@@ -93,6 +93,63 @@ export type Database = {
           },
         ]
       }
+      assessment_responses: {
+        Row: {
+          assessment_id: string
+          created_at: string
+          file_path: string | null
+          id: string
+          is_flagged: boolean | null
+          question_id: string
+          response_choice: Json | null
+          response_text: string | null
+          reviewer_notes: string | null
+          score: number | null
+          updated_at: string
+        }
+        Insert: {
+          assessment_id: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          question_id: string
+          response_choice?: Json | null
+          response_text?: string | null
+          reviewer_notes?: string | null
+          score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          assessment_id?: string
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          is_flagged?: boolean | null
+          question_id?: string
+          response_choice?: Json | null
+          response_text?: string | null
+          reviewer_notes?: string | null
+          score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_responses_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assessment_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessments: {
         Row: {
           completed_date: string | null
@@ -193,6 +250,158 @@ export type Database = {
           },
         ]
       }
+      issues: {
+        Row: {
+          assessment_id: string | null
+          assigned_to: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          resolution_notes: string | null
+          resolved_date: string | null
+          severity: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string | null
+          vendor_id: string
+        }
+        Insert: {
+          assessment_id?: string | null
+          assigned_to?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved_date?: string | null
+          severity?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          vendor_id: string
+        }
+        Update: {
+          assessment_id?: string | null
+          assigned_to?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved_date?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "issues_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "issues_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaire_questions: {
+        Row: {
+          compliance_mapping: Json | null
+          created_at: string
+          id: string
+          is_required: boolean | null
+          options: Json | null
+          order_index: number | null
+          question_text: string
+          question_type: string
+          section: string
+          template_id: string
+          weight: number | null
+        }
+        Insert: {
+          compliance_mapping?: Json | null
+          created_at?: string
+          id?: string
+          is_required?: boolean | null
+          options?: Json | null
+          order_index?: number | null
+          question_text: string
+          question_type?: string
+          section?: string
+          template_id: string
+          weight?: number | null
+        }
+        Update: {
+          compliance_mapping?: Json | null
+          created_at?: string
+          id?: string
+          is_required?: boolean | null
+          options?: Json | null
+          order_index?: number | null
+          question_text?: string
+          question_type?: string
+          section?: string
+          template_id?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_questions_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaire_templates: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          framework: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          framework?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          framework?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assignee: string | null
@@ -225,6 +434,78 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      vendor_assessments: {
+        Row: {
+          access_token: string | null
+          created_at: string
+          due_date: string
+          id: string
+          is_recurring: boolean | null
+          recurrence_interval: string | null
+          reviewed_date: string | null
+          risk_level: string | null
+          score: number | null
+          status: string
+          submitted_date: string | null
+          template_id: string | null
+          title: string
+          updated_at: string
+          user_id: string | null
+          vendor_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string
+          due_date: string
+          id?: string
+          is_recurring?: boolean | null
+          recurrence_interval?: string | null
+          reviewed_date?: string | null
+          risk_level?: string | null
+          score?: number | null
+          status?: string
+          submitted_date?: string | null
+          template_id?: string | null
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          vendor_id: string
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string
+          due_date?: string
+          id?: string
+          is_recurring?: boolean | null
+          recurrence_interval?: string | null
+          reviewed_date?: string | null
+          risk_level?: string | null
+          score?: number | null
+          status?: string
+          submitted_date?: string | null
+          template_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_assessments_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_assessments_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vendors: {
         Row: {

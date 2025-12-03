@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ChevronDown, X, ExternalLink, MoreHorizontal, Mail, FileText } from 'lucide-react';
+import { Search, Filter, X, ExternalLink, MoreHorizontal, Mail, FileText, Loader2, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,8 +17,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
-import { vendors, type Vendor } from '@/data/mockData';
+import { useVendors, type Vendor } from '@/hooks/useVendors';
+import { AddVendorDialog } from '@/components/vendors/AddVendorDialog';
 import { format } from 'date-fns';
 
 const riskTierStyles = {
@@ -42,32 +53,40 @@ const statusStyles = {
 };
 
 export default function Vendors() {
+  const { vendors, isLoading, deleteVendor } = useVendors();
   const [searchQuery, setSearchQuery] = useState('');
   const [riskFilter, setRiskFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('riskScore');
+  const [sortBy, setSortBy] = useState<string>('risk_score');
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [vendorToDelete, setVendorToDelete] = useState<Vendor | null>(null);
 
   const filteredVendors = vendors
     .filter((vendor) => {
       const matchesSearch = vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         vendor.category.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesRisk = riskFilter === 'all' || vendor.riskTier === riskFilter;
+      const matchesRisk = riskFilter === 'all' || vendor.risk_tier === riskFilter;
       const matchesStatus = statusFilter === 'all' || vendor.status === statusFilter;
       return matchesSearch && matchesRisk && matchesStatus;
     })
     .sort((a, b) => {
-      if (sortBy === 'riskScore') return b.riskScore - a.riskScore;
+      if (sortBy === 'risk_score') return (b.risk_score || 0) - (a.risk_score || 0);
       if (sortBy === 'name') return a.name.localeCompare(b.name);
-      if (sortBy === 'lastAssessment') return b.lastAssessment.getTime() - a.lastAssessment.getTime();
-      if (sortBy === 'annualValue') return b.annualValue - a.annualValue;
+      if (sortBy === 'last_assessment') {
+        const dateA = a.last_assessment ? new Date(a.last_assessment).getTime() : 0;
+        const dateB = b.last_assessment ? new Date(b.last_assessment).getTime() : 0;
+        return dateB - dateA;
+      }
+      if (sortBy === 'annual_value') return (b.annual_value || 0) - (a.annual_value || 0);
       return 0;
     });
 
   const addFilter = (type: string, value: string) => {
     const filterKey = `${type}:${value}`;
-    if (!activeFilters.includes(filterKey)) {
-      setActiveFilters([...activeFilters, filterKey]);
+    if (!activeFilters.includes(filterKey) && value !== 'all') {
+      setActiveFilters([...activeFilters.filter(f => !f.startsWith(`${type}:`)), filterKey]);
+    } else if (value === 'all') {
+      setActiveFilters(activeFilters.filter(f => !f.startsWith(`${type}:`)));
     }
     if (type === 'risk') setRiskFilter(value);
     if (type === 'status') setStatusFilter(value);
@@ -80,6 +99,13 @@ export default function Vendors() {
     if (type === 'status') setStatusFilter('all');
   };
 
+  const handleDeleteVendor = async () => {
+    if (vendorToDelete) {
+      await deleteVendor.mutateAsync(vendorToDelete.id);
+      setVendorToDelete(null);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
@@ -88,9 +114,7 @@ export default function Vendors() {
           <h1 className="text-2xl font-bold text-foreground">Vendors</h1>
           <p className="text-muted-foreground">Manage and monitor your third-party vendors</p>
         </div>
-        <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-          + Add Vendor
-        </Button>
+        <AddVendorDialog />
       </div>
 
       {/* Search and Filters */}
@@ -138,10 +162,10 @@ export default function Vendors() {
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="riskScore">Risk Score</SelectItem>
+                <SelectItem value="risk_score">Risk Score</SelectItem>
                 <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="lastAssessment">Last Assessment</SelectItem>
-                <SelectItem value="annualValue">Annual Value</SelectItem>
+                <SelectItem value="last_assessment">Last Assessment</SelectItem>
+                <SelectItem value="annual_value">Annual Value</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -152,7 +176,6 @@ export default function Vendors() {
           <div className="flex flex-wrap gap-2">
             {activeFilters.map((filter) => {
               const [type, value] = filter.split(':');
-              if (value === 'all') return null;
               return (
                 <Badge
                   key={filter}
@@ -183,38 +206,73 @@ export default function Vendors() {
 
       {/* Vendor Cards */}
       <div className="space-y-4">
-        {filteredVendors.map((vendor, index) => (
-          <VendorCard key={vendor.id} vendor={vendor} index={index} />
-        ))}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-secondary" />
+          </div>
+        ) : filteredVendors.length === 0 ? (
+          <div className="bg-card rounded-lg p-12 text-center shadow-card">
+            <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold text-card-foreground mb-2">No vendors found</h3>
+            <p className="text-muted-foreground mb-4">
+              {vendors.length === 0 
+                ? 'Get started by adding your first vendor'
+                : 'Try adjusting your search or filters'
+              }
+            </p>
+            {vendors.length === 0 && <AddVendorDialog />}
+          </div>
+        ) : (
+          filteredVendors.map((vendor, index) => (
+            <VendorCard 
+              key={vendor.id} 
+              vendor={vendor} 
+              index={index} 
+              onDelete={() => setVendorToDelete(vendor)}
+            />
+          ))
+        )}
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          Showing {filteredVendors.length} of {vendors.length} vendors
-        </p>
-        <div className="flex gap-1">
-          <Button variant="outline" size="sm" disabled>
-            Previous
-          </Button>
-          <Button variant="outline" size="sm" className="bg-secondary text-secondary-foreground">
-            1
-          </Button>
-          <Button variant="outline" size="sm">
-            Next
-          </Button>
+      {filteredVendors.length > 0 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing {filteredVendors.length} of {vendors.length} vendors
+          </p>
         </div>
-      </div>
+      )}
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!vendorToDelete} onOpenChange={() => setVendorToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Vendor</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{vendorToDelete?.name}"? This action cannot be undone and will remove all associated assessments, documents, and issues.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteVendor}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
 
-function VendorCard({ vendor, index }: { vendor: Vendor; index: number }) {
+function VendorCard({ vendor, index, onDelete }: { vendor: Vendor; index: number; onDelete: () => void }) {
   return (
     <div
       className={cn(
         'bg-card rounded-lg shadow-card hover:shadow-card-hover transition-all duration-200 border-l-4 p-5 animate-fade-in',
-        riskBorderStyles[vendor.riskTier]
+        riskBorderStyles[vendor.risk_tier]
       )}
       style={{ animationDelay: `${index * 50}ms` }}
     >
@@ -227,8 +285,8 @@ function VendorCard({ vendor, index }: { vendor: Vendor; index: number }) {
             >
               {vendor.name}
             </Link>
-            <Badge className={cn('text-xs', riskTierStyles[vendor.riskTier])}>
-              {vendor.riskTier.toUpperCase()} ({vendor.riskScore.toFixed(1)})
+            <Badge className={cn('text-xs', riskTierStyles[vendor.risk_tier])}>
+              {vendor.risk_tier.toUpperCase()} ({(vendor.risk_score || 0).toFixed(1)})
             </Badge>
             <Badge variant="outline" className={cn('text-xs', statusStyles[vendor.status])}>
               {vendor.status}
@@ -236,21 +294,23 @@ function VendorCard({ vendor, index }: { vendor: Vendor; index: number }) {
           </div>
           
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <span className="font-medium text-card-foreground">{vendor.category}</span>
-            </span>
+            <span className="font-medium text-card-foreground">{vendor.category}</span>
             <span>•</span>
-            <span>${vendor.annualValue.toLocaleString()}/year</span>
-            <span>•</span>
-            <a
-              href={`https://${vendor.website}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-secondary hover:text-secondary/80"
-            >
-              {vendor.website}
-              <ExternalLink className="h-3 w-3" />
-            </a>
+            <span>${(vendor.annual_value || 0).toLocaleString()}/year</span>
+            {vendor.website && (
+              <>
+                <span>•</span>
+                <a
+                  href={`https://${vendor.website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-secondary hover:text-secondary/80"
+                >
+                  {vendor.website}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </>
+            )}
           </div>
         </div>
 
@@ -259,21 +319,24 @@ function VendorCard({ vendor, index }: { vendor: Vendor; index: number }) {
             <div>
               <p className="text-xs text-muted-foreground">Last Assessment</p>
               <p className="text-sm font-medium text-card-foreground">
-                {format(vendor.lastAssessment, 'MMM d, yyyy')}
+                {vendor.last_assessment 
+                  ? format(new Date(vendor.last_assessment), 'MMM d, yyyy')
+                  : 'Never'
+                }
               </p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Open Issues</p>
               <p className={cn(
                 'text-sm font-medium',
-                vendor.openIssues > 0 ? 'text-warning' : 'text-success'
+                (vendor.open_issues || 0) > 0 ? 'text-warning' : 'text-success'
               )}>
-                {vendor.openIssues}
+                {vendor.open_issues || 0}
               </p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Documents</p>
-              <p className="text-sm font-medium text-card-foreground">{vendor.documentsCount}</p>
+              <p className="text-sm font-medium text-card-foreground">{vendor.documents_count || 0}</p>
             </div>
           </div>
 
@@ -297,6 +360,13 @@ function VendorCard({ vendor, index }: { vendor: Vendor; index: number }) {
                 <DropdownMenuItem>
                   <FileText className="h-4 w-4 mr-2" />
                   Request Assessment
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="text-destructive"
+                  onClick={onDelete}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Vendor
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

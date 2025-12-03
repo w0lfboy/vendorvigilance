@@ -5,6 +5,7 @@ import { AlertCard } from '@/components/dashboard/AlertCard';
 import { TaskList } from '@/components/dashboard/TaskList';
 import { RiskHeatMap } from '@/components/dashboard/RiskHeatMap';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { useAuth } from '@/hooks/useAuth';
 import { 
   dashboardStats, 
   alerts, 
@@ -14,13 +15,16 @@ import {
 } from '@/data/mockData';
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const displayName = user?.email?.split('@')[0] || 'there';
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back, John. Here's your risk overview.</p>
+          <p className="text-muted-foreground">Welcome back, {displayName}. Here's your risk overview.</p>
         </div>
         <ActionBar />
       </div>

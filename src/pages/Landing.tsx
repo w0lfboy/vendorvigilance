@@ -19,6 +19,21 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import logo from "@/assets/logo.png";
+import { motion } from "framer-motion";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.9 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
 
 const Landing = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -161,7 +176,12 @@ const Landing = () => {
         
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border/40 bg-background">
+          <motion.div 
+            className="md:hidden border-t border-border/40 bg-background"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+          >
             <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
               <a 
                 href="#features" 
@@ -193,7 +213,7 @@ const Landing = () => {
                 </Button>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </nav>
 
@@ -201,17 +221,43 @@ const Landing = () => {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24 md:py-32 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm">
-              Trusted by 500+ enterprises worldwide
-            </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-tight">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <Badge variant="secondary" className="mb-4 sm:mb-6 text-xs sm:text-sm">
+                Trusted by 500+ enterprises worldwide
+              </Badge>
+            </motion.div>
+            <motion.h1 
+              className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Simplify Third-Party Risk Management
-            </h1>
-            <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
+            </motion.h1>
+            <motion.p 
+              className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               VendorVigilance helps security and compliance teams assess, monitor, and manage vendor risks—all in one intelligent platform.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
+            </motion.p>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8" asChild>
                 <Link to="/auth">
                   Start Free Trial
@@ -221,11 +267,16 @@ const Landing = () => {
               <Button size="lg" variant="outline" className="text-sm sm:text-base px-6 sm:px-8">
                 Book a Demo
               </Button>
-            </div>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-4">
+            </motion.div>
+            <motion.p 
+              className="text-xs sm:text-sm text-muted-foreground mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
               14-day free trial • No credit card required
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
@@ -239,10 +290,17 @@ const Landing = () => {
               { value: "70%", label: "Time Saved" },
               { value: "99.9%", label: "Uptime SLA" }
             ].map((stat, index) => (
-              <div key={index} className="text-center">
+              <motion.div 
+                key={index} 
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
                 <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-1">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -251,7 +309,10 @@ const Landing = () => {
       {/* Features Section */}
       <section id="features" className="py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-16">
+          <motion.div 
+            className="text-center mb-10 sm:mb-16"
+            {...fadeInUp}
+          >
             <Badge variant="outline" className="mb-4">Features</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 px-2">
               Everything You Need for Vendor Risk Management
@@ -259,20 +320,28 @@ const Landing = () => {
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
               A complete platform to assess, monitor, and manage third-party risks throughout the vendor lifecycle.
             </p>
-          </div>
+          </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="border-border/50 bg-card/50 hover:bg-card hover:shadow-lg transition-all duration-300">
-                <CardHeader>
-                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="border-border/50 bg-card/50 hover:bg-card hover:shadow-lg transition-all duration-300 h-full">
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <feature.icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base">{feature.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -282,7 +351,12 @@ const Landing = () => {
       <section id="solutions" className="py-24 bg-muted/30">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <Badge variant="outline" className="mb-4">Solutions</Badge>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
                 Built for Security & Compliance Teams
@@ -292,10 +366,17 @@ const Landing = () => {
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
+                  <motion.div 
+                    key={index} 
+                    className="flex items-center gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                  >
                     <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
                     <span className="text-foreground">{benefit}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
               <Button className="mt-8" size="lg" asChild>
@@ -304,8 +385,14 @@ const Landing = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-            </div>
-            <div className="relative">
+            </motion.div>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <div className="bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl p-8">
                 <div className="bg-background rounded-xl shadow-2xl p-6 space-y-4">
                   <div className="flex items-center justify-between">
@@ -332,7 +419,7 @@ const Landing = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -340,28 +427,39 @@ const Landing = () => {
       {/* Testimonials */}
       <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
+          <motion.div 
+            className="text-center mb-16"
+            {...fadeInUp}
+          >
             <Badge variant="outline" className="mb-4">Testimonials</Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Trusted by Industry Leaders
             </h2>
-          </div>
+          </motion.div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-border/50">
-                <CardContent className="pt-6">
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="text-foreground mb-4 italic">"{testimonial.quote}"</p>
-                  <div>
-                    <div className="font-semibold text-foreground">{testimonial.author}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+              >
+                <Card className="border-border/50 h-full">
+                  <CardContent className="pt-6">
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                      ))}
+                    </div>
+                    <p className="text-foreground mb-4 italic">"{testimonial.quote}"</p>
+                    <div>
+                      <div className="font-semibold text-foreground">{testimonial.author}</div>
+                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -370,7 +468,10 @@ const Landing = () => {
       {/* Pricing Section */}
       <section id="pricing" className="py-16 sm:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-16">
+          <motion.div 
+            className="text-center mb-10 sm:mb-16"
+            {...fadeInUp}
+          >
             <Badge variant="outline" className="mb-4">Pricing</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
               Simple, Transparent Pricing
@@ -378,78 +479,88 @@ const Landing = () => {
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
               Choose the plan that fits your organization. All plans include a 14-day free trial.
             </p>
-          </div>
+          </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {pricingPlans.map((plan, index) => (
-              <Card 
-                key={index} 
-                className={`relative ${plan.highlighted ? 'border-primary shadow-lg scale-105' : 'border-border/50'}`}
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
               >
-                {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
-                  </div>
-                )}
-                <CardHeader className="text-center pb-4">
-                  <CardTitle className="text-xl">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
-                  </div>
-                  <CardDescription className="mt-2">{plan.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                        <span className="text-sm text-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button 
-                    className="w-full" 
-                    variant={plan.highlighted ? "default" : "outline"}
-                    asChild
-                  >
-                    <Link to="/auth">
-                      {plan.price === "Custom" ? "Contact Sales" : "Start Free Trial"}
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                <Card 
+                  className={`relative h-full ${plan.highlighted ? 'border-primary shadow-lg scale-105' : 'border-border/50'}`}
+                >
+                  {plan.highlighted && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground">Most Popular</Badge>
+                    </div>
+                  )}
+                  <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-xl">{plan.name}</CardTitle>
+                    <div className="mt-4">
+                      <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+                      <span className="text-muted-foreground">{plan.period}</span>
+                    </div>
+                    <CardDescription className="mt-2">{plan.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                          <span className="text-sm text-foreground">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      className="w-full" 
+                      variant={plan.highlighted ? "default" : "outline"}
+                      asChild
+                    >
+                      <Link to="/auth">
+                        {plan.price === "Custom" ? "Contact Sales" : "Start Free Trial"}
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 rounded-3xl p-12 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+      <section className="py-16 sm:py-24">
+        <div className="container mx-auto px-4 sm:px-6">
+          <motion.div 
+            className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 rounded-2xl sm:rounded-3xl p-6 sm:p-12 text-center"
+            {...scaleIn}
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
               Ready to Transform Your Vendor Risk Management?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join hundreds of organizations that trust VendorVigilance to protect their business from third-party risks.
+            <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
+              Join 500+ enterprises who trust VendorVigilance to protect their organization from third-party risks.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-base px-8" asChild>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Button size="lg" className="text-sm sm:text-base" asChild>
                 <Link to="/auth">
                   Start Your Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-base px-8">
+              <Button size="lg" variant="outline" className="text-sm sm:text-base">
                 Schedule a Demo
               </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-12">
+      <footer className="border-t border-border/40 bg-muted/30 py-12">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -458,7 +569,7 @@ const Landing = () => {
                 <span className="text-lg font-bold text-foreground">VendorVigilance</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                The intelligent platform for third-party risk management.
+                Rock-solid third-party risk management for modern enterprises.
               </p>
             </div>
             <div>
@@ -466,8 +577,8 @@ const Landing = () => {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="#features" className="hover:text-foreground transition-colors">Features</a></li>
                 <li><a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Security</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors">Integrations</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">API</a></li>
               </ul>
             </div>
             <div>
@@ -484,12 +595,12 @@ const Landing = () => {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Security</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Cookie Policy</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border/40 mt-12 pt-8 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} VendorVigilance. All rights reserved.
+          <div className="border-t border-border/40 mt-8 pt-8 text-center text-sm text-muted-foreground">
+            <p>&copy; {new Date().getFullYear()} VendorVigilance. All rights reserved.</p>
           </div>
         </div>
       </footer>

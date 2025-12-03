@@ -12,11 +12,16 @@ import {
   Clock,
   CheckCircle2,
   ArrowRight,
-  Star
+  Star,
+  Menu,
+  X
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Landing = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const features = [
     {
       icon: Shield,
@@ -136,14 +141,59 @@ const Landing = () => {
             <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <Button variant="ghost" size="sm" className="text-xs sm:text-sm" asChild>
+            <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-xs sm:text-sm" asChild>
               <Link to="/auth">Sign In</Link>
             </Button>
-            <Button size="sm" className="text-xs sm:text-sm" asChild>
+            <Button size="sm" className="hidden sm:inline-flex text-xs sm:text-sm" asChild>
               <Link to="/auth">Get Started</Link>
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
+        
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border/40 bg-background">
+            <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+              <a 
+                href="#features" 
+                className="text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Features
+              </a>
+              <a 
+                href="#solutions" 
+                className="text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Solutions
+              </a>
+              <a 
+                href="#pricing" 
+                className="text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Pricing
+              </a>
+              <div className="flex flex-col gap-2 pt-2 border-t border-border/40">
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                </Button>
+                <Button size="sm" asChild>
+                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}

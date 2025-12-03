@@ -6,27 +6,33 @@ export function ActionBar() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex items-center gap-2">
       <Button 
-        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-md"
+        size="sm"
+        variant="outline"
+        className="h-8 px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
         onClick={() => navigate('/vendors')}
       >
-        <Plus className="mr-2 h-4 w-4" />
+        <Plus className="h-3.5 w-3.5" />
         Add Vendor
       </Button>
       <Button 
-        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-md"
+        size="sm"
+        variant="outline"
+        className="h-8 px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
         onClick={() => navigate('/assessments')}
       >
-        <ClipboardList className="mr-2 h-4 w-4" />
-        Create Assessment
+        <ClipboardList className="h-3.5 w-3.5" />
+        Assessment
       </Button>
       <Button 
-        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-md"
+        size="sm"
+        variant="outline"
+        className="h-8 px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
         onClick={() => navigate('/documents')}
       >
-        <Upload className="mr-2 h-4 w-4" />
-        Upload Document
+        <Upload className="h-3.5 w-3.5" />
+        Upload
       </Button>
     </div>
   );

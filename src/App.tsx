@@ -10,6 +10,9 @@ import Vendors from "./pages/Vendors";
 import VendorProfile from "./pages/VendorProfile";
 import Documents from "./pages/Documents";
 import Assessments from "./pages/Assessments";
+import ExecutiveDashboard from "./pages/ExecutiveDashboard";
+import Reports from "./pages/Reports";
+import VendorPortal from "./pages/VendorPortal";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -23,13 +26,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/auth" element={<Auth />} />
+          <Route path="/portal" element={<VendorPortal />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
               <Route path="/" element={<Index />} />
+              <Route path="/executive" element={<ExecutiveDashboard />} />
               <Route path="/vendors" element={<Vendors />} />
               <Route path="/vendors/:id" element={<VendorProfile />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/assessments" element={<Assessments />} />
+              <Route path="/reports" element={<Reports />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

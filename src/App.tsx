@@ -12,6 +12,7 @@ import Documents from "./pages/Documents";
 import Assessments from "./pages/Assessments";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
 import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 import VendorPortal from "./pages/VendorPortal";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/documents" element={<Documents />} />
               <Route path="/assessments" element={<Assessments />} />
               <Route path="/reports" element={<Reports />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

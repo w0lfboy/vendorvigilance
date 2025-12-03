@@ -14,9 +14,11 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
+  { icon: BarChart3, label: 'Executive View', href: '/executive' },
   { icon: Building2, label: 'Vendors', href: '/vendors' },
   { icon: ClipboardCheck, label: 'Assessments', href: '/assessments' },
   { icon: FileText, label: 'Documents', href: '/documents' },
+  { icon: FileBarChart, label: 'Reports', href: '/reports' },
 ];
 
 const bottomNavItems = [

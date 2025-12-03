@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -8,18 +10,32 @@ interface TaskListProps {
   tasks: Task[];
 }
 
-export function TaskList({ tasks }: TaskListProps) {
+export function TaskList({ tasks: initialTasks }: TaskListProps) {
+  const navigate = useNavigate();
+  const [tasks, setTasks] = useState(initialTasks);
+
   const priorityStyles = {
     high: 'bg-destructive/10 text-destructive border-destructive/30',
     medium: 'bg-warning/10 text-warning border-warning/30',
     low: 'bg-info/10 text-info border-info/30',
   };
 
+  const handleToggleTask = (taskId: string) => {
+    setTasks(prev => 
+      prev.map(task => 
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
   return (
     <div className="bg-card rounded-lg shadow-card p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-lg text-card-foreground">Quick Tasks</h3>
-        <button className="text-sm text-secondary hover:text-secondary/80 font-medium">
+        <button 
+          className="text-sm text-secondary hover:text-secondary/80 font-medium"
+          onClick={() => navigate('/assessments')}
+        >
           View All →
         </button>
       </div>
@@ -34,6 +50,7 @@ export function TaskList({ tasks }: TaskListProps) {
           >
             <Checkbox
               checked={task.completed}
+              onCheckedChange={() => handleToggleTask(task.id)}
               className="border-muted-foreground data-[state=checked]:bg-secondary data-[state=checked]:border-secondary"
             />
             <div className="flex-1 min-w-0">

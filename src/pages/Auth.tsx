@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Shield, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import logo from '@/assets/logo.png';
 import { z } from 'zod';
 
 const authSchema = z.object({
@@ -26,13 +27,13 @@ export default function Auth() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate('/');
+        navigate('/dashboard');
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/');
+        navigate('/dashboard');
       }
     });
 
@@ -143,10 +144,8 @@ export default function Auth() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
-              <Shield className="h-6 w-6 text-secondary-foreground" />
-            </div>
-            <span className="text-3xl font-bold text-header-foreground">Vendor Vigilance</span>
+            <img src={logo} alt="VendorVigilance" className="w-12 h-12" />
+            <span className="text-3xl font-bold text-header-foreground">VendorVigilance</span>
           </div>
           <p className="text-sidebar-foreground">
             Rock-Solid Third-Party Risk Management

@@ -1,4 +1,5 @@
 import { Search, Bell, User, Settings, ChevronDown, LogOut } from 'lucide-react';
+import logo from '@/assets/logo.png';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,10 +29,8 @@ export function Header() {
     <header className="h-16 bg-header text-header-foreground flex items-center justify-between px-6 border-b border-sidebar-border">
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-            <span className="text-secondary-foreground font-bold text-sm">VV</span>
-          </div>
-          <span className="font-semibold text-lg tracking-tight">Vendor Vigilance</span>
+          <img src={logo} alt="VendorVigilance" className="w-8 h-8" />
+          <span className="font-semibold text-lg tracking-tight">VendorVigilance</span>
         </div>
         
         <div className="relative hidden md:block">

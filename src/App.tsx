@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import Index from "./pages/Index";
+import Landing from "./pages/Landing";
 import Vendors from "./pages/Vendors";
 import VendorProfile from "./pages/VendorProfile";
 import Documents from "./pages/Documents";
@@ -26,6 +27,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/landing" element={<Landing />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/portal" element={<VendorPortal />} />
           <Route element={<ProtectedRoute />}>

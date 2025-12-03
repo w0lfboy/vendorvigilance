@@ -6,86 +6,95 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 213 41% 10%;
+    /* Light mode - Based on BlueVoyant Brand Guidelines */
+    --background: 220 14% 96%; /* #F3F4F6 Light Gray */
+    --foreground: 211 53% 11%; /* #0D1B2A Deep Black */
 
-    --card: 0 0% 100%;
-    --card-foreground: 213 41% 10%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 211 53% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 213 41% 10%;
+    --popover-foreground: 211 53% 11%;
 
-    --primary: 222 83% 21%;
+    --primary: 222 81% 21%; /* #0A2463 Deep Navy */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 201 65% 52%;
+    --secondary: 205 58% 56%; /* #3E92CC Bright Accent Blue */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 213 68% 90%; /* #D4E4F7 Light Blue */
+    --muted-foreground: 220 9% 46%; /* #6B7280 Medium Gray */
 
-    --accent: 213 100% 92%;
-    --accent-foreground: 222 83% 21%;
+    --accent: 213 68% 90%; /* #D4E4F7 Light Blue */
+    --accent-foreground: 222 81% 21%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%; /* #EF4444 Danger Red */
     --destructive-foreground: 0 0% 100%;
 
-    --success: 158 64% 40%;
+    --success: 160 84% 39%; /* #10B981 Success Green */
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 50%;
+    --warning: 38 92% 50%; /* #F59E0B Warning Orange */
     --warning-foreground: 0 0% 100%;
 
-    --info: 217 91% 60%;
+    --info: 217 91% 60%; /* #3B82F6 Info Blue */
     --info-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 201 65% 52%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 205 58% 56%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 213 41% 10%;
-    --sidebar-foreground: 215 20% 65%;
-    --sidebar-primary: 201 65% 52%;
+    /* Sidebar - Dark theme */
+    --sidebar-background: 211 53% 11%; /* #0D1B2A Deep Black */
+    --sidebar-foreground: 220 13% 85%;
+    --sidebar-primary: 205 58% 56%; /* #3E92CC */
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 214 36% 15%;
+    --sidebar-accent: 219 37% 17%; /* #1B263B Dark Gray */
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 214 36% 20%;
-    --sidebar-ring: 201 65% 52%;
+    --sidebar-border: 219 37% 22%;
+    --sidebar-ring: 205 58% 56%;
 
-    --header-background: 214 36% 17%;
+    /* Header */
+    --header-background: 222 81% 21%; /* #0A2463 Deep Navy */
     --header-foreground: 0 0% 100%;
+
+    /* Risk Tiers */
+    --risk-critical: 0 72% 51%; /* #DC2626 */
+    --risk-high: 38 92% 50%; /* #F59E0B */
+    --risk-medium: 217 91% 60%; /* #3B82F6 */
+    --risk-low: 160 84% 39%; /* #10B981 */
   }
 
   .dark {
-    --background: 213 41% 10%;
-    --foreground: 210 40% 98%;
+    --background: 211 53% 11%; /* #0D1B2A */
+    --foreground: 220 14% 96%;
 
-    --card: 214 36% 15%;
-    --card-foreground: 210 40% 98%;
+    --card: 219 37% 17%; /* #1B263B */
+    --card-foreground: 220 14% 96%;
 
-    --popover: 214 36% 15%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 219 37% 17%;
+    --popover-foreground: 220 14% 96%;
 
-    --primary: 201 65% 52%;
+    --primary: 205 58% 56%; /* #3E92CC */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 83% 21%;
+    --secondary: 222 81% 21%; /* #0A2463 */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 214 36% 20%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 219 37% 22%;
+    --muted-foreground: 220 13% 70%;
 
-    --accent: 214 36% 25%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 219 37% 25%;
+    --accent-foreground: 220 14% 96%;
 
-    --destructive: 0 62% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 220 14% 96%;
 
-    --border: 214 36% 25%;
-    --input: 214 36% 25%;
-    --ring: 201 65% 52%;
+    --border: 219 37% 25%;
+    --input: 219 37% 25%;
+    --ring: 205 58% 56%;
   }
 }
 
@@ -164,6 +173,19 @@
 
 .card-accent-success {
   @apply border-l-4 border-l-success;
+}
+
+/* Brand Gradients */
+.gradient-primary {
+  background: linear-gradient(135deg, hsl(222 81% 21%) 0%, hsl(219 37% 17%) 50%, hsl(205 58% 56%) 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, hsl(205 58% 56%) 0%, hsl(217 91% 70%) 100%);
+}
+
+.gradient-subtle {
+  background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 96%) 100%);
 }
 
 /* Animations */

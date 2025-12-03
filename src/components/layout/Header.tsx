@@ -29,9 +29,9 @@ export function Header() {
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-            <span className="text-secondary-foreground font-bold text-sm">V</span>
+            <span className="text-secondary-foreground font-bold text-sm">VV</span>
           </div>
-          <span className="font-semibold text-lg tracking-tight">VIGILANT</span>
+          <span className="font-semibold text-lg tracking-tight">Vendor Vigilance</span>
         </div>
         
         <div className="relative hidden md:block">

@@ -237,10 +237,15 @@ export default function VendorPortal() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Shield className="h-8 w-8 text-primary" />
-              <div>
-                <h1 className="font-semibold text-foreground">{assessment?.title}</h1>
-                <p className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-xs">VV</span>
+                </div>
+                <span className="font-semibold text-foreground">Vendor Vigilance</span>
+              </div>
+              <div className="border-l pl-3 ml-2">
+                <h1 className="font-medium text-foreground text-sm">{assessment?.title}</h1>
+                <p className="text-xs text-muted-foreground">
                   Due: {assessment?.due_date ? new Date(assessment.due_date).toLocaleDateString() : 'N/A'}
                 </p>
               </div>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Shield, 
   BarChart3, 
   FileCheck, 
   Users, 
@@ -14,10 +13,12 @@ import {
   ArrowRight,
   Star,
   Menu,
-  X
+  X,
+  Shield
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import logo from "@/assets/logo.png";
 
 const Landing = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -132,7 +133,7 @@ const Landing = () => {
       <nav className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+            <img src={logo} alt="VendorVigilance" className="h-6 w-6 sm:h-8 sm:w-8" />
             <span className="text-lg sm:text-xl font-bold text-foreground">VendorVigilance</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -453,7 +454,7 @@ const Landing = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Shield className="h-6 w-6 text-primary" />
+                <img src={logo} alt="VendorVigilance" className="h-6 w-6" />
                 <span className="text-lg font-bold text-foreground">VendorVigilance</span>
               </div>
               <p className="text-sm text-muted-foreground">

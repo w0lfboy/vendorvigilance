@@ -115,7 +115,7 @@ const Landing = () => {
 
   const testimonials = [
     {
-      quote: "VendorShield transformed how we manage third-party risk. What used to take weeks now takes hours.",
+      quote: "VendorVigilance transformed how we manage third-party risk. What used to take weeks now takes hours.",
       author: "Sarah Chen",
       role: "CISO, TechCorp Inc."
     },
@@ -133,7 +133,7 @@ const Landing = () => {
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-            <span className="text-lg sm:text-xl font-bold text-foreground">VendorShield</span>
+            <span className="text-lg sm:text-xl font-bold text-foreground">VendorVigilance</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
@@ -208,7 +208,7 @@ const Landing = () => {
               Simplify Third-Party Risk Management
             </h1>
             <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
-              VendorShield helps security and compliance teams assess, monitor, and manage vendor risks—all in one intelligent platform.
+              VendorVigilance helps security and compliance teams assess, monitor, and manage vendor risks—all in one intelligent platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
               <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8" asChild>
@@ -287,7 +287,7 @@ const Landing = () => {
                 Built for Security & Compliance Teams
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Whether you're managing 10 vendors or 10,000, VendorShield scales with your organization and adapts to your risk framework.
+                Whether you're managing 10 vendors or 10,000, VendorVigilance scales with your organization and adapts to your risk framework.
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -430,7 +430,7 @@ const Landing = () => {
               Ready to Transform Your Vendor Risk Management?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join hundreds of organizations that trust VendorShield to protect their business from third-party risks.
+              Join hundreds of organizations that trust VendorVigilance to protect their business from third-party risks.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-base px-8" asChild>
@@ -454,7 +454,7 @@ const Landing = () => {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Shield className="h-6 w-6 text-primary" />
-                <span className="text-lg font-bold text-foreground">VendorShield</span>
+                <span className="text-lg font-bold text-foreground">VendorVigilance</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 The intelligent platform for third-party risk management.
@@ -488,7 +488,7 @@ const Landing = () => {
             </div>
           </div>
           <div className="border-t border-border/40 mt-12 pt-8 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} VendorShield. All rights reserved.
+            © {new Date().getFullYear()} VendorVigilance. All rights reserved.
           </div>
         </div>
       </footer>

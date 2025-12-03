@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['Everett', 'Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
         mono: ['Roboto Mono', 'monospace'],
       },
       colors: {

@@ -146,10 +146,10 @@ export default function Auth() {
             <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
               <Shield className="h-6 w-6 text-secondary-foreground" />
             </div>
-            <span className="text-3xl font-bold text-header-foreground">VIGILANT</span>
+            <span className="text-3xl font-bold text-header-foreground">Vendor Vigilance</span>
           </div>
           <p className="text-sidebar-foreground">
-            Third-Party Risk Management Platform
+            Rock-Solid Third-Party Risk Management
           </p>
         </div>
 

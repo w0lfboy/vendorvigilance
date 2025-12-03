@@ -17,8 +17,6 @@ const navItems = [
   { icon: Building2, label: 'Vendors', href: '/vendors' },
   { icon: ClipboardCheck, label: 'Assessments', href: '/assessments' },
   { icon: FileText, label: 'Documents', href: '/documents' },
-  { icon: Shield, label: 'Risk Dashboard', href: '/risk' },
-  { icon: FileBarChart, label: 'Reports', href: '/reports' },
 ];
 
 const bottomNavItems = [

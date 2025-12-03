@@ -8,6 +8,8 @@ import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import Index from "./pages/Index";
 import Vendors from "./pages/Vendors";
 import VendorProfile from "./pages/VendorProfile";
+import Documents from "./pages/Documents";
+import Assessments from "./pages/Assessments";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +28,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/vendors" element={<Vendors />} />
               <Route path="/vendors/:id" element={<VendorProfile />} />
+              <Route path="/documents" element={<Documents />} />
+              <Route path="/assessments" element={<Assessments />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

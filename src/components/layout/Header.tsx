@@ -32,7 +32,7 @@ export function Header() {
         <MobileNav />
         
         <div className="flex items-center gap-2">
-          <img src={logo} alt="VendorVigilance" className="w-7 h-7 md:w-8 md:h-8" />
+          <img src={logo} alt="VendorVigilance" className="w-7 h-7 md:w-8 md:h-8 transition-all duration-300 hover:drop-shadow-[0_0_8px_hsl(var(--primary))]" />
           <span className="font-semibold text-base md:text-lg tracking-tight hidden sm:block">VendorVigilance</span>
         </div>
         

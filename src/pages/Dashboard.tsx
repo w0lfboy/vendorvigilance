@@ -19,18 +19,18 @@ export default function Dashboard() {
   const displayName = user?.email?.split('@')[0] || 'there';
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-4 md:space-y-6 animate-fade-in">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back, {displayName}. Here's your risk overview.</p>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm md:text-base text-muted-foreground">Welcome back, {displayName}. Here's your risk overview.</p>
         </div>
         <ActionBar />
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <KPICard
           title="Active Vendors"
           value={dashboardStats.activeVendors}

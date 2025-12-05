@@ -28,7 +28,7 @@ const bottomNavItems = [
 
 export function Sidebar() {
   return (
-    <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col h-[calc(100vh-4rem)]">
+    <aside className="hidden md:flex w-64 bg-sidebar text-sidebar-foreground flex-col h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)]">
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => (
           <NavLink

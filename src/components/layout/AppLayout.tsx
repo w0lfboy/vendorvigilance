@@ -8,7 +8,7 @@ export function AppLayout() {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-6 overflow-auto h-[calc(100vh-4rem)]">
+        <main className="flex-1 p-3 md:p-6 overflow-auto h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)]">
           <Outlet />
         </main>
       </div>

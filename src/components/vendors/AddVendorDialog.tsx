@@ -167,7 +167,7 @@ export function AddVendorDialog() {
 
           <Button 
             type="submit"
-            className="w-full bg-secondary hover:bg-secondary/90"
+            className="w-full bg-secondary hover:bg-secondary/90 text-white"
             disabled={createVendor.isPending || !formData.name || !formData.category}
           >
             {createVendor.isPending ? 'Adding...' : 'Add Vendor'}

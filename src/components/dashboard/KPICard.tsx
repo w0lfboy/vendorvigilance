@@ -22,7 +22,7 @@ export function KPICard({ title, value, icon: Icon, trend, variant = 'default' }
 
   return (
     <div className={cn(
-      'bg-card rounded-lg p-4 md:p-6 shadow-card hover:shadow-card-hover transition-all duration-200',
+      'bg-card rounded-lg p-4 md:p-6 shadow-card transition-all duration-300 hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] hover:-translate-y-0.5',
       variantStyles[variant]
     )}>
       <div className="flex items-start justify-between">
@@ -45,7 +45,7 @@ export function KPICard({ title, value, icon: Icon, trend, variant = 'default' }
           )}
         </div>
         <div className="p-2 md:p-3 bg-accent rounded-lg flex-shrink-0">
-          <Icon className="h-5 w-5 md:h-6 md:w-6 text-secondary" />
+          <Icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
         </div>
       </div>
     </div>

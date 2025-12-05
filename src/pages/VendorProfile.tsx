@@ -21,6 +21,7 @@ import { useAssessments } from '@/hooks/useAssessments';
 import { useDocuments } from '@/hooks/useDocuments';
 import { useIssues } from '@/hooks/useIssues';
 import { AISuggestionsPanel } from '@/components/vendors/AISuggestionsPanel';
+import { SendAssessmentDialog } from '@/components/vendors/SendAssessmentDialog';
 import { format, formatDistanceToNow } from 'date-fns';
 
 const riskTierStyles = {
@@ -136,10 +137,7 @@ export default function VendorProfile() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-              <Mail className="h-4 w-4 mr-2" />
-              Request Update
-            </Button>
+            <SendAssessmentDialog vendor={vendor} />
             <Button variant="outline">
               <Upload className="h-4 w-4 mr-2" />
               Upload Document
@@ -346,12 +344,15 @@ export default function VendorProfile() {
           <div className="bg-card rounded-lg shadow-card p-6">
             <h3 className="font-semibold text-lg text-card-foreground mb-4">Quick Actions</h3>
             <div className="space-y-2">
-              <Link to="/assessments">
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Request Assessment
-                </Button>
-              </Link>
+              <SendAssessmentDialog 
+                vendor={vendor} 
+                trigger={
+                  <Button variant="outline" className="w-full justify-start">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Send Assessment
+                  </Button>
+                }
+              />
               <Link to="/documents">
                 <Button variant="outline" className="w-full justify-start">
                   <Upload className="h-4 w-4 mr-2" />

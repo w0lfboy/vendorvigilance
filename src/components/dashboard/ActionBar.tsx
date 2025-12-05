@@ -10,7 +10,7 @@ export function ActionBar() {
       <Button 
         size="sm"
         variant="outline"
-        className="h-8 px-2 sm:px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
+        className="h-8 px-2 sm:px-3 text-xs font-medium border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
         onClick={() => navigate('/vendors')}
       >
         <Plus className="h-3.5 w-3.5" />
@@ -20,7 +20,7 @@ export function ActionBar() {
       <Button 
         size="sm"
         variant="outline"
-        className="h-8 px-2 sm:px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
+        className="h-8 px-2 sm:px-3 text-xs font-medium border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
         onClick={() => navigate('/assessments')}
       >
         <ClipboardList className="h-3.5 w-3.5" />
@@ -29,7 +29,7 @@ export function ActionBar() {
       <Button 
         size="sm"
         variant="outline"
-        className="h-8 px-2 sm:px-3 text-xs font-medium border-secondary/30 hover:bg-secondary hover:text-secondary-foreground transition-colors"
+        className="h-8 px-2 sm:px-3 text-xs font-medium border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
         onClick={() => navigate('/documents')}
       >
         <Upload className="h-3.5 w-3.5" />

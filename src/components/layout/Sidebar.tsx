@@ -36,10 +36,10 @@ export function Sidebar() {
             to={item.href}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all duration-200 bg-sidebar-accent',
+                'flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all duration-200 bg-sidebar-accent border-l-2',
                 isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? 'bg-primary text-primary-foreground border-l-primary-foreground'
+                  : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground border-l-transparent'
               )
             }
           >
@@ -56,10 +56,10 @@ export function Sidebar() {
             to={item.href}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all duration-200 bg-sidebar-accent',
+                'flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all duration-200 bg-sidebar-accent border-l-2',
                 isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? 'bg-primary text-primary-foreground border-l-primary-foreground'
+                  : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground border-l-transparent'
               )
             }
           >

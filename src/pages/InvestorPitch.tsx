@@ -137,7 +137,7 @@ export default function InvestorPitch() {
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 gradient-primary opacity-90" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
-        <motion.div className="container mx-auto px-6 relative z-10 text-center" initial={{
+        <motion.div className="container mx-auto px-4 md:px-6 relative z-10 text-center" initial={{
         opacity: 0,
         y: 30
       }} animate={{
@@ -156,8 +156,8 @@ export default function InvestorPitch() {
           delay: 0.2,
           duration: 0.5
         }}>
-            <img src={logo} alt="VendorVigilance" className="w-16 h-16 rounded-xl" />
-            <span className="text-4xl md:text-5xl font-bold text-foreground">VendorVigilance</span>
+            <img src={logo} alt="VendorVigilance" className="w-12 h-12 md:w-16 md:h-16 rounded-xl" />
+            <span className="text-2xl md:text-5xl font-bold text-foreground">VendorVigilance</span>
           </motion.div>
           <motion.h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4 max-w-4xl mx-auto" initial={{
           opacity: 0
@@ -169,7 +169,7 @@ export default function InvestorPitch() {
         }}>
             AI-Powered Third-Party Risk Management
           </motion.h1>
-          <motion.p className="text-xl md:text-2xl text-muted-foreground mb-12" initial={{
+          <motion.p className="text-lg md:text-2xl text-muted-foreground mb-8 md:mb-12" initial={{
           opacity: 0
         }} animate={{
           opacity: 1
@@ -179,7 +179,7 @@ export default function InvestorPitch() {
         }}>
             Enterprise-Grade Security. Mid-Market Pricing.
           </motion.p>
-          <motion.div className="flex flex-wrap justify-center gap-6" initial={{
+          <motion.div className="flex flex-wrap justify-center gap-3 md:gap-6" initial={{
           opacity: 0,
           y: 20
         }} animate={{
@@ -189,27 +189,27 @@ export default function InvestorPitch() {
           delay: 0.8,
           duration: 0.6
         }}>
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 text-center">
-              <p className="text-sm text-muted-foreground mb-1">Assessments</p>
-              <p className="text-3xl font-bold text-success">80% Faster</p>
+            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 md:p-6 text-center">
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Assessments</p>
+              <p className="text-xl md:text-3xl font-bold text-success">80% Faster</p>
             </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 text-center">
-              <p className="text-sm text-muted-foreground mb-1">Cost vs Enterprise</p>
-              <p className="text-3xl font-bold text-success">75% Less</p>
+            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 md:p-6 text-center">
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Cost vs Enterprise</p>
+              <p className="text-xl md:text-3xl font-bold text-success">75% Less</p>
             </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 text-center">
-              <p className="text-sm text-muted-foreground mb-1">Time to Value</p>
-              <p className="text-3xl font-bold text-success">1 Day</p>
+            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 md:p-6 text-center">
+              <p className="text-xs md:text-sm text-muted-foreground mb-1">Time to Value</p>
+              <p className="text-xl md:text-3xl font-bold text-success">1 Day</p>
             </div>
           </motion.div>
         </motion.div>
       </section>
 
       {/* Problem Section */}
-      <motion.section className="py-20 bg-card" {...fadeInUp}>
-        <div className="container mx-auto px-6">
+      <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">The Problem</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
             Third-Party Risk is Exploding, But Solutions Are Broken
           </h2>
           <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" {...staggerChildren}>
@@ -566,15 +566,163 @@ export default function InvestorPitch() {
         </div>
       </motion.section>
 
+      {/* Financial Projections Section */}
+      <motion.section className="py-16 md:py-20" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
+          <Badge variant="outline" className="mb-4 text-success border-success">Financial Projections</Badge>
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
+            3-Year Financial Forecast
+          </h2>
+          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-3xl">
+            Conservative projections based on realistic customer acquisition and standard SaaS metrics for the mid-market TPRM space.
+          </p>
+
+          {/* Revenue & Expense Table */}
+          <motion.div className="overflow-x-auto mb-8 md:mb-12" {...scaleIn}>
+            <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden min-w-[600px]">
+              <thead>
+                <tr className="bg-primary text-primary-foreground">
+                  <th className="p-3 md:p-4 text-left font-semibold text-sm md:text-base">Metric</th>
+                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2026</th>
+                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2027</th>
+                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2028</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-border">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Annual Revenue (ARR)</td>
+                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$720K</td>
+                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$2.4M</td>
+                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$6.0M</td>
+                </tr>
+                <tr className="border-b border-border bg-card/50">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Ending MRR</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$60K</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$200K</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$500K</td>
+                </tr>
+                <tr className="border-b border-border">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Customers (EOY)</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">130</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">400</td>
+                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">950</td>
+                </tr>
+                <tr className="border-b border-border bg-card/50">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">COGS (AI + Infra)</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$108K</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$360K</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$900K</td>
+                </tr>
+                <tr className="border-b border-border">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Gross Profit</td>
+                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$612K (85%)</td>
+                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$2.04M (85%)</td>
+                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$5.1M (85%)</td>
+                </tr>
+                <tr className="border-b border-border bg-card/50">
+                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Operating Expenses</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$580K</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$1.8M</td>
+                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$3.5M</td>
+                </tr>
+                <tr className="bg-success/20">
+                  <td className="p-3 md:p-4 text-foreground font-bold text-sm md:text-base">Net Income</td>
+                  <td className="p-3 md:p-4 text-center text-destructive font-bold text-sm md:text-base">($68K)</td>
+                  <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$240K</td>
+                  <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$1.6M</td>
+                </tr>
+              </tbody>
+            </table>
+          </motion.div>
+
+          {/* Expense Breakdown & Runway */}
+          <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12" {...staggerChildren}>
+            <motion.div className="bg-card rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">2026 Operating Expenses Breakdown</h3>
+              <div className="space-y-3">
+                {[
+                  { label: 'Engineering (2 FTEs)', amount: '$280K', percent: 48 },
+                  { label: 'Sales & Marketing', amount: '$180K', percent: 31 },
+                  { label: 'G&A (Legal, Accounting)', amount: '$60K', percent: 10 },
+                  { label: 'Tools & Software', amount: '$40K', percent: 7 },
+                  { label: 'Contingency', amount: '$20K', percent: 4 },
+                ].map((item, i) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex justify-between text-xs md:text-sm">
+                      <span className="text-muted-foreground">{item.label}</span>
+                      <span className="text-foreground font-medium">{item.amount}</span>
+                    </div>
+                    <div className="w-full bg-secondary rounded-full h-2">
+                      <div 
+                        className="bg-primary h-2 rounded-full transition-all duration-500" 
+                        style={{ width: `${item.percent}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div className="bg-card rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">Runway & Funding</h3>
+              <div className="space-y-4">
+                <div className="bg-warning/10 rounded-xl p-4">
+                  <p className="text-xs md:text-sm text-warning font-semibold uppercase mb-1">Seed Round Target</p>
+                  <p className="text-2xl md:text-3xl font-extrabold text-warning">$750K</p>
+                  <p className="text-xs md:text-sm text-muted-foreground mt-1">18-month runway to profitability</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-success/10 rounded-xl p-3 md:p-4 text-center">
+                    <p className="text-xs text-success font-semibold uppercase mb-1">Break-Even</p>
+                    <p className="text-lg md:text-xl font-bold text-success">Q2 2027</p>
+                  </div>
+                  <div className="bg-primary/10 rounded-xl p-3 md:p-4 text-center">
+                    <p className="text-xs text-primary font-semibold uppercase mb-1">Cash Flow +</p>
+                    <p className="text-lg md:text-xl font-bold text-primary">Q3 2027</p>
+                  </div>
+                </div>
+                <div className="bg-secondary rounded-xl p-4">
+                  <p className="text-xs md:text-sm text-muted-foreground mb-2">Use of Funds</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline" className="text-xs">60% Engineering</Badge>
+                    <Badge variant="outline" className="text-xs">25% GTM</Badge>
+                    <Badge variant="outline" className="text-xs">15% Ops</Badge>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Key Assumptions */}
+          <motion.div className="bg-secondary/50 rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
+            <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">Key Assumptions</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              {[
+                { label: 'Avg Contract Value', value: '$450/mo', sub: 'Blended' },
+                { label: 'Monthly Churn', value: '<3%', sub: 'Logo churn' },
+                { label: 'CAC Payback', value: '2 months', sub: 'Target' },
+                { label: 'Net Revenue Retention', value: '110%+', sub: 'With expansion' },
+              ].map((item, i) => (
+                <div key={i} className="text-center p-2 md:p-3">
+                  <p className="text-lg md:text-2xl font-bold text-primary">{item.value}</p>
+                  <p className="text-xs md:text-sm font-medium text-foreground">{item.label}</p>
+                  <p className="text-xs text-muted-foreground">{item.sub}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </motion.section>
+
       {/* Competition Section */}
-      <motion.section className="py-20 bg-card" {...fadeInUp}>
-        <div className="container mx-auto px-6">
+      <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Competition</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
             A Clear Gap in the Mid-Market
           </h2>
-          <motion.div className="overflow-x-auto mb-8" {...scaleIn}>
-            <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden">
+          <motion.div className="overflow-x-auto mb-6 md:mb-8" {...scaleIn}>
+            <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden min-w-[500px]">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
                   <th className="p-4 text-left font-semibold">Competitor</th>
@@ -635,13 +783,13 @@ export default function InvestorPitch() {
       </motion.section>
 
       {/* Roadmap Section - Redesigned */}
-      <motion.section className="py-20" {...fadeInUp}>
-        <div className="container mx-auto px-6">
+      <motion.section className="py-16 md:py-20" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Roadmap</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 md:mb-6">
             Path to $100K+ ARR
           </h2>
-          <p className="text-lg text-muted-foreground mb-12 max-w-3xl">
+          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-3xl">
             A focused roadmap to establish market presence and achieve sustainable growth in 2026.
           </p>
           
@@ -650,7 +798,7 @@ export default function InvestorPitch() {
             {/* Timeline line */}
             <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-primary via-success to-warning rounded-full" />
             
-            <motion.div className="grid md:grid-cols-4 gap-6" {...staggerChildren}>
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6" {...staggerChildren}>
               {[{
               quarter: 'Q1 2026',
               title: 'Launch & Validate',
@@ -690,8 +838,8 @@ export default function InvestorPitch() {
                     <item.icon className="w-4 h-4 text-primary" />
                   </div>
                   
-                  <Card className="bg-secondary border-border mt-8 md:mt-16 h-full">
-                    <CardContent className="p-6">
+                  <Card className="bg-secondary border-border mt-4 md:mt-16 h-full">
+                    <CardContent className="p-4 md:p-6">
                       <div className="flex items-center gap-2 mb-2">
                         <Badge className={`bg-${item.color} text-${item.color}-foreground`}>{item.quarter}</Badge>
                       </div>
@@ -712,13 +860,13 @@ export default function InvestorPitch() {
       </motion.section>
 
       {/* Founder Section */}
-      <motion.section className="py-20 bg-card" {...fadeInUp}>
-        <div className="container mx-auto px-6">
+      <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Founder</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 md:mb-12">
             Security Practitioner + Product Builder
           </h2>
-          <div className="grid lg:grid-cols-3 gap-12 items-center">
+          <div className="grid lg:grid-cols-3 gap-8 md:gap-12 items-center">
             <motion.div className="flex justify-center" {...scaleIn}>
               <div className="relative">
                 <div className="w-56 h-56 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl">
@@ -761,7 +909,7 @@ export default function InvestorPitch() {
       </motion.section>
 
       {/* Why Now Section */}
-      <motion.section className="py-20 bg-gradient-to-br from-amber-500/10 via-background to-orange-500/10" initial={{
+      <motion.section className="py-16 md:py-20 bg-gradient-to-br from-amber-500/10 via-background to-orange-500/10" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -770,8 +918,8 @@ export default function InvestorPitch() {
     }} transition={{
       duration: 0.8
     }}>
-        <div className="container mx-auto px-6">
-          <motion.div className="text-center mb-16" initial={{
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div className="text-center mb-10 md:mb-16" initial={{
           y: 20,
           opacity: 0
         }} whileInView={{
@@ -783,10 +931,10 @@ export default function InvestorPitch() {
           delay: 0.2
         }}>
             <Badge className="mb-4 bg-amber-500/20 text-amber-400 border-amber-500/30">Market Timing</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">Why Now?</h2>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground">Why Now?</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[{
             icon: '📈',
             title: 'Regulatory Tsunami',
@@ -815,10 +963,10 @@ export default function InvestorPitch() {
             delay: 0.1 * i
           }}>
                 <Card className="h-full bg-card/50 border-border/50 hover:border-amber-500/50 transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="text-4xl mb-4">{item.icon}</div>
-                    <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="text-3xl md:text-4xl mb-3 md:mb-4">{item.icon}</div>
+                    <h3 className="text-base md:text-lg font-semibold text-foreground mb-2 md:mb-3">{item.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground">{item.desc}</p>
                   </CardContent>
                 </Card>
               </motion.div>)}
@@ -841,7 +989,7 @@ export default function InvestorPitch() {
       </motion.section>
 
       {/* CTA Section */}
-      <motion.section className="py-20 gradient-primary relative overflow-hidden" initial={{
+      <motion.section className="py-16 md:py-20 gradient-primary relative overflow-hidden" initial={{
       opacity: 0
     }} whileInView={{
       opacity: 1
@@ -851,8 +999,8 @@ export default function InvestorPitch() {
       duration: 0.8
     }}>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <motion.h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" initial={{
+        <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
+          <motion.h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4" initial={{
           y: 20,
           opacity: 0
         }} whileInView={{
@@ -865,7 +1013,7 @@ export default function InvestorPitch() {
         }}>
             Strategic Partners, Not Just Capital
           </motion.h2>
-          <motion.p className="text-lg text-muted-foreground mb-12" initial={{
+          <motion.p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12" initial={{
           y: 20,
           opacity: 0
         }} whileInView={{
@@ -876,7 +1024,7 @@ export default function InvestorPitch() {
         }} transition={{
           delay: 0.3
         }}>I am looking for investors and partners who understand security and can open doors</motion.p>
-          <motion.div className="grid md:grid-cols-3 gap-6 mb-12" initial={{
+          <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12" initial={{
           y: 20,
           opacity: 0
         }} whileInView={{
@@ -896,14 +1044,14 @@ export default function InvestorPitch() {
           }, {
             title: 'Seed Investment',
             desc: '$500K-$1M when we hit $5-10K MRR'
-          }].map((item, i) => <motion.div key={i} className="bg-white/10 border border-white/20 rounded-xl p-6 backdrop-blur-sm" whileHover={{
+          }].map((item, i) => <motion.div key={i} className="bg-white/10 border border-white/20 rounded-xl p-4 md:p-6 backdrop-blur-sm" whileHover={{
             scale: 1.03,
             transition: {
               duration: 0.2
             }
           }}>
-                <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground">{item.desc}</p>
               </motion.div>)}
           </motion.div>
           <motion.div initial={{

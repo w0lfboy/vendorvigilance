@@ -11,7 +11,9 @@ import Vendors from "./pages/Vendors";
 import VendorProfile from "./pages/VendorProfile";
 import Documents from "./pages/Documents";
 import Assessments from "./pages/Assessments";
+import AssessmentDetail from "./pages/AssessmentDetail";
 import AssessmentComparison from "./pages/AssessmentComparison";
+import QuestionnaireBuilder from "./pages/QuestionnaireBuilder";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
 import RiskAnalytics from "./pages/RiskAnalytics";
 import RemediationTracking from "./pages/RemediationTracking";
@@ -45,7 +47,10 @@ const App = () => (
               <Route path="/vendors/:id" element={<VendorProfile />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/assessments" element={<Assessments />} />
+              <Route path="/assessments/:id" element={<AssessmentDetail />} />
               <Route path="/assessments/compare" element={<AssessmentComparison />} />
+              <Route path="/questionnaire-builder" element={<QuestionnaireBuilder />} />
+              <Route path="/questionnaire-builder/:id" element={<QuestionnaireBuilder />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/settings" element={<Settings />} />
             </Route>

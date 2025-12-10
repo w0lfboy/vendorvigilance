@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Users, 
   Settings as SettingsIcon, 
@@ -15,7 +16,8 @@ import {
   ExternalLink,
   Check,
   X,
-  Building2
+  Building2,
+  FileText,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -127,6 +129,25 @@ export default function Settings() {
         {/* Organization Tab */}
         <TabsContent value="organization" className="space-y-6">
           <OrganizationSettings />
+          
+          {/* Questionnaire Templates */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Questionnaire Templates
+              </CardTitle>
+              <CardDescription>Create and manage assessment questionnaires</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link to="/questionnaire-builder">
+                <Button className="bg-secondary hover:bg-secondary/90">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create New Template
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* User Management Tab */}

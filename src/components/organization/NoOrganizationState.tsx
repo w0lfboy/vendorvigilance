@@ -1,71 +1,193 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Mail, Clock } from 'lucide-react';
+import { Building2, Mail, Clock, Plus, ArrowRight } from 'lucide-react';
 import { usePendingInvitations, useAcceptInvitation } from '@/hooks/useOrganization';
+import { useCreateOrganization } from '@/hooks/useCreateOrganization';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
 
 export function NoOrganizationState() {
   const { data: invitations, isLoading } = usePendingInvitations();
   const acceptInvitation = useAcceptInvitation();
+  const createOrganization = useCreateOrganization();
+  
+  const [companyName, setCompanyName] = useState('');
+  const [slug, setSlug] = useState('');
+  const [slugEdited, setSlugEdited] = useState(false);
+
+  const handleNameChange = (value: string) => {
+    setCompanyName(value);
+    if (!slugEdited) {
+      setSlug(generateSlug(value));
+    }
+  };
+
+  const handleSlugChange = (value: string) => {
+    setSlug(generateSlug(value));
+    setSlugEdited(true);
+  };
+
+  const handleCreateOrganization = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!companyName.trim() || !slug.trim()) return;
+    
+    await createOrganization.mutateAsync({ 
+      name: companyName.trim(), 
+      slug: slug.trim() 
+    });
+  };
+
+  const hasInvitations = invitations && invitations.length > 0;
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center p-4">
+    <div className="min-h-[80vh] flex items-center justify-center p-4">
       <Card className="max-w-lg w-full">
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center mb-4">
             <Building2 className="h-8 w-8 text-secondary" />
           </div>
-          <CardTitle>No Organization</CardTitle>
-          <CardDescription>
-            You're not part of any organization yet. 
-            An administrator needs to invite you to join their organization.
+          <CardTitle className="text-2xl">Welcome to VendorVigilance</CardTitle>
+          <CardDescription className="text-base">
+            Get started by creating your organization or joining an existing one.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {isLoading ? (
-            <div className="text-center text-muted-foreground">
-              Checking for invitations...
-            </div>
-          ) : invitations && invitations.length > 0 ? (
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-center">Pending Invitations</p>
-              {invitations.map((inv) => {
-                const org = inv.organizations as { name: string } | null;
-                return (
-                  <div key={inv.id} className="flex items-center justify-between p-3 rounded-lg border bg-card">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{org?.name || 'Organization'}</p>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          Expires {format(new Date(inv.expires_at), 'MMM d, yyyy')}
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      size="sm"
-                      className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                      onClick={() => acceptInvitation.mutate(inv.id)}
-                      disabled={acceptInvitation.isPending}
-                    >
-                      {acceptInvitation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        'Join'
-                      )}
-                    </Button>
+        <CardContent>
+          <Tabs defaultValue={hasInvitations ? "join" : "create"} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="create" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Create New
+              </TabsTrigger>
+              <TabsTrigger value="join" className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                Join Existing
+                {hasInvitations && (
+                  <span className="bg-secondary text-secondary-foreground text-xs px-1.5 py-0.5 rounded-full">
+                    {invitations.length}
+                  </span>
+                )}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="create" className="space-y-4">
+              <form onSubmit={handleCreateOrganization} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="companyName">Company Name</Label>
+                  <Input
+                    id="companyName"
+                    placeholder="Acme Corporation"
+                    value={companyName}
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="slug">URL Slug</Label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">vendorvigilance.app/</span>
+                    <Input
+                      id="slug"
+                      placeholder="acme-corp"
+                      value={slug}
+                      onChange={(e) => handleSlugChange(e.target.value)}
+                      className="flex-1"
+                      required
+                    />
                   </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center text-muted-foreground text-sm">
-              <p>No pending invitations found.</p>
-              <p>Please contact your organization administrator to request an invitation.</p>
-            </div>
-          )}
+                  <p className="text-xs text-muted-foreground">
+                    This will be your unique organization identifier
+                  </p>
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                  disabled={createOrganization.isPending || !companyName.trim() || !slug.trim()}
+                >
+                  {createOrganization.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      Create Organization
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="join" className="space-y-4">
+              {isLoading ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2" />
+                  Checking for invitations...
+                </div>
+              ) : hasInvitations ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground text-center mb-4">
+                    You have pending invitations to join:
+                  </p>
+                  {invitations.map((inv) => {
+                    const org = inv.organizations as { name: string } | null;
+                    return (
+                      <div 
+                        key={inv.id} 
+                        className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                            <Building2 className="h-5 w-5 text-secondary" />
+                          </div>
+                          <div>
+                            <p className="font-medium">{org?.name || 'Organization'}</p>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              Expires {format(new Date(inv.expires_at), 'MMM d, yyyy')}
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                          onClick={() => acceptInvitation.mutate(inv.id)}
+                          disabled={acceptInvitation.isPending}
+                        >
+                          {acceptInvitation.isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            'Join'
+                          )}
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Mail className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p className="font-medium">No pending invitations</p>
+                  <p className="text-sm mt-1">
+                    Create a new organization or ask an administrator to invite you.
+                  </p>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </div>

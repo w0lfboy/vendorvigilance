@@ -161,7 +161,7 @@ const Landing = () => {
               <Link to="/auth">Sign In</Link>
             </Button>
             <Button size="sm" className="hidden sm:inline-flex text-xs sm:text-sm" asChild>
-              <Link to="/auth">Get Started</Link>
+              <Link to="/auth?mode=signup">Get Started</Link>
             </Button>
             <Button 
               variant="ghost" 
@@ -209,7 +209,7 @@ const Landing = () => {
                   <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
                 </Button>
                 <Button size="sm" asChild>
-                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                  <Link to="/auth?mode=signup" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
                 </Button>
               </div>
             </div>
@@ -259,7 +259,7 @@ const Landing = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8" asChild>
-                <Link to="/auth">
+                <Link to="/auth?mode=signup">
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
@@ -380,7 +380,7 @@ const Landing = () => {
                 ))}
               </div>
               <Button className="mt-8" size="lg" asChild>
-                <Link to="/auth">
+                <Link to="/auth?mode=signup">
                   See It in Action
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

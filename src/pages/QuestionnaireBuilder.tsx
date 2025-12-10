@@ -595,9 +595,9 @@ export default function QuestionnaireBuilder() {
               <div className="space-y-2">
                 <Label>Framework</Label>
                 <Select
-                  value={template.framework || ''}
+                  value={template.framework || 'multi-framework'}
                   onValueChange={(v) => {
-                    setTemplate(prev => ({ ...prev, framework: v }));
+                    setTemplate(prev => ({ ...prev, framework: v === 'multi-framework' ? null : v }));
                     setHasChanges(true);
                   }}
                 >
@@ -605,7 +605,7 @@ export default function QuestionnaireBuilder() {
                     <SelectValue placeholder="Select framework..." />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Multi-Framework</SelectItem>
+                    <SelectItem value="multi-framework">Multi-Framework</SelectItem>
                     <SelectItem value="SOC 2">SOC 2</SelectItem>
                     <SelectItem value="ISO 27001">ISO 27001</SelectItem>
                     <SelectItem value="GDPR">GDPR</SelectItem>

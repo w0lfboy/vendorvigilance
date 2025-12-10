@@ -10,6 +10,7 @@ export interface Organization {
   id: string;
   name: string;
   slug: string;
+  logo_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -218,7 +219,7 @@ export function useOrganization() {
 
   // Update organization details
   const updateOrganization = useMutation({
-    mutationFn: async (updates: Partial<Pick<Organization, 'name' | 'slug'>>) => {
+    mutationFn: async (updates: Partial<Pick<Organization, 'name' | 'slug' | 'logo_url'>>) => {
       const { data, error } = await supabase
         .from('organizations')
         .update(updates)

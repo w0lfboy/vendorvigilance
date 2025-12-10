@@ -685,6 +685,81 @@ export default function InvestorPitch() {
         </div>
       </motion.section>
 
+      {/* Why Now Section */}
+      <motion.section 
+        className="py-20 bg-gradient-to-br from-amber-500/10 via-background to-orange-500/10"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="container mx-auto px-6">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <Badge className="mb-4 bg-amber-500/20 text-amber-400 border-amber-500/30">Market Timing</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">Why Now?</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: '📈',
+                title: 'Regulatory Tsunami',
+                desc: 'SEC cybersecurity disclosure rules (Dec 2023) and DORA (Jan 2025) are forcing companies to prove vendor oversight—or face fines.',
+              },
+              {
+                icon: '💸',
+                title: 'SMB Budget Squeeze',
+                desc: 'Enterprise tools cost $50K+/year. The 28M SMBs in the US have zero affordable options for compliance-grade vendor management.',
+              },
+              {
+                icon: '🤖',
+                title: 'AI Inflection Point',
+                desc: 'LLMs can now analyze questionnaires, extract risks, and generate reports—work that used to require expensive analysts.',
+              },
+              {
+                icon: '⚠️',
+                title: 'Supply Chain Attacks Surge',
+                desc: 'SolarWinds, MOVEit, 3CX—third-party breaches are up 78% YoY. Boards are demanding visibility into vendor security.',
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * i }}
+              >
+                <Card className="h-full bg-card/50 border-border/50 hover:border-amber-500/50 transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="text-4xl mb-4">{item.icon}</div>
+                    <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div 
+            className="mt-12 text-center"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            <p className="text-xl text-foreground font-medium">
+              The window is open. Early movers in SMB TPRM will define the category.
+            </p>
+          </motion.div>
+        </div>
+      </motion.section>
+
       {/* CTA Section */}
       <motion.section 
         className="py-20 gradient-primary relative overflow-hidden"
@@ -743,10 +818,23 @@ export default function InvestorPitch() {
           >
             <p className="text-2xl font-semibold text-foreground mb-2">We're hackers and hustlers.</p>
             <p className="text-muted-foreground mb-8">Let's build something together.</p>
-            <div className="text-sm text-muted-foreground">
-              <a href="mailto:your@email.com" className="text-foreground hover:text-primary transition-colors">[your@email.com]</a>
-              <span className="mx-2">·</span>
-              <a href="#" className="text-foreground hover:text-primary transition-colors">[LinkedIn]</a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
+              <a 
+                href="mailto:taylor@wolfpacksecurity.org" 
+                className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg"
+              >
+                <span>📧</span>
+                taylor@wolfpacksecurity.org
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/tayfletch/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg"
+              >
+                <span>💼</span>
+                LinkedIn
+              </a>
             </div>
           </motion.div>
         </div>

@@ -724,8 +724,8 @@ export default function InvestorPitch() {
                 <div className="w-56 h-56 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl">
                   <img src={founderHeadshot} alt="Founder headshot" className="w-full h-full object-cover object-top" />
                 </div>
-                <div className="absolute -bottom-3 -right-3 w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
-                  <Shield className="w-8 h-8 text-primary-foreground" />
+                <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                  <img src={logo} alt="VendorVigilance" className="w-full h-full object-cover" />
                 </div>
               </div>
             </motion.div>

@@ -26,12 +26,18 @@ export function NoOrganizationState() {
   
   const [companyName, setCompanyName] = useState('');
   const [slug, setSlug] = useState('');
+  const [subdomain, setSubdomain] = useState('');
   const [slugEdited, setSlugEdited] = useState(false);
+  const [subdomainEdited, setSubdomainEdited] = useState(false);
 
   const handleNameChange = (value: string) => {
     setCompanyName(value);
+    const generated = generateSlug(value);
     if (!slugEdited) {
-      setSlug(generateSlug(value));
+      setSlug(generated);
+    }
+    if (!subdomainEdited) {
+      setSubdomain(generated);
     }
   };
 
@@ -40,13 +46,19 @@ export function NoOrganizationState() {
     setSlugEdited(true);
   };
 
+  const handleSubdomainChange = (value: string) => {
+    setSubdomain(generateSlug(value));
+    setSubdomainEdited(true);
+  };
+
   const handleCreateOrganization = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!companyName.trim() || !slug.trim()) return;
     
     await createOrganization.mutateAsync({ 
       name: companyName.trim(), 
-      slug: slug.trim() 
+      slug: slug.trim(),
+      subdomain: subdomain.trim() || undefined
     });
   };
 
@@ -109,6 +121,22 @@ export function NoOrganizationState() {
                   </div>
                   <p className="text-xs text-muted-foreground">
                     This will be your unique organization identifier
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="subdomain">Custom Subdomain (Optional)</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="subdomain"
+                      placeholder="acme"
+                      value={subdomain}
+                      onChange={(e) => handleSubdomainChange(e.target.value)}
+                      className="flex-1"
+                    />
+                    <span className="text-sm text-muted-foreground">.vendorvigilance.io</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Your vendors will access assessments via this custom URL
                   </p>
                 </div>
                 <Button 

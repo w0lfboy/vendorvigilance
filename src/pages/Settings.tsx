@@ -47,6 +47,7 @@ import { useOrganization } from '@/hooks/useOrganization';
 import { OrganizationMembers } from '@/components/organization/OrganizationMembers';
 import { OrganizationSettings } from '@/components/organization/OrganizationSettings';
 import { NoOrganizationState } from '@/components/organization/NoOrganizationState';
+import { BrandingSettings } from '@/components/organization/BrandingSettings';
 
 // Mock API connections
 const mockApiConnections = [
@@ -129,6 +130,9 @@ export default function Settings() {
         {/* Organization Tab */}
         <TabsContent value="organization" className="space-y-6">
           <OrganizationSettings />
+          
+          {/* Branding & White-Label */}
+          <BrandingSettings />
           
           {/* Questionnaire Templates */}
           <Card>

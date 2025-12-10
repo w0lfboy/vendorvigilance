@@ -9,13 +9,17 @@ export function useCreateOrganization() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ name, slug }: { name: string; slug: string }) => {
+    mutationFn: async ({ name, slug, subdomain }: { name: string; slug: string; subdomain?: string }) => {
       if (!user) throw new Error('Not authenticated');
 
-      // Create the organization
+      // Create the organization with optional subdomain
       const { data: org, error: orgError } = await supabase
         .from('organizations')
-        .insert({ name, slug })
+        .insert({ 
+          name, 
+          slug,
+          subdomain: subdomain || null
+        })
         .select()
         .single();
 

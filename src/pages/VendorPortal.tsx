@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
+import { useSubdomainBranding, type OrganizationBranding } from '@/hooks/useSubdomainBranding';
 interface Question {
   id: string;
   section: string;
@@ -44,6 +44,7 @@ export default function VendorPortal() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const { toast } = useToast();
+  const { organization: subdomainOrg, branding, isSubdomainMode } = useSubdomainBranding();
 
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [vendor, setVendor] = useState<Vendor | null>(null);
@@ -54,6 +55,11 @@ export default function VendorPortal() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Get display name and logo from branding or defaults
+  const displayName = branding.company_name || subdomainOrg?.name || 'Vendor Vigilance';
+  const logoUrl = branding.logo_url || subdomainOrg?.logo_url;
+  const welcomeMessage = branding.welcome_message;
+  const supportEmail = branding.support_email;
   const sections = [...new Set(questions.map(q => q.section))];
   const currentQuestions = questions.filter(q => q.section === sections[currentSection]);
   const answeredCount = Object.keys(responses).filter(k => responses[k] && responses[k] !== '').length;
@@ -394,17 +400,27 @@ export default function VendorPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="border-b bg-card sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-xs">VV</span>
-                </div>
-                <span className="font-semibold text-foreground hidden sm:inline">Vendor Vigilance</span>
+                {logoUrl ? (
+                  <img 
+                    src={logoUrl} 
+                    alt={displayName} 
+                    className="h-8 w-auto object-contain"
+                  />
+                ) : (
+                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                    <span className="text-primary-foreground font-bold text-xs">
+                      {displayName.substring(0, 2).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <span className="font-semibold text-foreground hidden sm:inline">{displayName}</span>
               </div>
               <div className="border-l pl-3 ml-2">
                 <h1 className="font-medium text-foreground text-sm">{assessment?.title}</h1>
@@ -431,6 +447,15 @@ export default function VendorPortal() {
           </div>
         </div>
       </header>
+
+      {/* Welcome Message */}
+      {welcomeMessage && currentSection === 0 && (
+        <div className="bg-muted/50 border-b">
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <p className="text-sm text-muted-foreground">{welcomeMessage}</p>
+          </div>
+        </div>
+      )}
 
       {/* Section Navigation */}
       <div className="border-b bg-muted/30">
@@ -466,7 +491,7 @@ export default function VendorPortal() {
       </div>
 
       {/* Questions */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 flex-1">
         <div className="space-y-6">
           {currentQuestions.map((question, idx) => (
             <Card key={question.id} className={responses[question.id] ? 'border-success/30' : ''}>
@@ -535,6 +560,40 @@ export default function VendorPortal() {
           )}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t bg-muted/30 py-6">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              {isSubdomainMode && (
+                <>
+                  <span>Powered by</span>
+                  <a 
+                    href="https://vendorvigilance.io" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-semibold text-foreground hover:text-primary transition-colors"
+                  >
+                    VendorVigilance
+                  </a>
+                </>
+              )}
+            </div>
+            {supportEmail && (
+              <div>
+                Need help? Contact{' '}
+                <a 
+                  href={`mailto:${supportEmail}`}
+                  className="text-primary hover:underline"
+                >
+                  {supportEmail}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

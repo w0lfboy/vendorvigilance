@@ -542,27 +542,33 @@ export type Database = {
       }
       organizations: {
         Row: {
+          branding: Json | null
           created_at: string
           id: string
           logo_url: string | null
           name: string
           slug: string
+          subdomain: string | null
           updated_at: string
         }
         Insert: {
+          branding?: Json | null
           created_at?: string
           id?: string
           logo_url?: string | null
           name: string
           slug: string
+          subdomain?: string | null
           updated_at?: string
         }
         Update: {
+          branding?: Json | null
           created_at?: string
           id?: string
           logo_url?: string | null
           name?: string
           slug?: string
+          subdomain?: string | null
           updated_at?: string
         }
         Relationships: []

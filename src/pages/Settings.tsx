@@ -144,9 +144,9 @@ export default function Settings() {
               <CardDescription>Create and manage assessment questionnaires</CardDescription>
             </CardHeader>
             <CardContent>
-              <Link to="/questionnaire-builder">
-                <Button className="bg-secondary hover:bg-secondary/90">
-                  <Plus className="h-4 w-4 mr-2" />
+              <Link to="/questionnaire-builder/new">
+                <Button variant="outline" className="gap-2">
+                  <Plus className="h-4 w-4" />
                   Create New Template
                 </Button>
               </Link>

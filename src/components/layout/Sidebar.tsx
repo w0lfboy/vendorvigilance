@@ -12,6 +12,8 @@ import {
   ListTodo,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useOrganization } from '@/hooks/useOrganization';
+import appLogo from '@/assets/logo.png';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
@@ -30,8 +32,30 @@ const bottomNavItems = [
 ];
 
 export function Sidebar() {
+  const { organization } = useOrganization();
+  const logoSrc = organization?.logo_url || appLogo;
+
   return (
     <aside className="hidden md:flex w-64 bg-sidebar text-sidebar-foreground flex-col h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)]">
+      {/* Organization Logo Header */}
+      <div className="px-4 py-4 border-b border-sidebar-border">
+        <div className="flex items-center gap-3">
+          <img 
+            src={logoSrc} 
+            alt={organization?.name || 'Organization'} 
+            className="w-10 h-10 rounded object-cover"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-sidebar-foreground truncate">
+              {organization?.name || 'Organization'}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {organization?.slug ? `@${organization.slug}` : 'Vendor Risk Management'}
+            </p>
+          </div>
+        </div>
+      </div>
+
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => (
           <NavLink

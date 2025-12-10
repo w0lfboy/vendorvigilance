@@ -577,155 +577,6 @@ export default function InvestorPitch() {
           </div>
         </div>
       </motion.section>
-
-      {/* Financial Projections Section */}
-      <motion.section className="py-16 md:py-20" {...fadeInUp}>
-        <div className="container mx-auto px-4 md:px-6">
-          <Badge variant="outline" className="mb-4 text-success border-success">Financial Projections</Badge>
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
-            3-Year Financial Forecast
-          </h2>
-          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-3xl">
-            Conservative projections based on realistic customer acquisition and standard SaaS metrics for the mid-market TPRM space.
-          </p>
-
-          {/* Revenue & Expense Table */}
-          <motion.div className="overflow-x-auto mb-8 md:mb-12" {...scaleIn}>
-            <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden min-w-[600px]">
-              <thead>
-                <tr className="bg-primary text-primary-foreground">
-                  <th className="p-3 md:p-4 text-left font-semibold text-sm md:text-base">Metric</th>
-                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2026</th>
-                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2027</th>
-                  <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2028</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-border">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Annual Revenue (ARR)</td>
-                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$720K</td>
-                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$2.4M</td>
-                  <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$6.0M</td>
-                </tr>
-                <tr className="border-b border-border bg-card/50">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Ending MRR</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$60K</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$200K</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$500K</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Customers (EOY)</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">130</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">400</td>
-                  <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">950</td>
-                </tr>
-                <tr className="border-b border-border bg-card/50">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">COGS (AI + Infra)</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$108K</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$360K</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$900K</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Gross Profit</td>
-                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$612K (85%)</td>
-                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$2.04M (85%)</td>
-                  <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$5.1M (85%)</td>
-                </tr>
-                <tr className="border-b border-border bg-card/50">
-                  <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Operating Expenses</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$580K</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$1.8M</td>
-                  <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$3.5M</td>
-                </tr>
-                <tr className="bg-success/20">
-                  <td className="p-3 md:p-4 text-foreground font-bold text-sm md:text-base">Net Income</td>
-                  <td className="p-3 md:p-4 text-center text-destructive font-bold text-sm md:text-base">($68K)</td>
-                  <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$240K</td>
-                  <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$1.6M</td>
-                </tr>
-              </tbody>
-            </table>
-          </motion.div>
-
-          {/* Expense Breakdown & Runway */}
-          <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12" {...staggerChildren}>
-            <motion.div className="bg-card rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
-              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">2026 Operating Expenses Breakdown</h3>
-              <div className="space-y-3">
-                {[
-                  { label: 'Engineering (2 FTEs)', amount: '$280K', percent: 48 },
-                  { label: 'Sales & Marketing', amount: '$180K', percent: 31 },
-                  { label: 'G&A (Legal, Accounting)', amount: '$60K', percent: 10 },
-                  { label: 'Tools & Software', amount: '$40K', percent: 7 },
-                  { label: 'Contingency', amount: '$20K', percent: 4 },
-                ].map((item, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between text-xs md:text-sm">
-                      <span className="text-muted-foreground">{item.label}</span>
-                      <span className="text-foreground font-medium">{item.amount}</span>
-                    </div>
-                    <div className="w-full bg-secondary rounded-full h-2">
-                      <div 
-                        className="bg-primary h-2 rounded-full transition-all duration-500" 
-                        style={{ width: `${item.percent}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div className="bg-card rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
-              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">Runway & Funding</h3>
-              <div className="space-y-4">
-                <div className="bg-warning/10 rounded-xl p-4">
-                  <p className="text-xs md:text-sm text-warning font-semibold uppercase mb-1">Seed Round Target</p>
-                  <p className="text-2xl md:text-3xl font-extrabold text-warning">$750K</p>
-                  <p className="text-xs md:text-sm text-muted-foreground mt-1">18-month runway to profitability</p>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-success/10 rounded-xl p-3 md:p-4 text-center">
-                    <p className="text-xs text-success font-semibold uppercase mb-1">Break-Even</p>
-                    <p className="text-lg md:text-xl font-bold text-success">Q2 2027</p>
-                  </div>
-                  <div className="bg-primary/10 rounded-xl p-3 md:p-4 text-center">
-                    <p className="text-xs text-primary font-semibold uppercase mb-1">Cash Flow +</p>
-                    <p className="text-lg md:text-xl font-bold text-primary">Q3 2027</p>
-                  </div>
-                </div>
-                <div className="bg-secondary rounded-xl p-4">
-                  <p className="text-xs md:text-sm text-muted-foreground mb-2">Use of Funds</p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline" className="text-xs">60% Engineering</Badge>
-                    <Badge variant="outline" className="text-xs">25% GTM</Badge>
-                    <Badge variant="outline" className="text-xs">15% Ops</Badge>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Key Assumptions */}
-          <motion.div className="bg-secondary/50 rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
-            <h3 className="text-base md:text-lg font-semibold text-foreground mb-4">Key Assumptions</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              {[
-                { label: 'Avg Contract Value', value: '$450/mo', sub: 'Blended' },
-                { label: 'Monthly Churn', value: '<3%', sub: 'Logo churn' },
-                { label: 'CAC Payback', value: '2 months', sub: 'Target' },
-                { label: 'Net Revenue Retention', value: '110%+', sub: 'With expansion' },
-              ].map((item, i) => (
-                <div key={i} className="text-center p-2 md:p-3">
-                  <p className="text-lg md:text-2xl font-bold text-primary">{item.value}</p>
-                  <p className="text-xs md:text-sm font-medium text-foreground">{item.label}</p>
-                  <p className="text-xs text-muted-foreground">{item.sub}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
-
       {/* Competition Section */}
       <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-4 md:px-6">
@@ -1000,7 +851,7 @@ export default function InvestorPitch() {
         </div>
       </motion.section>
 
-      {/* Appendix - Unit Economics */}
+      {/* Appendix - Financial Projections & Unit Economics */}
       <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center gap-3 mb-4">
@@ -1008,11 +859,121 @@ export default function InvestorPitch() {
             <Badge variant="outline" className="text-primary border-primary">Appendix</Badge>
           </div>
           <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
-            Unit Economics Deep Dive
+            Financial Projections & Unit Economics
           </h2>
           <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-3xl">
-            Detailed breakdown of key SaaS metrics and sensitivity analysis for different growth scenarios.
+            Comprehensive 3-year financial forecast with detailed unit economics and sensitivity analysis.
           </p>
+
+          {/* 3-Year Financial Forecast */}
+          <motion.div className="mb-10 md:mb-14" {...scaleIn}>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-success" />
+              3-Year Financial Forecast
+            </h3>
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden min-w-[600px]">
+                <thead>
+                  <tr className="bg-primary text-primary-foreground">
+                    <th className="p-3 md:p-4 text-left font-semibold text-sm md:text-base">Metric</th>
+                    <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2026</th>
+                    <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2027</th>
+                    <th className="p-3 md:p-4 text-center font-semibold text-sm md:text-base">2028</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Annual Revenue (ARR)</td>
+                    <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$720K</td>
+                    <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$2.4M</td>
+                    <td className="p-3 md:p-4 text-center text-success font-semibold text-sm md:text-base">$6.0M</td>
+                  </tr>
+                  <tr className="border-b border-border bg-card/50">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Ending MRR</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$60K</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$200K</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">$500K</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Customers (EOY)</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">130</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">400</td>
+                    <td className="p-3 md:p-4 text-center text-muted-foreground text-sm md:text-base">950</td>
+                  </tr>
+                  <tr className="border-b border-border bg-card/50">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">COGS (AI + Infra)</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$108K</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$360K</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$900K</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Gross Profit</td>
+                    <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$612K (85%)</td>
+                    <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$2.04M (85%)</td>
+                    <td className="p-3 md:p-4 text-center text-success text-sm md:text-base">$5.1M (85%)</td>
+                  </tr>
+                  <tr className="border-b border-border bg-card/50">
+                    <td className="p-3 md:p-4 text-foreground font-medium text-sm md:text-base">Operating Expenses</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$580K</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$1.8M</td>
+                    <td className="p-3 md:p-4 text-center text-destructive text-sm md:text-base">$3.5M</td>
+                  </tr>
+                  <tr className="bg-success/20">
+                    <td className="p-3 md:p-4 text-foreground font-bold text-sm md:text-base">Net Income</td>
+                    <td className="p-3 md:p-4 text-center text-destructive font-bold text-sm md:text-base">($68K)</td>
+                    <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$240K</td>
+                    <td className="p-3 md:p-4 text-center text-success font-bold text-sm md:text-base">$1.6M</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Expense Breakdown & Runway */}
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+              <div className="bg-secondary rounded-xl p-4 md:p-6 border border-border">
+                <h4 className="text-sm md:text-base font-semibold text-foreground mb-3">2026 OpEx Breakdown</h4>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Engineering (2 FTEs)', amount: '$280K', percent: 48 },
+                    { label: 'Sales & Marketing', amount: '$180K', percent: 31 },
+                    { label: 'G&A (Legal, Accounting)', amount: '$60K', percent: 10 },
+                    { label: 'Tools & Software', amount: '$40K', percent: 7 },
+                  ].map((item, i) => (
+                    <div key={i} className="space-y-1">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{item.label}</span>
+                        <span className="text-foreground font-medium">{item.amount}</span>
+                      </div>
+                      <div className="w-full bg-card rounded-full h-1.5">
+                        <div className="bg-primary h-1.5 rounded-full" style={{ width: `${item.percent}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-secondary rounded-xl p-4 md:p-6 border border-border">
+                <h4 className="text-sm md:text-base font-semibold text-foreground mb-3">Runway & Funding</h4>
+                <div className="space-y-3">
+                  <div className="bg-warning/10 rounded-lg p-3">
+                    <p className="text-xs text-warning font-semibold uppercase mb-1">Seed Round Target</p>
+                    <p className="text-xl font-extrabold text-warning">$750K</p>
+                    <p className="text-xs text-muted-foreground">18-month runway to profitability</p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-success/10 rounded-lg p-2 text-center">
+                      <p className="text-xs text-success font-semibold uppercase">Break-Even</p>
+                      <p className="text-lg font-bold text-success">Q2 2027</p>
+                    </div>
+                    <div className="bg-primary/10 rounded-lg p-2 text-center">
+                      <p className="text-xs text-primary font-semibold uppercase">Cash Flow +</p>
+                      <p className="text-lg font-bold text-primary">Q3 2027</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
           {/* Unit Economics Calculations */}
           <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12" {...staggerChildren}>

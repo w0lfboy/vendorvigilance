@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Shield, CheckCircle2, AlertCircle, Send, Save, ChevronRight, ChevronLeft, HelpCircle } from 'lucide-react';
+import { Shield, CheckCircle2, AlertCircle, Send, Save, ChevronRight, ChevronLeft, HelpCircle, Upload, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,9 +19,12 @@ interface Question {
   section: string;
   question_text: string;
   question_type: string;
-  options: string[] | null;
+  options: { choices?: string[] } | null;
   is_required: boolean;
   order_index: number;
+  help_text: string | null;
+  weight: number;
+  compliance_mapping: Record<string, string[]> | null;
 }
 
 interface Assessment {
@@ -28,6 +33,11 @@ interface Assessment {
   due_date: string;
   status: string;
   vendor_id: string;
+  template_id: string | null;
+}
+
+interface Vendor {
+  name: string;
 }
 
 export default function VendorPortal() {
@@ -36,6 +46,7 @@ export default function VendorPortal() {
   const { toast } = useToast();
 
   const [assessment, setAssessment] = useState<Assessment | null>(null);
+  const [vendor, setVendor] = useState<Vendor | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [responses, setResponses] = useState<Record<string, any>>({});
   const [currentSection, setCurrentSection] = useState(0);
@@ -59,9 +70,9 @@ export default function VendorPortal() {
       // Get assessment by access token
       const { data: assessmentData, error: assessmentError } = await supabase
         .from('vendor_assessments')
-        .select('*')
+        .select('*, vendors(name)')
         .eq('access_token', token)
-        .single();
+        .maybeSingle();
 
       if (assessmentError || !assessmentData) {
         setError('Invalid or expired assessment link');
@@ -70,6 +81,7 @@ export default function VendorPortal() {
       }
 
       setAssessment(assessmentData);
+      setVendor(assessmentData.vendors as unknown as Vendor);
 
       // Load questions from template
       if (assessmentData.template_id) {
@@ -82,7 +94,8 @@ export default function VendorPortal() {
         if (questionsData) {
           setQuestions(questionsData.map(q => ({
             ...q,
-            options: q.options as string[] | null
+            options: q.options as { choices?: string[] } | null,
+            compliance_mapping: q.compliance_mapping as Record<string, string[]> | null
           })));
         }
       }
@@ -96,9 +109,22 @@ export default function VendorPortal() {
       if (responsesData) {
         const responseMap: Record<string, any> = {};
         responsesData.forEach(r => {
-          responseMap[r.question_id] = r.response_text || r.response_choice;
+          if (r.response_choice) {
+            const choice = r.response_choice as { answer?: string };
+            responseMap[r.question_id] = choice.answer || r.response_choice;
+          } else {
+            responseMap[r.question_id] = r.response_text;
+          }
         });
         setResponses(responseMap);
+      }
+
+      // Update status to in_progress if pending
+      if (assessmentData.status === 'pending') {
+        await supabase
+          .from('vendor_assessments')
+          .update({ status: 'in_progress' })
+          .eq('id', assessmentData.id);
       }
 
       setLoading(false);
@@ -118,15 +144,21 @@ export default function VendorPortal() {
 
     try {
       for (const [questionId, response] of Object.entries(responses)) {
+        if (!response || response === '') continue;
+        
+        const question = questions.find(q => q.id === questionId);
         const responseData: any = {
           assessment_id: assessment.id,
           question_id: questionId,
         };
 
-        if (typeof response === 'string') {
-          responseData.response_text = response;
+        // Store structured responses for yes/no and choice questions
+        if (question?.question_type === 'yes_no_na' || question?.question_type === 'yes_no' || question?.question_type === 'single_choice') {
+          responseData.response_choice = { answer: response };
+        } else if (question?.question_type === 'multi_choice') {
+          responseData.response_choice = { answers: response };
         } else {
-          responseData.response_choice = response;
+          responseData.response_text = response;
         }
 
         await supabase
@@ -173,9 +205,140 @@ export default function VendorPortal() {
     setSaving(false);
   };
 
+  const renderQuestionInput = (question: Question) => {
+    const value = responses[question.id];
+    const choices = question.options?.choices || [];
+
+    switch (question.question_type) {
+      case 'yes_no':
+      case 'yes_no_na':
+        const yesNoOptions = question.question_type === 'yes_no_na' 
+          ? ['Yes', 'No', 'N/A'] 
+          : ['Yes', 'No'];
+        return (
+          <RadioGroup
+            value={value || ''}
+            onValueChange={(v) => handleResponseChange(question.id, v)}
+            className="flex flex-wrap gap-4"
+          >
+            {yesNoOptions.map((option) => (
+              <div key={option} className="flex items-center space-x-2">
+                <RadioGroupItem value={option.toLowerCase()} id={`${question.id}-${option}`} />
+                <Label htmlFor={`${question.id}-${option}`} className="cursor-pointer">{option}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        );
+
+      case 'single_choice':
+        return (
+          <RadioGroup
+            value={value || ''}
+            onValueChange={(v) => handleResponseChange(question.id, v)}
+            className="space-y-2"
+          >
+            {choices.map((option) => (
+              <div key={option} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                <RadioGroupItem value={option} id={`${question.id}-${option}`} />
+                <Label htmlFor={`${question.id}-${option}`} className="cursor-pointer flex-1">{option}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        );
+
+      case 'multi_choice':
+        const currentValue = Array.isArray(value) ? value : [];
+        return (
+          <div className="space-y-2">
+            {choices.map((option) => {
+              const isChecked = currentValue.includes(option);
+              return (
+                <div key={option} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Checkbox
+                    id={`${question.id}-${option}`}
+                    checked={isChecked}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        handleResponseChange(question.id, [...currentValue, option]);
+                      } else {
+                        handleResponseChange(question.id, currentValue.filter((v: string) => v !== option));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`${question.id}-${option}`} className="cursor-pointer flex-1">{option}</Label>
+                </div>
+              );
+            })}
+          </div>
+        );
+
+      case 'text_short':
+        return (
+          <Input
+            placeholder="Enter your response..."
+            value={value || ''}
+            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+          />
+        );
+
+      case 'text_long':
+      case 'text':
+        return (
+          <Textarea
+            placeholder="Enter your detailed response..."
+            value={value || ''}
+            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+            className="min-h-[120px]"
+          />
+        );
+
+      case 'file_upload':
+        return (
+          <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+            <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground mb-2">Drop files here or click to upload</p>
+            <Button variant="outline" size="sm">
+              <FileText className="h-4 w-4 mr-2" />
+              Choose File
+            </Button>
+            {value && <p className="text-sm text-success mt-2">File uploaded</p>}
+          </div>
+        );
+
+      case 'number':
+        return (
+          <Input
+            type="number"
+            placeholder="Enter a number..."
+            value={value || ''}
+            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+          />
+        );
+
+      case 'date':
+        return (
+          <Input
+            type="date"
+            value={value || ''}
+            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+          />
+        );
+
+      default:
+        return (
+          <Textarea
+            placeholder="Enter your response..."
+            value={value || ''}
+            onChange={(e) => handleResponseChange(question.id, e.target.value)}
+            className="min-h-[100px]"
+          />
+        );
+    }
+  };
+
   if (!token) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <Shield className="h-12 w-12 mx-auto text-destructive mb-4" />
@@ -202,7 +365,7 @@ export default function VendorPortal() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <AlertCircle className="h-12 w-12 mx-auto text-destructive mb-4" />
@@ -216,7 +379,7 @@ export default function VendorPortal() {
 
   if (assessment?.status === 'submitted' || assessment?.status === 'completed') {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CheckCircle2 className="h-12 w-12 mx-auto text-success mb-4" />
@@ -241,19 +404,19 @@ export default function VendorPortal() {
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-xs">VV</span>
                 </div>
-                <span className="font-semibold text-foreground">Vendor Vigilance</span>
+                <span className="font-semibold text-foreground hidden sm:inline">Vendor Vigilance</span>
               </div>
               <div className="border-l pl-3 ml-2">
                 <h1 className="font-medium text-foreground text-sm">{assessment?.title}</h1>
                 <p className="text-xs text-muted-foreground">
-                  Due: {assessment?.due_date ? new Date(assessment.due_date).toLocaleDateString() : 'N/A'}
+                  {vendor?.name} • Due: {assessment?.due_date ? new Date(assessment.due_date).toLocaleDateString() : 'N/A'}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={saveProgress} disabled={saving}>
                 <Save className="h-4 w-4 mr-2" />
-                Save Progress
+                <span className="hidden sm:inline">Save Progress</span>
               </Button>
             </div>
           </div>
@@ -306,70 +469,43 @@ export default function VendorPortal() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="space-y-6">
           {currentQuestions.map((question, idx) => (
-            <Card key={question.id}>
+            <Card key={question.id} className={responses[question.id] ? 'border-success/30' : ''}>
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <span className="text-muted-foreground">{idx + 1}.</span>
-                      {question.question_text}
-                      {question.is_required && <span className="text-destructive">*</span>}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <CardTitle className="text-base flex items-start gap-2">
+                      <span className="text-muted-foreground shrink-0">{idx + 1}.</span>
+                      <span>
+                        {question.question_text}
+                        {question.is_required && <span className="text-destructive ml-1">*</span>}
+                      </span>
                     </CardTitle>
+                    {question.compliance_mapping && (
+                      <div className="flex gap-1 mt-2 flex-wrap">
+                        {Object.entries(question.compliance_mapping).map(([framework, controls]) => (
+                          <Badge key={framework} variant="outline" className="text-xs">
+                            {framework}: {controls.join(', ')}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <Button variant="ghost" size="icon" className="shrink-0">
-                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                  </Button>
+                  {question.help_text && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" className="shrink-0">
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p>{question.help_text}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
-                {question.question_type === 'text' && (
-                  <Textarea
-                    placeholder="Enter your response..."
-                    value={responses[question.id] || ''}
-                    onChange={(e) => handleResponseChange(question.id, e.target.value)}
-                    className="min-h-[120px]"
-                  />
-                )}
-
-                {question.question_type === 'single_choice' && question.options && (
-                  <RadioGroup
-                    value={responses[question.id] || ''}
-                    onValueChange={(value) => handleResponseChange(question.id, value)}
-                  >
-                    {question.options.map((option) => (
-                      <div key={option} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option} id={`${question.id}-${option}`} />
-                        <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                )}
-
-                {question.question_type === 'multiple_choice' && question.options && (
-                  <div className="space-y-2">
-                    {question.options.map((option) => {
-                      const currentValue = responses[question.id] || [];
-                      const isChecked = Array.isArray(currentValue) && currentValue.includes(option);
-                      
-                      return (
-                        <div key={option} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`${question.id}-${option}`}
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                handleResponseChange(question.id, [...currentValue, option]);
-                              } else {
-                                handleResponseChange(question.id, currentValue.filter((v: string) => v !== option));
-                              }
-                            }}
-                          />
-                          <Label htmlFor={`${question.id}-${option}`}>{option}</Label>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+                {renderQuestionInput(question)}
               </CardContent>
             </Card>
           ))}
@@ -387,7 +523,7 @@ export default function VendorPortal() {
           </Button>
 
           {currentSection === sections.length - 1 ? (
-            <Button onClick={submitAssessment} disabled={saving}>
+            <Button onClick={submitAssessment} disabled={saving} className="text-white">
               <Send className="h-4 w-4 mr-2" />
               Submit Assessment
             </Button>

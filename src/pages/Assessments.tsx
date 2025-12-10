@@ -9,9 +9,9 @@ import {
   AlertCircle,
   FileText,
   Send,
-  Eye
+  Eye,
+  Sparkles,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -36,8 +36,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 import { useAssessments, useTemplates, type VendorAssessment } from '@/hooks/useAssessments';
 import { useVendors } from '@/hooks/useVendors';
-import { format, formatDistanceToNow, addDays } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import { AssessmentDetailsDialog } from '@/components/assessments/AssessmentDetailsDialog';
 
 const statusConfig: Record<string, { label: string; icon: any; class: string }> = {
   pending: { label: 'Pending', icon: Clock, class: 'bg-muted text-muted-foreground' },
@@ -56,6 +57,7 @@ export default function Assessments() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState<VendorAssessment | null>(null);
   const [createData, setCreateData] = useState({
     vendorId: '',
     templateId: '',
@@ -157,10 +159,10 @@ export default function Assessments() {
               </div>
 
               <div className="space-y-2">
-                <Label>Questionnaire Template (optional)</Label>
+                <Label>Questionnaire Template</Label>
                 <Select value={createData.templateId} onValueChange={(v) => setCreateData(prev => ({ ...prev, templateId: v }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select template or create custom" />
+                    <SelectValue placeholder="Select template" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">Custom Assessment</SelectItem>
@@ -228,8 +230,8 @@ export default function Assessments() {
           <p className="text-2xl font-bold text-warning">{assessments.filter(a => a.status === 'pending').length}</p>
         </div>
         <div className="bg-card rounded-lg p-4 shadow-card">
-          <p className="text-sm text-muted-foreground">In Review</p>
-          <p className="text-2xl font-bold text-info">{assessments.filter(a => a.status === 'under_review').length}</p>
+          <p className="text-sm text-muted-foreground">Submitted</p>
+          <p className="text-2xl font-bold text-info">{assessments.filter(a => a.status === 'submitted').length}</p>
         </div>
         <div className="bg-card rounded-lg p-4 shadow-card">
           <p className="text-sm text-muted-foreground">Completed</p>
@@ -282,12 +284,17 @@ export default function Assessments() {
             const StatusIcon = status.icon;
             const progress = getProgressPercentage(assessment.status);
             const isOverdue = new Date(assessment.due_date) < new Date() && assessment.status !== 'completed';
+            const hasScore = assessment.score !== null;
             
             return (
-              <div key={assessment.id} className="bg-card rounded-lg shadow-card p-5 hover:shadow-card-hover transition-all">
+              <div 
+                key={assessment.id} 
+                className="bg-card rounded-lg shadow-card p-5 hover:shadow-card-hover transition-all cursor-pointer"
+                onClick={() => setSelectedAssessment(assessment)}
+              >
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <h3 className="font-semibold text-card-foreground">{assessment.title}</h3>
                       <Badge className={cn('gap-1', status.class)}>
                         <StatusIcon className="h-3 w-3" />
@@ -297,6 +304,12 @@ export default function Assessments() {
                         <Badge variant="destructive" className="gap-1">
                           <AlertCircle className="h-3 w-3" />
                           Overdue
+                        </Badge>
+                      )}
+                      {hasScore && (
+                        <Badge variant="outline" className="gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Score: {assessment.score}%
                         </Badge>
                       )}
                       {assessment.is_recurring && (
@@ -309,10 +322,16 @@ export default function Assessments() {
                       Vendor: <span className="text-foreground font-medium">{getVendorName(assessment.vendor_id)}</span>
                       {' • '}
                       Due: {format(new Date(assessment.due_date), 'MMM d, yyyy')}
-                      {assessment.score !== null && (
+                      {assessment.risk_level && (
                         <>
                           {' • '}
-                          Score: <span className="font-medium">{assessment.score}%</span>
+                          Risk: <span className={cn(
+                            'font-medium capitalize',
+                            assessment.risk_level === 'low' && 'text-success',
+                            assessment.risk_level === 'medium' && 'text-warning',
+                            assessment.risk_level === 'high' && 'text-orange-500',
+                            assessment.risk_level === 'critical' && 'text-destructive',
+                          )}>{assessment.risk_level}</span>
                         </>
                       )}
                     </p>
@@ -326,7 +345,10 @@ export default function Assessments() {
                       </div>
                       <Progress value={progress} className="h-2" />
                     </div>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedAssessment(assessment);
+                    }}>
                       View Details
                     </Button>
                   </div>
@@ -336,6 +358,16 @@ export default function Assessments() {
           })
         )}
       </div>
+
+      {/* Assessment Details Dialog */}
+      {selectedAssessment && (
+        <AssessmentDetailsDialog
+          assessment={selectedAssessment}
+          vendorName={getVendorName(selectedAssessment.vendor_id)}
+          open={!!selectedAssessment}
+          onOpenChange={(open) => !open && setSelectedAssessment(null)}
+        />
+      )}
     </div>
   );
 }

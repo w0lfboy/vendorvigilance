@@ -22,6 +22,7 @@ import Settings from "./pages/Settings";
 import VendorPortal from "./pages/VendorPortal";
 import Auth from "./pages/Auth";
 import SuperAdmin from "./pages/SuperAdmin";
+import InvestorPitch from "./pages/InvestorPitch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/portal" element={<VendorPortal />} />
+          <Route path="/pitch" element={<InvestorPitch />} />
           <Route path="/super-admin" element={<SuperAdmin />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>

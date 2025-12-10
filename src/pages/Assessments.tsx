@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ClipboardCheck, 
   Plus, 
@@ -11,6 +12,7 @@ import {
   Send,
   Eye,
   Sparkles,
+  Scale,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -49,6 +51,7 @@ const statusConfig: Record<string, { label: string; icon: any; class: string }> 
 };
 
 export default function Assessments() {
+  const navigate = useNavigate();
   const { assessments, isLoading, createAssessment } = useAssessments();
   const { templates } = useTemplates();
   const { vendors } = useVendors();
@@ -122,13 +125,22 @@ export default function Assessments() {
           <h1 className="text-2xl font-bold text-foreground">Assessments</h1>
           <p className="text-muted-foreground">Manage vendor questionnaires and risk assessments</p>
         </div>
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Assessment
-            </Button>
-          </DialogTrigger>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/assessments/compare')}
+            className="hidden sm:flex"
+          >
+            <Scale className="h-4 w-4 mr-2" />
+            Compare
+          </Button>
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Assessment
+              </Button>
+            </DialogTrigger>
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Create New Assessment</DialogTitle>
@@ -217,6 +229,7 @@ export default function Assessments() {
             </div>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* Stats */}

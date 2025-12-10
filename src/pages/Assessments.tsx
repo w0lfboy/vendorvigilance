@@ -13,6 +13,8 @@ import {
   Eye,
   Sparkles,
   Scale,
+  Trash2,
+  MoreVertical,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -33,6 +35,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
@@ -52,7 +70,7 @@ const statusConfig: Record<string, { label: string; icon: any; class: string }> 
 
 export default function Assessments() {
   const navigate = useNavigate();
-  const { assessments, isLoading, createAssessment } = useAssessments();
+  const { assessments, isLoading, createAssessment, deleteAssessment } = useAssessments();
   const { templates } = useTemplates();
   const { vendors } = useVendors();
   const { toast } = useToast();
@@ -61,6 +79,7 @@ export default function Assessments() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [selectedAssessment, setSelectedAssessment] = useState<VendorAssessment | null>(null);
+  const [assessmentToDelete, setAssessmentToDelete] = useState<VendorAssessment | null>(null);
   const [createData, setCreateData] = useState({
     vendorId: '',
     templateId: '',
@@ -69,6 +88,12 @@ export default function Assessments() {
     isRecurring: false,
     recurrenceInterval: 'quarterly',
   });
+
+  const handleDelete = async () => {
+    if (!assessmentToDelete) return;
+    await deleteAssessment.mutateAsync(assessmentToDelete.id);
+    setAssessmentToDelete(null);
+  };
 
   const filteredAssessments = assessments.filter((a) => {
     const matchesSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -364,6 +389,32 @@ export default function Assessments() {
                     }}>
                       View Details
                     </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/assessments/${assessment.id}`);
+                        }}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          className="text-destructive focus:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAssessmentToDelete(assessment);
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </div>
@@ -381,6 +432,27 @@ export default function Assessments() {
           onOpenChange={(open) => !open && setSelectedAssessment(null)}
         />
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!assessmentToDelete} onOpenChange={(open) => !open && setAssessmentToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Assessment</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{assessmentToDelete?.title}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleteAssessment.isPending ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

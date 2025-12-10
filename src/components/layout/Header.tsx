@@ -1,4 +1,4 @@
-import { Search, Bell, User, Settings, ChevronDown, LogOut } from 'lucide-react';
+import { Search, User, Settings, ChevronDown, LogOut } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { MobileNav } from './MobileNav';
+import { NotificationBell } from './NotificationBell';
 
 export function Header() {
   const { user, signOut } = useAuth();
@@ -46,12 +46,7 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
-        <Button variant="ghost" size="icon" className="relative text-header-foreground hover:bg-sidebar-accent h-9 w-9 md:h-10 md:w-10">
-          <Bell className="h-4 w-4 md:h-5 md:w-5" />
-          <Badge className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 flex items-center justify-center p-0 bg-destructive text-destructive-foreground text-[10px] md:text-xs">
-            3
-          </Badge>
-        </Button>
+        <NotificationBell />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

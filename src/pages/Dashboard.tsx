@@ -5,6 +5,7 @@ import { AlertCard } from '@/components/dashboard/AlertCard';
 import { TaskList } from '@/components/dashboard/TaskList';
 import { RiskHeatMap } from '@/components/dashboard/RiskHeatMap';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { PendingAnalysisWidget } from '@/components/dashboard/PendingAnalysisWidget';
 import { useAuth } from '@/hooks/useAuth';
 import { 
   dashboardStats, 
@@ -83,6 +84,7 @@ export default function Dashboard() {
 
         {/* Right Column - 1/3 width */}
         <div className="space-y-6">
+          <PendingAnalysisWidget />
           <RiskHeatMap data={riskHeatMapData} />
         </div>
       </div>

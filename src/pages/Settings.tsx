@@ -14,7 +14,8 @@ import {
   Plus,
   ExternalLink,
   Check,
-  X
+  X,
+  Building2
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,14 +41,10 @@ import {
 } from '@/components/ui/table';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-
-// Mock data for users
-const mockUsers = [
-  { id: '1', name: 'John Smith', email: 'john@company.com', role: 'Admin', status: 'active', lastLogin: '2024-01-15' },
-  { id: '2', name: 'Sarah Chen', email: 'sarah@company.com', role: 'Editor', status: 'active', lastLogin: '2024-01-14' },
-  { id: '3', name: 'Mike Johnson', email: 'mike@company.com', role: 'Viewer', status: 'active', lastLogin: '2024-01-10' },
-  { id: '4', name: 'Emily Brown', email: 'emily@company.com', role: 'Editor', status: 'inactive', lastLogin: '2023-12-20' },
-];
+import { useOrganization } from '@/hooks/useOrganization';
+import { OrganizationMembers } from '@/components/organization/OrganizationMembers';
+import { OrganizationSettings } from '@/components/organization/OrganizationSettings';
+import { NoOrganizationState } from '@/components/organization/NoOrganizationState';
 
 // Mock API connections
 const mockApiConnections = [
@@ -60,7 +57,7 @@ const mockApiConnections = [
 export default function Settings() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('users');
+  const [activeTab, setActiveTab] = useState('organization');
 
   // Preferences state
   const [preferences, setPreferences] = useState({
@@ -100,7 +97,11 @@ export default function Settings() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid">
+        <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsTrigger value="organization" className="gap-2">
+            <Building2 className="h-4 w-4" />
+            <span className="hidden sm:inline">Organization</span>
+          </TabsTrigger>
           <TabsTrigger value="users" className="gap-2">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Users</span>
@@ -123,97 +124,51 @@ export default function Settings() {
           </TabsTrigger>
         </TabsList>
 
+        {/* Organization Tab */}
+        <TabsContent value="organization" className="space-y-6">
+          <OrganizationSettings />
+        </TabsContent>
+
         {/* User Management Tab */}
         <TabsContent value="users" className="space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>User Management</CardTitle>
-                <CardDescription>Manage users and their access levels</CardDescription>
-              </div>
-              <Button size="sm" className="bg-secondary hover:bg-secondary/90">
-                <Plus className="h-4 w-4 mr-2" />
-                Invite User
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Last Login</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockUsers.map((u) => (
-                    <TableRow key={u.id}>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium">{u.name}</p>
-                          <p className="text-sm text-muted-foreground">{u.email}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={u.role === 'Admin' ? 'default' : 'secondary'}>
-                          {u.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={u.status === 'active' ? 'outline' : 'secondary'} className={u.status === 'active' ? 'border-success text-success' : ''}>
-                          {u.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{u.lastLogin}</TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm">Edit</Button>
-                        <Button variant="ghost" size="sm" className="text-destructive">Remove</Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          <OrganizationMembers />
 
-          {/* Roles & Permissions */}
+          {/* Roles & Permissions info card */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
                 Roles & Permissions
               </CardTitle>
-              <CardDescription>Configure role-based access control</CardDescription>
+              <CardDescription>Organization role capabilities</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg border bg-card">
-                  <h4 className="font-semibold mb-2">Admin</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Full system access</p>
+                  <h4 className="font-semibold mb-2">Owner</h4>
+                  <p className="text-sm text-muted-foreground mb-3">Full organization control</p>
                   <ul className="text-sm space-y-1">
-                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Manage users</li>
-                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Configure settings</li>
+                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Manage organization</li>
+                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Add/remove users</li>
                     <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Delete vendors</li>
                   </ul>
                 </div>
                 <div className="p-4 rounded-lg border bg-card">
-                  <h4 className="font-semibold mb-2">Editor</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Create and edit content</p>
+                  <h4 className="font-semibold mb-2">Admin</h4>
+                  <p className="text-sm text-muted-foreground mb-3">User management access</p>
                   <ul className="text-sm space-y-1">
-                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Manage vendors</li>
-                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Run assessments</li>
-                    <li className="flex items-center gap-2"><X className="h-3 w-3 text-destructive" /> Configure settings</li>
+                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Invite users</li>
+                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Manage roles</li>
+                    <li className="flex items-center gap-2"><X className="h-3 w-3 text-destructive" /> Remove users</li>
                   </ul>
                 </div>
                 <div className="p-4 rounded-lg border bg-card">
-                  <h4 className="font-semibold mb-2">Viewer</h4>
-                  <p className="text-sm text-muted-foreground mb-3">Read-only access</p>
+                  <h4 className="font-semibold mb-2">Member</h4>
+                  <p className="text-sm text-muted-foreground mb-3">Standard access</p>
                   <ul className="text-sm space-y-1">
                     <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> View vendors</li>
-                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> View reports</li>
-                    <li className="flex items-center gap-2"><X className="h-3 w-3 text-destructive" /> Edit content</li>
+                    <li className="flex items-center gap-2"><Check className="h-3 w-3 text-success" /> Manage vendors</li>
+                    <li className="flex items-center gap-2"><X className="h-3 w-3 text-destructive" /> User management</li>
                   </ul>
                 </div>
               </div>

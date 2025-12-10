@@ -38,13 +38,24 @@ export function useCreateOrganization() {
         throw memberError;
       }
 
+      // Send welcome email (non-blocking)
+      supabase.functions.invoke('send-welcome-email', {
+        body: {
+          email: user.email,
+          organizationName: name,
+          userName: user.user_metadata?.full_name || user.email?.split('@')[0],
+        },
+      }).catch((err) => {
+        console.error('Failed to send welcome email:', err);
+      });
+
       return org;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organization-membership'] });
       toast({ 
         title: 'Organization created!', 
-        description: 'Your organization is ready. You can now start managing vendors.' 
+        description: 'Your organization is ready. Check your email for setup tips!' 
       });
     },
     onError: (error: Error) => {

@@ -68,6 +68,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import TemplateStarterModal from '@/components/TemplateStarterModal';
 
 // Types
 interface Question {
@@ -170,6 +171,7 @@ export default function QuestionnaireBuilder() {
   const [newSectionName, setNewSectionName] = useState('');
   const [showAddSectionDialog, setShowAddSectionDialog] = useState(false);
   const [draggedQuestion, setDraggedQuestion] = useState<Question | null>(null);
+  const [showStarterModal, setShowStarterModal] = useState(isNewTemplate);
 
   // Load template data
   useEffect(() => {
@@ -1224,6 +1226,19 @@ export default function QuestionnaireBuilder() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Template Starter Modal */}
+      <TemplateStarterModal
+        open={showStarterModal}
+        onOpenChange={setShowStarterModal}
+        onSelectTemplate={(template) => {
+          if (template === null) {
+            // User chose "Start from Scratch"
+            setShowStarterModal(false);
+          }
+          // If template was selected, the modal handles navigation
+        }}
+      />
     </div>
   );
 }

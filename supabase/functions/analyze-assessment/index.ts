@@ -308,6 +308,49 @@ serve(async (req) => {
       }
     }
 
+    // Auto-create issues from recommended actions for remediation tracking
+    if (analysis.recommended_actions && Array.isArray(analysis.recommended_actions)) {
+      const priorityToDays: Record<string, number> = {
+        critical: 7,
+        high: 14,
+        medium: 30,
+        low: 60,
+      };
+
+      for (const action of analysis.recommended_actions) {
+        const severity = action.priority || 'medium';
+        const daysUntilDue = priorityToDays[severity] || 30;
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + daysUntilDue);
+
+        // Check if a similar issue already exists for this assessment
+        const { data: existingIssue } = await supabase
+          .from('issues')
+          .select('id')
+          .eq('assessment_id', assessment_id)
+          .eq('title', action.action.substring(0, 100))
+          .maybeSingle();
+
+        if (!existingIssue) {
+          await supabase
+            .from('issues')
+            .insert({
+              vendor_id: assessment.vendor_id,
+              assessment_id: assessment_id,
+              user_id: assessment.user_id,
+              organization_id: assessment.organization_id,
+              title: action.action.substring(0, 100),
+              description: `${action.rationale}\n\nGenerated from AI analysis of assessment: ${assessment.title}`,
+              severity: severity,
+              status: 'open',
+              due_date: dueDate.toISOString(),
+            });
+        }
+      }
+
+      console.log(`Created ${analysis.recommended_actions.length} remediation issues for assessment ${assessment_id}`);
+    }
+
     return new Response(JSON.stringify({
       success: true,
       assessment_id,

@@ -420,7 +420,7 @@ export default function InvestorPitch() {
                 </Badge>
                 <CardContent className="p-8">
                   <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Professional</p>
-                  <p className="text-5xl font-extrabold text-foreground mb-1">$499</p>
+                  <p className="text-5xl font-extrabold text-foreground mb-1">$799</p>
                   <p className="text-sm text-muted-foreground mb-4">/month</p>
                   <p className="text-sm text-muted-foreground">Up to 500 vendors, 10 users</p>
                 </CardContent>
@@ -619,7 +619,7 @@ export default function InvestorPitch() {
                 </tr>
                 <tr className="bg-success text-success-foreground font-semibold">
                   <td className="p-4">VendorVigilance</td>
-                  <td className="p-4">$3,600-6,000</td>
+                  <td className="p-4">$3,588-9,588</td>
                   <td className="p-4">SMB + Mid-Market</td>
                   <td className="p-4">AI-First TPRM</td>
                 </tr>
@@ -630,7 +630,7 @@ export default function InvestorPitch() {
             <motion.div className="bg-warning/10 border-l-4 border-warning rounded-xl p-6" {...staggerItem}>
               <h3 className="text-sm font-bold uppercase text-warning mb-2">The Gap</h3>
               <p className="text-foreground">
-                No TPRM-native solution between $3,600 and $15,000/year for mid-market companies with 50-500 employees.
+                No TPRM-native solution between $3,588 and $15,000/year for mid-market companies with 50-500 employees.
               </p>
             </motion.div>
             <motion.div className="gradient-primary rounded-xl p-6" {...staggerItem}>
@@ -994,7 +994,7 @@ export default function InvestorPitch() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between items-center p-2 bg-card rounded-lg">
                   <span className="text-muted-foreground">Average Revenue Per Account (ARPA)</span>
-                  <span className="font-mono font-semibold text-foreground">$450/mo</span>
+                  <span className="font-mono font-semibold text-foreground">$549/mo</span>
                 </div>
                 <div className="flex justify-between items-center p-2 bg-card rounded-lg">
                   <span className="text-muted-foreground">Gross Margin</span>
@@ -1011,7 +1011,7 @@ export default function InvestorPitch() {
                 <div className="border-t border-border pt-3 mt-3">
                   <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
                     <span className="font-medium text-foreground">LTV = ARPA × GM × Lifetime</span>
-                    <span className="font-mono font-bold text-success text-lg">$15,300</span>
+                    <span className="font-mono font-bold text-success text-lg">$18,666</span>
                   </div>
                 </div>
               </div>
@@ -1053,12 +1053,12 @@ export default function InvestorPitch() {
           <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12" {...staggerChildren}>
             {[{
             label: 'LTV:CAC Ratio',
-            value: '27.6x',
+            value: '33.7x',
             target: 'Target: >3x',
             status: 'success'
           }, {
             label: 'CAC Payback',
-            value: '1.4 mo',
+            value: '1.2 mo',
             target: 'Target: <12mo',
             status: 'success'
           }, {

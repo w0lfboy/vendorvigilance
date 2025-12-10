@@ -2,6 +2,7 @@ import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, Tr
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
+import founderHeadshot from '@/assets/founder-headshot.jpeg';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
 
@@ -640,18 +641,44 @@ export default function InvestorPitch() {
           </h2>
           <div className="grid lg:grid-cols-3 gap-12 items-center">
             <motion.div className="flex justify-center" {...scaleIn}>
-              <div className="w-48 h-48 gradient-primary rounded-3xl flex items-center justify-center">
-                <Users className="w-20 h-20 text-muted-foreground/30" />
+              <div className="relative">
+                <div className="w-56 h-56 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl">
+                  <img 
+                    src={founderHeadshot} 
+                    alt="Founder headshot" 
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <div className="absolute -bottom-3 -right-3 w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
+                  <Shield className="w-8 h-8 text-primary-foreground" />
+                </div>
               </div>
             </motion.div>
-            <div className="lg:col-span-2">
-              <h3 className="text-2xl font-bold text-primary mb-4">[Your Name]</h3>
-              <div className="flex flex-wrap gap-3 mb-6">
-                <Badge variant="secondary">Product Manager @ Cybersecurity Startup</Badge>
-                <Badge variant="secondary">Founder, Penetration Testing LLC</Badge>
+            <div className="lg:col-span-2 space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-primary mb-2">Tyler Farmer</h3>
+                <p className="text-muted-foreground">Founder & CEO</p>
               </div>
-              <blockquote className="text-lg italic text-muted-foreground border-l-4 border-primary pl-6">
-                "I've been on both sides — managing vendor risk at a growing company and filling out endless questionnaires as a vendor. The tools are either too expensive or not built for the job. VendorVigilance fixes that."
+              <div className="flex flex-wrap gap-3">
+                <Badge variant="secondary" className="py-1.5">Product Manager @ BlueVoyant (MDR & TPRM)</Badge>
+                <Badge variant="secondary" className="py-1.5">Founder, Bespoke Pentesting Startup</Badge>
+                <Badge variant="secondary" className="py-1.5">3+ Years Cloud & SaaS Security</Badge>
+              </div>
+              
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  <span className="font-semibold text-foreground">Deep domain expertise:</span> Spent 3+ years in the trenches of cloud security, application security, vulnerability program management, and SaaS security. Currently leading product at BlueVoyant, a cybersecurity company specializing in Managed Detection & Response and Third-Party Risk Management.
+                </p>
+                <p>
+                  <span className="font-semibold text-foreground">Founder DNA:</span> Built a boutique pentesting startup from scratch, delivering enterprise-grade security assessments at a fraction of typical costs. Proven ability to identify market gaps and build solutions that customers love.
+                </p>
+                <p>
+                  <span className="font-semibold text-foreground">The insight:</span> Working at a TPRM leader, I see firsthand that the majority of mid-market companies are priced out of effective vendor risk solutions. They deserve enterprise-grade security without the enterprise price tag.
+                </p>
+              </div>
+
+              <blockquote className="text-lg italic text-foreground border-l-4 border-primary pl-6 bg-primary/5 py-4 pr-4 rounded-r-xl">
+                "I love breaking things and fixing them back better. Building products that genuinely help security teams protect their organizations is what drives me."
               </blockquote>
             </div>
           </div>

@@ -917,8 +917,8 @@ export default function InvestorPitch() {
         }} transition={{
           delay: 0.5
         }}>
-            <p className="text-2xl font-semibold text-foreground mb-2">We're hackers and hustlers.</p>
-            <p className="text-muted-foreground mb-8">Let's build something together.</p>
+            <p className="text-2xl font-semibold text-foreground mb-2">I'm a hacker and a hustler.  Ready to break, and ready to build.</p>
+            
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
               <a href="mailto:taylor@wolfpacksecurity.org" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg">
                 <span>📧</span>

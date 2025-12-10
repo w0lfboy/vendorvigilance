@@ -119,12 +119,31 @@ export function useAssessments(vendorId?: string) {
     },
   });
 
+  const deleteAssessment = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('vendor_assessments')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vendor_assessments'] });
+      toast({ title: 'Success', description: 'Assessment deleted successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    },
+  });
+
   return {
     assessments: assessmentsQuery.data || [],
     isLoading: assessmentsQuery.isLoading,
     error: assessmentsQuery.error,
     createAssessment,
     updateAssessment,
+    deleteAssessment,
   };
 }
 

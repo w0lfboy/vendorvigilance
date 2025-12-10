@@ -2,7 +2,7 @@ import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, Tr
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
-import founderHeadshot from '@/assets/founder-headshot.jpeg';
+import founderHeadshot from '@/assets/founder-headshot.jpg';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
 
@@ -656,7 +656,7 @@ export default function InvestorPitch() {
             </motion.div>
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h3 className="text-2xl font-bold text-primary mb-2">Tyler Farmer</h3>
+                <h3 className="text-2xl font-bold text-primary mb-2">Taylor Fletcher</h3>
                 <p className="text-muted-foreground">Founder & CEO</p>
               </div>
               <div className="flex flex-wrap gap-3">

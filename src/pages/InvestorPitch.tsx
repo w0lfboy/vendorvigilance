@@ -177,9 +177,7 @@ export default function InvestorPitch() {
         }} transition={{
           delay: 0.6,
           duration: 0.6
-        }}>
-            Enterprise-Grade Security. Mid-Market Pricing.
-          </motion.p>
+        }}>Enterprise-Grade Vendor Management at a Fraction of the Cost.</motion.p>
           <motion.div className="flex flex-wrap justify-center gap-3 md:gap-6" initial={{
           opacity: 0,
           y: 20
@@ -933,22 +931,33 @@ export default function InvestorPitch() {
               <div className="bg-secondary rounded-xl p-4 md:p-6 border border-border">
                 <h4 className="text-sm md:text-base font-semibold text-foreground mb-3">2026 OpEx Breakdown</h4>
                 <div className="space-y-2">
-                  {[
-                    { label: 'Engineering (2 FTEs)', amount: '$280K', percent: 48 },
-                    { label: 'Sales & Marketing', amount: '$180K', percent: 31 },
-                    { label: 'G&A (Legal, Accounting)', amount: '$60K', percent: 10 },
-                    { label: 'Tools & Software', amount: '$40K', percent: 7 },
-                  ].map((item, i) => (
-                    <div key={i} className="space-y-1">
+                  {[{
+                  label: 'Engineering (2 FTEs)',
+                  amount: '$280K',
+                  percent: 48
+                }, {
+                  label: 'Sales & Marketing',
+                  amount: '$180K',
+                  percent: 31
+                }, {
+                  label: 'G&A (Legal, Accounting)',
+                  amount: '$60K',
+                  percent: 10
+                }, {
+                  label: 'Tools & Software',
+                  amount: '$40K',
+                  percent: 7
+                }].map((item, i) => <div key={i} className="space-y-1">
                       <div className="flex justify-between text-xs">
                         <span className="text-muted-foreground">{item.label}</span>
                         <span className="text-foreground font-medium">{item.amount}</span>
                       </div>
                       <div className="w-full bg-card rounded-full h-1.5">
-                        <div className="bg-primary h-1.5 rounded-full" style={{ width: `${item.percent}%` }} />
+                        <div className="bg-primary h-1.5 rounded-full" style={{
+                      width: `${item.percent}%`
+                    }} />
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
 
@@ -1042,18 +1051,31 @@ export default function InvestorPitch() {
 
           {/* Key Ratios */}
           <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12" {...staggerChildren}>
-            {[
-              { label: 'LTV:CAC Ratio', value: '27.6x', target: 'Target: >3x', status: 'success' },
-              { label: 'CAC Payback', value: '1.4 mo', target: 'Target: <12mo', status: 'success' },
-              { label: 'Magic Number', value: '1.8', target: 'Target: >0.75', status: 'success' },
-              { label: 'Rule of 40', value: '95%', target: 'Growth + Margin', status: 'success' },
-            ].map((item, i) => (
-              <motion.div key={i} className={`bg-${item.status}/10 rounded-xl p-3 md:p-4 text-center border border-${item.status}/20`} {...staggerItem}>
+            {[{
+            label: 'LTV:CAC Ratio',
+            value: '27.6x',
+            target: 'Target: >3x',
+            status: 'success'
+          }, {
+            label: 'CAC Payback',
+            value: '1.4 mo',
+            target: 'Target: <12mo',
+            status: 'success'
+          }, {
+            label: 'Magic Number',
+            value: '1.8',
+            target: 'Target: >0.75',
+            status: 'success'
+          }, {
+            label: 'Rule of 40',
+            value: '95%',
+            target: 'Growth + Margin',
+            status: 'success'
+          }].map((item, i) => <motion.div key={i} className={`bg-${item.status}/10 rounded-xl p-3 md:p-4 text-center border border-${item.status}/20`} {...staggerItem}>
                 <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">{item.label}</p>
                 <p className={`text-xl md:text-3xl font-bold text-${item.status}`}>{item.value}</p>
                 <p className="text-xs text-muted-foreground mt-1">{item.target}</p>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
 
           {/* Sensitivity Analysis */}

@@ -5,104 +5,190 @@ import logo from '@/assets/logo.png';
 import founderHeadshot from '@/assets/founder-headshot.jpg';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
-
 const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  initial: {
+    opacity: 0,
+    y: 40
+  },
+  whileInView: {
+    opacity: 1,
+    y: 0
+  },
+  viewport: {
+    once: true,
+    margin: "-100px"
+  },
+  transition: {
+    duration: 0.6,
+    ease: [0.25, 0.46, 0.45, 0.94] as const
+  }
 };
-
 const scaleIn = {
-  initial: { opacity: 0, scale: 0.9 },
-  whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
+  initial: {
+    opacity: 0,
+    scale: 0.9
+  },
+  whileInView: {
+    opacity: 1,
+    scale: 1
+  },
+  viewport: {
+    once: true,
+    margin: "-100px"
+  },
+  transition: {
+    duration: 0.5,
+    ease: [0.25, 0.46, 0.45, 0.94] as const
+  }
 };
-
 const staggerChildren = {
-  initial: { opacity: 0 },
-  whileInView: { opacity: 1 },
-  viewport: { once: true, margin: "-100px" },
-  transition: { staggerChildren: 0.1 }
+  initial: {
+    opacity: 0
+  },
+  whileInView: {
+    opacity: 1
+  },
+  viewport: {
+    once: true,
+    margin: "-100px"
+  },
+  transition: {
+    staggerChildren: 0.1
+  }
 };
-
 const staggerItem = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  transition: { duration: 0.4 }
+  initial: {
+    opacity: 0,
+    y: 20
+  },
+  whileInView: {
+    opacity: 1,
+    y: 0
+  },
+  transition: {
+    duration: 0.4
+  }
 };
 
 // Data for charts
-const revenueProjection = [
-  { month: 'Q1', mrr: 5, customers: 10 },
-  { month: 'Q2', mrr: 15, customers: 35 },
-  { month: 'Q3', mrr: 35, customers: 75 },
-  { month: 'Q4', mrr: 60, customers: 130 },
-  { month: 'Q1+', mrr: 100, customers: 200 },
-];
-
-const marketGrowth = [
-  { year: '2024', tam: 7.5 },
-  { year: '2025', tam: 9 },
-  { year: '2026', tam: 10.5 },
-  { year: '2027', tam: 12.5 },
-  { year: '2028', tam: 15 },
-  { year: '2029', tam: 17.5 },
-  { year: '2030', tam: 20 },
-];
-
-const unitEconomics = [
-  { metric: 'CAC', value: 800, target: 600 },
-  { metric: 'LTV', value: 4800, target: 7200 },
-  { metric: 'ARPU', value: 400, target: 500 },
-  { metric: 'Payback', value: 2, target: 1.5 },
-];
-
+const revenueProjection = [{
+  month: 'Q1',
+  mrr: 5,
+  customers: 10
+}, {
+  month: 'Q2',
+  mrr: 15,
+  customers: 35
+}, {
+  month: 'Q3',
+  mrr: 35,
+  customers: 75
+}, {
+  month: 'Q4',
+  mrr: 60,
+  customers: 130
+}, {
+  month: 'Q1+',
+  mrr: 100,
+  customers: 200
+}];
+const marketGrowth = [{
+  year: '2024',
+  tam: 7.5
+}, {
+  year: '2025',
+  tam: 9
+}, {
+  year: '2026',
+  tam: 10.5
+}, {
+  year: '2027',
+  tam: 12.5
+}, {
+  year: '2028',
+  tam: 15
+}, {
+  year: '2029',
+  tam: 17.5
+}, {
+  year: '2030',
+  tam: 20
+}];
+const unitEconomics = [{
+  metric: 'CAC',
+  value: 800,
+  target: 600
+}, {
+  metric: 'LTV',
+  value: 4800,
+  target: 7200
+}, {
+  metric: 'ARPU',
+  value: 400,
+  target: 500
+}, {
+  metric: 'Payback',
+  value: 2,
+  target: 1.5
+}];
 export default function InvestorPitch() {
-  return (
-    <div className="min-h-screen bg-background text-foreground">
+  return <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 gradient-primary opacity-90" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
-        <motion.div 
-          className="container mx-auto px-6 relative z-10 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div 
-            className="flex items-center justify-center gap-4 mb-8"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
+        <motion.div className="container mx-auto px-6 relative z-10 text-center" initial={{
+        opacity: 0,
+        y: 30
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.8
+      }}>
+          <motion.div className="flex items-center justify-center gap-4 mb-8" initial={{
+          scale: 0.8,
+          opacity: 0
+        }} animate={{
+          scale: 1,
+          opacity: 1
+        }} transition={{
+          delay: 0.2,
+          duration: 0.5
+        }}>
             <img src={logo} alt="VendorVigilance" className="w-16 h-16 rounded-xl" />
             <span className="text-4xl md:text-5xl font-bold text-foreground">VendorVigilance</span>
           </motion.div>
-          <motion.h1 
-            className="text-3xl md:text-5xl font-bold text-foreground mb-4 max-w-4xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
+          <motion.h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4 max-w-4xl mx-auto" initial={{
+          opacity: 0
+        }} animate={{
+          opacity: 1
+        }} transition={{
+          delay: 0.4,
+          duration: 0.6
+        }}>
             AI-Powered Third-Party Risk Management
           </motion.h1>
-          <motion.p 
-            className="text-xl md:text-2xl text-muted-foreground mb-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
+          <motion.p className="text-xl md:text-2xl text-muted-foreground mb-12" initial={{
+          opacity: 0
+        }} animate={{
+          opacity: 1
+        }} transition={{
+          delay: 0.6,
+          duration: 0.6
+        }}>
             Enterprise-Grade Security. Mid-Market Pricing.
           </motion.p>
-          <motion.div 
-            className="flex flex-wrap justify-center gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-          >
+          <motion.div className="flex flex-wrap justify-center gap-6" initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          delay: 0.8,
+          duration: 0.6
+        }}>
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 text-center">
               <p className="text-sm text-muted-foreground mb-1">Assessments</p>
               <p className="text-3xl font-bold text-success">80% Faster</p>
@@ -127,13 +213,23 @@ export default function InvestorPitch() {
             Third-Party Risk is Exploding, But Solutions Are Broken
           </h2>
           <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" {...staggerChildren}>
-            {[
-              { stat: '200-1,000', title: 'Vendors Per Company', desc: 'Each one a potential breach vector that needs assessment and monitoring' },
-              { stat: '83%', title: 'Say Methods Too Complex', desc: 'Security teams drowning in spreadsheets and manual questionnaire reviews' },
-              { stat: '9%', title: 'Have Mature TPRM', desc: 'Most organizations lack the capabilities to effectively manage vendor risk' },
-              { stat: '$25K+', title: 'Enterprise Tool Pricing', desc: 'Mid-market companies priced out, stuck between spreadsheets and budget constraints' },
-            ].map((item, i) => (
-              <motion.div key={i} {...staggerItem}>
+            {[{
+            stat: '200-1,000',
+            title: 'Vendors Per Company',
+            desc: 'Each one a potential breach vector that needs assessment and monitoring'
+          }, {
+            stat: '83%',
+            title: 'Say Methods Too Complex',
+            desc: 'Security teams drowning in spreadsheets and manual questionnaire reviews'
+          }, {
+            stat: '9%',
+            title: 'Have Mature TPRM',
+            desc: 'Most organizations lack the capabilities to effectively manage vendor risk'
+          }, {
+            stat: '$25K+',
+            title: 'Enterprise Tool Pricing',
+            desc: 'Mid-market companies priced out, stuck between spreadsheets and budget constraints'
+          }].map((item, i) => <motion.div key={i} {...staggerItem}>
                 <Card className="border-l-4 border-l-destructive bg-secondary h-full">
                   <CardContent className="p-6">
                     <p className="text-4xl font-extrabold text-primary mb-2">{item.stat}</p>
@@ -141,8 +237,7 @@ export default function InvestorPitch() {
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
         </div>
       </motion.section>
@@ -163,39 +258,42 @@ export default function InvestorPitch() {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'hsl(var(--card))', 
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="tam" 
-                      stroke="hsl(var(--primary))" 
-                      fill="hsl(var(--primary)/0.3)" 
-                      strokeWidth={3}
-                    />
+                    <Tooltip contentStyle={{
+                    backgroundColor: 'hsl(var(--card))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px'
+                  }} />
+                    <Area type="monotone" dataKey="tam" stroke="hsl(var(--primary))" fill="hsl(var(--primary)/0.3)" strokeWidth={3} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </motion.div>
             <div className="space-y-6">
               <h3 className="text-xl font-semibold text-foreground">Key Market Drivers</h3>
-              {[
-                { icon: FileText, title: 'Regulatory Pressure', desc: 'SOC 2, ISO 27001, GDPR, DORA, HIPAA, PCI-DSS requirements expanding' },
-                { icon: Shield, title: 'Supply Chain Attacks', desc: 'Third-party breaches now account for majority of data incidents' },
-                { icon: Zap, title: 'Cloud Adoption', desc: '70% cloud deployment accelerating SaaS-based TPRM solutions' },
-              ].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  className="flex gap-4"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                >
+              {[{
+              icon: FileText,
+              title: 'Regulatory Pressure',
+              desc: 'SOC 2, ISO 27001, GDPR, DORA, HIPAA, PCI-DSS requirements expanding'
+            }, {
+              icon: Shield,
+              title: 'Supply Chain Attacks',
+              desc: 'Third-party breaches now account for majority of data incidents'
+            }, {
+              icon: Zap,
+              title: 'Cloud Adoption',
+              desc: '70% cloud deployment accelerating SaaS-based TPRM solutions'
+            }].map((item, i) => <motion.div key={i} className="flex gap-4" initial={{
+              opacity: 0,
+              x: -20
+            }} whileInView={{
+              opacity: 1,
+              x: 0
+            }} viewport={{
+              once: true
+            }} transition={{
+              delay: i * 0.1,
+              duration: 0.4
+            }}>
                   <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
                     <item.icon className="w-6 h-6 text-primary-foreground" />
                   </div>
@@ -203,8 +301,7 @@ export default function InvestorPitch() {
                     <h4 className="font-semibold text-foreground">{item.title}</h4>
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </div>
-                </motion.div>
-              ))}
+                </motion.div>)}
             </div>
           </div>
         </div>
@@ -218,25 +315,34 @@ export default function InvestorPitch() {
             AI-Powered Automation for Every Stage
           </h2>
           <motion.div className="grid md:grid-cols-2 gap-6" {...staggerChildren}>
-            {[
-              { icon: Brain, title: 'AI Risk Scoring', desc: 'Auto-analyze questionnaire responses and generate risk scores in seconds, not days' },
-              { icon: FileText, title: 'Document Analysis', desc: 'Extract key findings from SOC 2 reports, ISO certifications, and security policies automatically' },
-              { icon: CheckCircle, title: 'Compliance Mapping', desc: 'Map vendor responses to SOC 2, ISO 27001, GDPR, and other framework controls' },
-              { icon: BarChart3, title: 'Board-Ready Reports', desc: 'Generate executive summaries and risk assessments on demand with one click' },
-            ].map((item, i) => (
-              <motion.div 
-                key={i} 
-                className="gradient-primary rounded-xl p-8 text-foreground"
-                whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                {...staggerItem}
-              >
+            {[{
+            icon: Brain,
+            title: 'AI Risk Scoring',
+            desc: 'Auto-analyze questionnaire responses and generate risk scores in seconds, not days'
+          }, {
+            icon: FileText,
+            title: 'Document Analysis',
+            desc: 'Extract key findings from SOC 2 reports, ISO certifications, and security policies automatically'
+          }, {
+            icon: CheckCircle,
+            title: 'Compliance Mapping',
+            desc: 'Map vendor responses to SOC 2, ISO 27001, GDPR, and other framework controls'
+          }, {
+            icon: BarChart3,
+            title: 'Board-Ready Reports',
+            desc: 'Generate executive summaries and risk assessments on demand with one click'
+          }].map((item, i) => <motion.div key={i} className="gradient-primary rounded-xl p-8 text-foreground" whileHover={{
+            scale: 1.02,
+            transition: {
+              duration: 0.2
+            }
+          }} {...staggerItem}>
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">
                   <item.icon className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
         </div>
       </motion.section>
@@ -250,28 +356,17 @@ export default function InvestorPitch() {
           </h2>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div className="grid grid-cols-2 gap-4" {...staggerChildren}>
-              {[
-                'Authentication & RBAC',
-                'Vendor Management',
-                'Assessment Workflows',
-                'Questionnaire Templates',
-                'Vendor Portal',
-                'AI Risk Analysis',
-                '6 Report Types',
-                'Document Storage',
-              ].map((feature, i) => (
-                <motion.div 
-                  key={i} 
-                  className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border"
-                  {...staggerItem}
-                  whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                >
+              {['Authentication & RBAC', 'Vendor Management', 'Assessment Workflows', 'Questionnaire Templates', 'Vendor Portal', 'AI Risk Analysis', '6 Report Types', 'Document Storage'].map((feature, i) => <motion.div key={i} className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border" {...staggerItem} whileHover={{
+              scale: 1.03,
+              transition: {
+                duration: 0.2
+              }
+            }}>
                   <div className="w-6 h-6 bg-success rounded-full flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-4 h-4 text-success-foreground" />
                   </div>
                   <span className="text-sm font-medium text-foreground">{feature}</span>
-                </motion.div>
-              ))}
+                </motion.div>)}
             </motion.div>
             <motion.div className="gradient-primary rounded-2xl p-8 text-center" {...scaleIn}>
               <h3 className="text-2xl font-semibold text-foreground mb-4">Real Backend, Real AI</h3>
@@ -279,11 +374,9 @@ export default function InvestorPitch() {
                 Live Supabase database with Claude-powered risk analysis running in production
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                {['React + TypeScript', 'Supabase', 'Claude AI', 'Edge Functions'].map((tech, i) => (
-                  <Badge key={i} variant="secondary" className="bg-white/20 text-foreground border-0">
+                {['React + TypeScript', 'Supabase', 'Claude AI', 'Edge Functions'].map((tech, i) => <Badge key={i} variant="secondary" className="bg-white/20 text-foreground border-0">
                     {tech}
-                  </Badge>
-                ))}
+                  </Badge>)}
               </div>
             </motion.div>
           </div>
@@ -344,20 +437,15 @@ export default function InvestorPitch() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                   <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--card))', 
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="mrr" 
-                    stroke="hsl(var(--success))" 
-                    strokeWidth={3}
-                    dot={{ fill: 'hsl(var(--success))', strokeWidth: 2 }}
-                  />
+                  <Tooltip contentStyle={{
+                  backgroundColor: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px'
+                }} />
+                  <Line type="monotone" dataKey="mrr" stroke="hsl(var(--success))" strokeWidth={3} dot={{
+                  fill: 'hsl(var(--success))',
+                  strokeWidth: 2
+                }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -368,18 +456,12 @@ export default function InvestorPitch() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                   <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--card))', 
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '8px'
-                    }}
-                  />
-                  <Bar 
-                    dataKey="customers" 
-                    fill="hsl(var(--primary))" 
-                    radius={[4, 4, 0, 0]}
-                  />
+                  <Tooltip contentStyle={{
+                  backgroundColor: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '8px'
+                }} />
+                  <Bar dataKey="customers" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -421,10 +503,12 @@ export default function InvestorPitch() {
           </p>
           
           <div className="grid lg:grid-cols-3 gap-8">
-            <motion.div 
-              className="bg-card rounded-xl p-8 border border-border"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
+            <motion.div className="bg-card rounded-xl p-8 border border-border" whileHover={{
+            y: -5,
+            transition: {
+              duration: 0.2
+            }
+          }}>
               <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center mb-4">
                 <DollarSign className="w-6 h-6 text-success" />
               </div>
@@ -439,10 +523,12 @@ export default function InvestorPitch() {
               </ul>
             </motion.div>
 
-            <motion.div 
-              className="bg-card rounded-xl p-8 border border-border"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
+            <motion.div className="bg-card rounded-xl p-8 border border-border" whileHover={{
+            y: -5,
+            transition: {
+              duration: 0.2
+            }
+          }}>
               <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6 text-primary" />
               </div>
@@ -457,10 +543,12 @@ export default function InvestorPitch() {
               </ul>
             </motion.div>
 
-            <motion.div 
-              className="bg-card rounded-xl p-8 border border-border"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            >
+            <motion.div className="bg-card rounded-xl p-8 border border-border" whileHover={{
+            y: -5,
+            transition: {
+              duration: 0.2
+            }
+          }}>
               <div className="w-12 h-12 bg-warning/20 rounded-xl flex items-center justify-center mb-4">
                 <Target className="w-6 h-6 text-warning" />
               </div>
@@ -563,46 +651,40 @@ export default function InvestorPitch() {
             <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-primary via-success to-warning rounded-full" />
             
             <motion.div className="grid md:grid-cols-4 gap-6" {...staggerChildren}>
-              {[
-                { 
-                  quarter: 'Q1 2026', 
-                  title: 'Launch & Validate', 
-                  milestone: '$5K MRR',
-                  items: ['Production launch', '10 design partners', 'First 5 paying customers'],
-                  color: 'primary',
-                  icon: Zap
-                },
-                { 
-                  quarter: 'Q2 2026', 
-                  title: 'Growth Engine', 
-                  milestone: '$15K MRR',
-                  items: ['Content marketing flywheel', 'Founder-led sales process', 'Seed round close'],
-                  color: 'success',
-                  icon: TrendingUp
-                },
-                { 
-                  quarter: 'Q3 2026', 
-                  title: 'Scale Up', 
-                  milestone: '$35K MRR',
-                  items: ['SSO + Enterprise features', 'First enterprise customer', 'Hire engineer #1'],
-                  color: 'warning',
-                  icon: Users
-                },
-                { 
-                  quarter: 'Q4 2026', 
-                  title: 'Series A Ready', 
-                  milestone: '$60K+ MRR',
-                  items: ['100+ customers', 'Integration ecosystem', 'Expand sales team'],
-                  color: 'success',
-                  icon: Target
-                },
-              ].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  className="relative"
-                  {...staggerItem}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                >
+              {[{
+              quarter: 'Q1 2026',
+              title: 'Launch & Validate',
+              milestone: '$5K MRR',
+              items: ['Production launch', '10 design partners', 'First 5 paying customers'],
+              color: 'primary',
+              icon: Zap
+            }, {
+              quarter: 'Q2 2026',
+              title: 'Growth Engine',
+              milestone: '$15K MRR',
+              items: ['Content marketing flywheel', 'Founder-led sales process', 'Seed round close'],
+              color: 'success',
+              icon: TrendingUp
+            }, {
+              quarter: 'Q3 2026',
+              title: 'Scale Up',
+              milestone: '$35K MRR',
+              items: ['SSO + Enterprise features', 'First enterprise customer', 'Hire engineer #1'],
+              color: 'warning',
+              icon: Users
+            }, {
+              quarter: 'Q4 2026',
+              title: 'Series A Ready',
+              milestone: '$60K+ MRR',
+              items: ['100+ customers', 'Integration ecosystem', 'Expand sales team'],
+              color: 'success',
+              icon: Target
+            }].map((item, i) => <motion.div key={i} className="relative" {...staggerItem} whileHover={{
+              y: -5,
+              transition: {
+                duration: 0.2
+              }
+            }}>
                   {/* Milestone dot */}
                   <div className="hidden md:flex absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-background border-4 border-primary rounded-full items-center justify-center z-10">
                     <item.icon className="w-4 h-4 text-primary" />
@@ -616,17 +698,14 @@ export default function InvestorPitch() {
                       <h3 className="text-lg font-bold text-foreground mb-1">{item.title}</h3>
                       <p className={`text-2xl font-extrabold text-${item.color} mb-4`}>{item.milestone}</p>
                       <ul className="space-y-2">
-                        {item.items.map((li, j) => (
-                          <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        {item.items.map((li, j) => <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
                             <CheckCircle className="w-4 h-4 text-success flex-shrink-0 mt-0.5" />
                             {li}
-                          </li>
-                        ))}
+                          </li>)}
                       </ul>
                     </CardContent>
                   </Card>
-                </motion.div>
-              ))}
+                </motion.div>)}
             </motion.div>
           </div>
         </div>
@@ -643,11 +722,7 @@ export default function InvestorPitch() {
             <motion.div className="flex justify-center" {...scaleIn}>
               <div className="relative">
                 <div className="w-56 h-56 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl">
-                  <img 
-                    src={founderHeadshot} 
-                    alt="Founder headshot" 
-                    className="w-full h-full object-cover object-top"
-                  />
+                  <img src={founderHeadshot} alt="Founder headshot" className="w-full h-full object-cover object-top" />
                 </div>
                 <div className="absolute -bottom-3 -right-3 w-16 h-16 gradient-primary rounded-xl flex items-center justify-center shadow-lg">
                   <Shield className="w-8 h-8 text-primary-foreground" />
@@ -686,55 +761,59 @@ export default function InvestorPitch() {
       </motion.section>
 
       {/* Why Now Section */}
-      <motion.section 
-        className="py-20 bg-gradient-to-br from-amber-500/10 via-background to-orange-500/10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      <motion.section className="py-20 bg-gradient-to-br from-amber-500/10 via-background to-orange-500/10" initial={{
+      opacity: 0
+    }} whileInView={{
+      opacity: 1
+    }} viewport={{
+      once: true
+    }} transition={{
+      duration: 0.8
+    }}>
         <div className="container mx-auto px-6">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.div className="text-center mb-16" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.2
+        }}>
             <Badge className="mb-4 bg-amber-500/20 text-amber-400 border-amber-500/30">Market Timing</Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">Why Now?</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: '📈',
-                title: 'Regulatory Tsunami',
-                desc: 'SEC cybersecurity disclosure rules (Dec 2023) and DORA (Jan 2025) are forcing companies to prove vendor oversight—or face fines.',
-              },
-              {
-                icon: '💸',
-                title: 'SMB Budget Squeeze',
-                desc: 'Enterprise tools cost $50K+/year. The 28M SMBs in the US have zero affordable options for compliance-grade vendor management.',
-              },
-              {
-                icon: '🤖',
-                title: 'AI Inflection Point',
-                desc: 'LLMs can now analyze questionnaires, extract risks, and generate reports—work that used to require expensive analysts.',
-              },
-              {
-                icon: '⚠️',
-                title: 'Supply Chain Attacks Surge',
-                desc: 'SolarWinds, MOVEit, 3CX—third-party breaches are up 78% YoY. Boards are demanding visibility into vendor security.',
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 * i }}
-              >
+            {[{
+            icon: '📈',
+            title: 'Regulatory Tsunami',
+            desc: 'SEC cybersecurity disclosure rules (Dec 2023) and DORA (Jan 2025) are forcing companies to prove vendor oversight—or face fines.'
+          }, {
+            icon: '💸',
+            title: 'SMB Budget Squeeze',
+            desc: 'Enterprise tools cost $50K+/year. The 28M SMBs in the US have zero affordable options for compliance-grade vendor management.'
+          }, {
+            icon: '🤖',
+            title: 'AI Inflection Point',
+            desc: 'LLMs can now analyze questionnaires, extract risks, and generate reports—work that used to require expensive analysts.'
+          }, {
+            icon: '⚠️',
+            title: 'Supply Chain Attacks Surge',
+            desc: 'SolarWinds, MOVEit, 3CX—third-party breaches are up 78% YoY. Boards are demanding visibility into vendor security.'
+          }].map((item, i) => <motion.div key={i} initial={{
+            y: 30,
+            opacity: 0
+          }} whileInView={{
+            y: 0,
+            opacity: 1
+          }} viewport={{
+            once: true
+          }} transition={{
+            delay: 0.1 * i
+          }}>
                 <Card className="h-full bg-card/50 border-border/50 hover:border-amber-500/50 transition-all duration-300">
                   <CardContent className="p-6">
                     <div className="text-4xl mb-4">{item.icon}</div>
@@ -742,96 +821,110 @@ export default function InvestorPitch() {
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </div>
 
-          <motion.div 
-            className="mt-12 text-center"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
-            <p className="text-xl text-foreground font-medium">
-              The window is open. Early movers in SMB TPRM will define the category.
-            </p>
+          <motion.div className="mt-12 text-center" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.5
+        }}>
+            
           </motion.div>
         </div>
       </motion.section>
 
       {/* CTA Section */}
-      <motion.section 
-        className="py-20 gradient-primary relative overflow-hidden"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
+      <motion.section className="py-20 gradient-primary relative overflow-hidden" initial={{
+      opacity: 0
+    }} whileInView={{
+      opacity: 1
+    }} viewport={{
+      once: true
+    }} transition={{
+      duration: 0.8
+    }}>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
         <div className="container mx-auto px-6 text-center relative z-10">
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-foreground mb-4"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.2
+        }}>
             Strategic Partners, Not Just Capital
           </motion.h2>
-          <motion.p 
-            className="text-lg text-muted-foreground mb-12"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            We're looking for investors who understand security and can open doors
-          </motion.p>
-          <motion.div 
-            className="grid md:grid-cols-3 gap-6 mb-12"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-          >
-            {[
-              { title: 'Design Partners', desc: 'Introductions to 3-5 security teams from your LP network' },
-              { title: 'Market Feedback', desc: 'Insights on positioning and pricing from investors who know security buyers' },
-              { title: 'Seed Investment', desc: '$500K-$1M when we hit $5-10K MRR' },
-            ].map((item, i) => (
-              <motion.div 
-                key={i} 
-                className="bg-white/10 border border-white/20 rounded-xl p-6 backdrop-blur-sm"
-                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-              >
+          <motion.p className="text-lg text-muted-foreground mb-12" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.3
+        }}>I am looking for investors and partners who understand security and can open doors</motion.p>
+          <motion.div className="grid md:grid-cols-3 gap-6 mb-12" initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.4
+        }}>
+            {[{
+            title: 'Design Partners',
+            desc: 'Introductions to 3-5 security teams from your LP network'
+          }, {
+            title: 'Market Feedback',
+            desc: 'Insights on positioning and pricing from investors who know security buyers'
+          }, {
+            title: 'Seed Investment',
+            desc: '$500K-$1M when we hit $5-10K MRR'
+          }].map((item, i) => <motion.div key={i} className="bg-white/10 border border-white/20 rounded-xl p-6 backdrop-blur-sm" whileHover={{
+            scale: 1.03,
+            transition: {
+              duration: 0.2
+            }
+          }}>
                 <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
+          <motion.div initial={{
+          y: 20,
+          opacity: 0
+        }} whileInView={{
+          y: 0,
+          opacity: 1
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.5
+        }}>
             <p className="text-2xl font-semibold text-foreground mb-2">We're hackers and hustlers.</p>
             <p className="text-muted-foreground mb-8">Let's build something together.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm">
-              <a 
-                href="mailto:taylor@wolfpacksecurity.org" 
-                className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg"
-              >
+              <a href="mailto:taylor@wolfpacksecurity.org" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg">
                 <span>📧</span>
                 taylor@wolfpacksecurity.org
               </a>
-              <a 
-                href="https://www.linkedin.com/in/tayfletch/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg"
-              >
+              <a href="https://www.linkedin.com/in/tayfletch/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors bg-white/10 px-4 py-2 rounded-lg">
                 <span>💼</span>
                 LinkedIn
               </a>
@@ -839,6 +932,5 @@ export default function InvestorPitch() {
           </motion.div>
         </div>
       </motion.section>
-    </div>
-  );
+    </div>;
 }

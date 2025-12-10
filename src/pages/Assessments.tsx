@@ -360,7 +360,7 @@ export default function Assessments() {
                     </div>
                     <Button variant="outline" size="sm" onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedAssessment(assessment);
+                      navigate(`/assessments/${assessment.id}`);
                     }}>
                       View Details
                     </Button>

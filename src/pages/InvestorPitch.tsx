@@ -1,7 +1,62 @@
-import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, TrendingUp, Clock, DollarSign, ArrowRight } from 'lucide-react';
+import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, TrendingUp, Clock, DollarSign, ArrowRight, Milestone } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import logo from '@/assets/logo.png';
+import { motion } from 'framer-motion';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.9 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const }
+};
+
+const staggerChildren = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { staggerChildren: 0.1 }
+};
+
+const staggerItem = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.4 }
+};
+
+// Data for charts
+const revenueProjection = [
+  { month: 'Q1', mrr: 5, customers: 10 },
+  { month: 'Q2', mrr: 15, customers: 35 },
+  { month: 'Q3', mrr: 35, customers: 75 },
+  { month: 'Q4', mrr: 60, customers: 130 },
+  { month: 'Q1+', mrr: 100, customers: 200 },
+];
+
+const marketGrowth = [
+  { year: '2024', tam: 7.5 },
+  { year: '2025', tam: 9 },
+  { year: '2026', tam: 10.5 },
+  { year: '2027', tam: 12.5 },
+  { year: '2028', tam: 15 },
+  { year: '2029', tam: 17.5 },
+  { year: '2030', tam: 20 },
+];
+
+const unitEconomics = [
+  { metric: 'CAC', value: 800, target: 600 },
+  { metric: 'LTV', value: 4800, target: 7200 },
+  { metric: 'ARPU', value: 400, target: 500 },
+  { metric: 'Payback', value: 2, target: 1.5 },
+];
 
 export default function InvestorPitch() {
   return (
@@ -10,18 +65,43 @@ export default function InvestorPitch() {
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="absolute inset-0 gradient-primary opacity-90" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="flex items-center justify-center gap-4 mb-8">
+        <motion.div 
+          className="container mx-auto px-6 relative z-10 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div 
+            className="flex items-center justify-center gap-4 mb-8"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
             <img src={logo} alt="VendorVigilance" className="w-16 h-16 rounded-xl" />
             <span className="text-4xl md:text-5xl font-bold text-foreground">VendorVigilance</span>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4 max-w-4xl mx-auto">
+          </motion.div>
+          <motion.h1 
+            className="text-3xl md:text-5xl font-bold text-foreground mb-4 max-w-4xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
             AI-Powered Third-Party Risk Management
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12">
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-muted-foreground mb-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
             Enterprise-Grade Security. Mid-Market Pricing.
-          </p>
-          <div className="flex flex-wrap justify-center gap-6">
+          </motion.p>
+          <motion.div 
+            className="flex flex-wrap justify-center gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 text-center">
               <p className="text-sm text-muted-foreground mb-1">Assessments</p>
               <p className="text-3xl font-bold text-success">80% Faster</p>
@@ -34,55 +114,72 @@ export default function InvestorPitch() {
               <p className="text-sm text-muted-foreground mb-1">Time to Value</p>
               <p className="text-3xl font-bold text-success">1 Day</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Problem Section */}
-      <section className="py-20 bg-card">
+      <motion.section className="py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">The Problem</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             Third-Party Risk is Exploding, But Solutions Are Broken
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" {...staggerChildren}>
             {[
               { stat: '200-1,000', title: 'Vendors Per Company', desc: 'Each one a potential breach vector that needs assessment and monitoring' },
               { stat: '83%', title: 'Say Methods Too Complex', desc: 'Security teams drowning in spreadsheets and manual questionnaire reviews' },
               { stat: '9%', title: 'Have Mature TPRM', desc: 'Most organizations lack the capabilities to effectively manage vendor risk' },
               { stat: '$25K+', title: 'Enterprise Tool Pricing', desc: 'Mid-market companies priced out, stuck between spreadsheets and budget constraints' },
             ].map((item, i) => (
-              <Card key={i} className="border-l-4 border-l-destructive bg-secondary">
-                <CardContent className="p-6">
-                  <p className="text-4xl font-extrabold text-primary mb-2">{item.stat}</p>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
-                </CardContent>
-              </Card>
+              <motion.div key={i} {...staggerItem}>
+                <Card className="border-l-4 border-l-destructive bg-secondary h-full">
+                  <CardContent className="p-6">
+                    <p className="text-4xl font-extrabold text-primary mb-2">{item.stat}</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Market Section */}
-      <section className="py-20">
+      {/* Market Section with Chart */}
+      <motion.section className="py-20" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">The Market</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             $9B Market Growing 15%+ Annually
           </h2>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center">
-              <div className="mb-8">
-                <p className="text-sm text-muted-foreground mb-2">2025 Market Size</p>
-                <p className="text-6xl md:text-7xl font-extrabold text-primary">$9<span className="text-3xl">B</span></p>
+            <motion.div {...scaleIn}>
+              <div className="bg-card rounded-xl p-6 border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">TPRM Market Size Projection ($B)</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={marketGrowth}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" />
+                    <YAxis stroke="hsl(var(--muted-foreground))" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'hsl(var(--card))', 
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="tam" 
+                      stroke="hsl(var(--primary))" 
+                      fill="hsl(var(--primary)/0.3)" 
+                      strokeWidth={3}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
-              <TrendingUp className="w-12 h-12 text-success mx-auto my-4" />
-              <div>
-                <p className="text-sm text-muted-foreground mb-2">2030 Projection</p>
-                <p className="text-6xl md:text-7xl font-extrabold text-primary">$20<span className="text-3xl">B</span></p>
-              </div>
-            </div>
+            </motion.div>
             <div className="space-y-6">
               <h3 className="text-xl font-semibold text-foreground">Key Market Drivers</h3>
               {[
@@ -90,7 +187,14 @@ export default function InvestorPitch() {
                 { icon: Shield, title: 'Supply Chain Attacks', desc: 'Third-party breaches now account for majority of data incidents' },
                 { icon: Zap, title: 'Cloud Adoption', desc: '70% cloud deployment accelerating SaaS-based TPRM solutions' },
               ].map((item, i) => (
-                <div key={i} className="flex gap-4">
+                <motion.div 
+                  key={i} 
+                  className="flex gap-4"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
                   <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
                     <item.icon className="w-6 h-6 text-primary-foreground" />
                   </div>
@@ -98,48 +202,53 @@ export default function InvestorPitch() {
                     <h4 className="font-semibold text-foreground">{item.title}</h4>
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Solution Section */}
-      <section className="py-20 bg-card">
+      <motion.section className="py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">The Solution</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             AI-Powered Automation for Every Stage
           </h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <motion.div className="grid md:grid-cols-2 gap-6" {...staggerChildren}>
             {[
               { icon: Brain, title: 'AI Risk Scoring', desc: 'Auto-analyze questionnaire responses and generate risk scores in seconds, not days' },
               { icon: FileText, title: 'Document Analysis', desc: 'Extract key findings from SOC 2 reports, ISO certifications, and security policies automatically' },
               { icon: CheckCircle, title: 'Compliance Mapping', desc: 'Map vendor responses to SOC 2, ISO 27001, GDPR, and other framework controls' },
               { icon: BarChart3, title: 'Board-Ready Reports', desc: 'Generate executive summaries and risk assessments on demand with one click' },
             ].map((item, i) => (
-              <div key={i} className="gradient-primary rounded-xl p-8 text-foreground">
+              <motion.div 
+                key={i} 
+                className="gradient-primary rounded-xl p-8 text-foreground"
+                whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                {...staggerItem}
+              >
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">
                   <item.icon className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Product Section */}
-      <section className="py-20">
+      <motion.section className="py-20" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">What We've Built</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             Working MVP — Not a Mockup
           </h2>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="grid grid-cols-2 gap-4">
+            <motion.div className="grid grid-cols-2 gap-4" {...staggerChildren}>
               {[
                 'Authentication & RBAC',
                 'Vendor Management',
@@ -150,15 +259,20 @@ export default function InvestorPitch() {
                 '6 Report Types',
                 'Document Storage',
               ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border">
+                <motion.div 
+                  key={i} 
+                  className="flex items-center gap-3 bg-card rounded-xl p-4 border border-border"
+                  {...staggerItem}
+                  whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                >
                   <div className="w-6 h-6 bg-success rounded-full flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-4 h-4 text-success-foreground" />
                   </div>
                   <span className="text-sm font-medium text-foreground">{feature}</span>
-                </div>
+                </motion.div>
               ))}
-            </div>
-            <div className="gradient-primary rounded-2xl p-8 text-center">
+            </motion.div>
+            <motion.div className="gradient-primary rounded-2xl p-8 text-center" {...scaleIn}>
               <h3 className="text-2xl font-semibold text-foreground mb-4">Real Backend, Real AI</h3>
               <p className="text-muted-foreground mb-6">
                 Live Supabase database with Claude-powered risk analysis running in production
@@ -170,75 +284,208 @@ export default function InvestorPitch() {
                   </Badge>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Pricing Section */}
-      <section className="py-20 bg-card">
+      {/* Pricing & Path to Profitability Section */}
+      <motion.section className="py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Business Model</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             Simple SaaS, Clear Path to Profitability
           </h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <Card className="text-center relative bg-secondary border-border">
-              <CardContent className="p-8">
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Starter</p>
-                <p className="text-5xl font-extrabold text-foreground mb-1">$299</p>
-                <p className="text-sm text-muted-foreground mb-4">/month</p>
-                <p className="text-sm text-muted-foreground">Up to 100 vendors, 3 users</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center relative gradient-primary border-0 transform md:scale-105">
-              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-success text-success-foreground">
-                Most Popular
-              </Badge>
-              <CardContent className="p-8">
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Professional</p>
-                <p className="text-5xl font-extrabold text-foreground mb-1">$499</p>
-                <p className="text-sm text-muted-foreground mb-4">/month</p>
-                <p className="text-sm text-muted-foreground">Up to 500 vendors, 10 users</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center relative bg-secondary border-border">
-              <CardContent className="p-8">
-                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Enterprise</p>
-                <p className="text-5xl font-extrabold text-foreground mb-1">Custom</p>
-                <p className="text-sm text-muted-foreground mb-4">contact us</p>
-                <p className="text-sm text-muted-foreground">Unlimited vendors, SSO, dedicated support</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-success/10 rounded-xl p-6 text-center">
+          
+          {/* Pricing Tiers */}
+          <motion.div className="grid md:grid-cols-3 gap-6 mb-12" {...staggerChildren}>
+            <motion.div {...staggerItem}>
+              <Card className="text-center relative bg-secondary border-border h-full">
+                <CardContent className="p-8">
+                  <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Starter</p>
+                  <p className="text-5xl font-extrabold text-foreground mb-1">$299</p>
+                  <p className="text-sm text-muted-foreground mb-4">/month</p>
+                  <p className="text-sm text-muted-foreground">Up to 100 vendors, 3 users</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div {...staggerItem}>
+              <Card className="text-center relative gradient-primary border-0 transform md:scale-105">
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-success text-success-foreground">
+                  Most Popular
+                </Badge>
+                <CardContent className="p-8">
+                  <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Professional</p>
+                  <p className="text-5xl font-extrabold text-foreground mb-1">$499</p>
+                  <p className="text-sm text-muted-foreground mb-4">/month</p>
+                  <p className="text-sm text-muted-foreground">Up to 500 vendors, 10 users</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div {...staggerItem}>
+              <Card className="text-center relative bg-secondary border-border h-full">
+                <CardContent className="p-8">
+                  <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Enterprise</p>
+                  <p className="text-5xl font-extrabold text-foreground mb-1">Custom</p>
+                  <p className="text-sm text-muted-foreground mb-4">contact us</p>
+                  <p className="text-sm text-muted-foreground">Unlimited vendors, SSO, dedicated support</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          {/* Revenue Projection Chart */}
+          <motion.div className="grid lg:grid-cols-2 gap-8 mb-12" {...scaleIn}>
+            <div className="bg-secondary rounded-xl p-6 border border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Projected MRR Growth ($K)</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={revenueProjection}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
+                  <YAxis stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--card))', 
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="mrr" 
+                    stroke="hsl(var(--success))" 
+                    strokeWidth={3}
+                    dot={{ fill: 'hsl(var(--success))', strokeWidth: 2 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="bg-secondary rounded-xl p-6 border border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Customer Growth</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={revenueProjection}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
+                  <YAxis stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--card))', 
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Bar 
+                    dataKey="customers" 
+                    fill="hsl(var(--primary))" 
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Key Metrics */}
+          <motion.div className="grid md:grid-cols-4 gap-6" {...staggerChildren}>
+            <motion.div className="bg-success/10 rounded-xl p-6 text-center" {...staggerItem}>
               <p className="text-xs font-semibold uppercase text-success mb-2">Target Gross Margin</p>
               <p className="text-4xl font-extrabold text-success">80%+</p>
-            </div>
-            <div className="bg-primary/10 rounded-xl p-6 text-center">
-              <p className="text-xs font-semibold uppercase text-primary mb-2">Path to $50K MRR</p>
-              <p className="text-4xl font-extrabold text-primary">125</p>
-              <p className="text-sm text-primary">customers @ $400 avg</p>
-            </div>
-            <div className="bg-warning/10 rounded-xl p-6 text-center">
-              <p className="text-xs font-semibold uppercase text-warning mb-2">Break-Even</p>
-              <p className="text-4xl font-extrabold text-warning">1 customer</p>
-              <p className="text-sm text-warning">covers infra 4x over</p>
-            </div>
+            </motion.div>
+            <motion.div className="bg-primary/10 rounded-xl p-6 text-center" {...staggerItem}>
+              <p className="text-xs font-semibold uppercase text-primary mb-2">LTV:CAC Ratio</p>
+              <p className="text-4xl font-extrabold text-primary">6:1</p>
+              <p className="text-sm text-primary">Target</p>
+            </motion.div>
+            <motion.div className="bg-warning/10 rounded-xl p-6 text-center" {...staggerItem}>
+              <p className="text-xs font-semibold uppercase text-warning mb-2">Payback Period</p>
+              <p className="text-4xl font-extrabold text-warning">&lt;2 mo</p>
+            </motion.div>
+            <motion.div className="bg-success/10 rounded-xl p-6 text-center" {...staggerItem}>
+              <p className="text-xs font-semibold uppercase text-success mb-2">Break-Even</p>
+              <p className="text-4xl font-extrabold text-success">~25</p>
+              <p className="text-sm text-success">customers</p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Path to Profitability Section */}
+      <motion.section className="py-20" {...fadeInUp}>
+        <div className="container mx-auto px-6">
+          <Badge variant="outline" className="mb-4 text-success border-success">Path to Profitability</Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Capital-Efficient Growth Strategy
+          </h2>
+          <p className="text-lg text-muted-foreground mb-12 max-w-3xl">
+            With low infrastructure costs and high gross margins, VendorVigilance is designed to reach profitability quickly while maintaining aggressive growth.
+          </p>
+          
+          <div className="grid lg:grid-cols-3 gap-8">
+            <motion.div 
+              className="bg-card rounded-xl p-8 border border-border"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center mb-4">
+                <DollarSign className="w-6 h-6 text-success" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3">Low Burn Model</h3>
+              <p className="text-muted-foreground mb-4">
+                Infrastructure costs under $100/month. Single customer covers operating expenses 4x over.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Serverless architecture</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Pay-per-use AI costs</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Founder-led until $50K MRR</li>
+              </ul>
+            </motion.div>
+
+            <motion.div 
+              className="bg-card rounded-xl p-8 border border-border"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3">Scalable Unit Economics</h3>
+              <p className="text-muted-foreground mb-4">
+                Strong LTV:CAC ratio with product-led growth reducing acquisition costs over time.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Content + SEO flywheel</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Vendor network effects</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Self-serve onboarding</li>
+              </ul>
+            </motion.div>
+
+            <motion.div 
+              className="bg-card rounded-xl p-8 border border-border"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <div className="w-12 h-12 bg-warning/20 rounded-xl flex items-center justify-center mb-4">
+                <Target className="w-6 h-6 text-warning" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground mb-3">Multiple Exit Paths</h3>
+              <p className="text-muted-foreground mb-4">
+                Strategic value for GRC platforms, compliance tools, and enterprise security vendors.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> GRC platform acquirers</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Compliance automation players</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-success" /> Enterprise security vendors</li>
+              </ul>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Competition Section */}
-      <section className="py-20">
+      <motion.section className="py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Competition</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             A Clear Gap in the Mid-Market
           </h2>
-          <div className="overflow-x-auto mb-8">
-            <table className="w-full border-collapse bg-card rounded-xl overflow-hidden">
+          <motion.div className="overflow-x-auto mb-8" {...scaleIn}>
+            <table className="w-full border-collapse bg-secondary rounded-xl overflow-hidden">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
                   <th className="p-4 text-left font-semibold">Competitor</th>
@@ -254,7 +501,7 @@ export default function InvestorPitch() {
                   <td className="p-4 text-muted-foreground">Enterprise</td>
                   <td className="p-4 text-muted-foreground">Price excludes mid-market</td>
                 </tr>
-                <tr className="border-b border-border bg-secondary/50">
+                <tr className="border-b border-border bg-card/50">
                   <td className="p-4 text-foreground">OneTrust</td>
                   <td className="p-4 text-destructive font-semibold">$44,000+</td>
                   <td className="p-4 text-muted-foreground">Enterprise</td>
@@ -266,7 +513,7 @@ export default function InvestorPitch() {
                   <td className="p-4 text-muted-foreground">Mid-Enterprise</td>
                   <td className="p-4 text-muted-foreground">Limited AI, slow setup</td>
                 </tr>
-                <tr className="border-b border-border bg-secondary/50">
+                <tr className="border-b border-border bg-card/50">
                   <td className="p-4 text-foreground">Vanta / Drata</td>
                   <td className="p-4 text-warning font-semibold">$7,500-11,500</td>
                   <td className="p-4 text-muted-foreground">Startups, SMB</td>
@@ -280,70 +527,123 @@ export default function InvestorPitch() {
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-warning/10 border-l-4 border-warning rounded-xl p-6">
+          </motion.div>
+          <motion.div className="grid md:grid-cols-2 gap-6" {...staggerChildren}>
+            <motion.div className="bg-warning/10 border-l-4 border-warning rounded-xl p-6" {...staggerItem}>
               <h3 className="text-sm font-bold uppercase text-warning mb-2">The Gap</h3>
               <p className="text-foreground">
                 No TPRM-native solution between $3,600 and $15,000/year for mid-market companies with 50-500 employees.
               </p>
-            </div>
-            <div className="gradient-primary rounded-xl p-6">
+            </motion.div>
+            <motion.div className="gradient-primary rounded-xl p-6" {...staggerItem}>
               <h3 className="text-sm font-bold uppercase text-success mb-2">Our Advantage</h3>
               <p className="text-foreground">
                 AI-native architecture built ground-up. Competitors are retrofitting AI onto legacy systems.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Roadmap Section */}
-      <section className="py-20 bg-card">
+      {/* Roadmap Section - Redesigned */}
+      <motion.section className="py-20" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Roadmap</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
-            Path to $50K+ MRR
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Path to $100K+ ARR
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { quarter: 'Q1 2025', title: 'MVP + Design Partners', items: ['Production-ready platform', '5 design partners signed', 'First paying customer'] },
-              { quarter: 'Q2 2025', title: '$5-10K MRR', items: ['Convert design partners', 'Founder-led sales', 'Seed round close'] },
-              { quarter: 'Q3 2025', title: '$25K MRR', items: ['SSO + Enterprise features', 'First enterprise customer', 'Hire engineer #1'] },
-              { quarter: 'Q4 2025', title: '$50K+ MRR', items: ['Series A ready', '50+ customers', 'Integrations ecosystem'] },
-            ].map((item, i) => (
-              <Card key={i} className="relative bg-secondary border-border">
-                <CardContent className="p-6">
-                  <Badge className="mb-4 bg-primary text-primary-foreground">{item.quarter}</Badge>
-                  <h3 className="text-lg font-bold text-primary mb-4">{item.title}</h3>
-                  <ul className="space-y-2">
-                    {item.items.map((li, j) => (
-                      <li key={j} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <ArrowRight className="w-4 h-4 text-success" />
-                        {li}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            ))}
+          <p className="text-lg text-muted-foreground mb-12 max-w-3xl">
+            A focused roadmap to establish market presence and achieve sustainable growth in 2026.
+          </p>
+          
+          {/* Timeline Visual */}
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-primary via-success to-warning rounded-full" />
+            
+            <motion.div className="grid md:grid-cols-4 gap-6" {...staggerChildren}>
+              {[
+                { 
+                  quarter: 'Q1 2026', 
+                  title: 'Launch & Validate', 
+                  milestone: '$5K MRR',
+                  items: ['Production launch', '10 design partners', 'First 5 paying customers'],
+                  color: 'primary',
+                  icon: Zap
+                },
+                { 
+                  quarter: 'Q2 2026', 
+                  title: 'Growth Engine', 
+                  milestone: '$15K MRR',
+                  items: ['Content marketing flywheel', 'Founder-led sales process', 'Seed round close'],
+                  color: 'success',
+                  icon: TrendingUp
+                },
+                { 
+                  quarter: 'Q3 2026', 
+                  title: 'Scale Up', 
+                  milestone: '$35K MRR',
+                  items: ['SSO + Enterprise features', 'First enterprise customer', 'Hire engineer #1'],
+                  color: 'warning',
+                  icon: Users
+                },
+                { 
+                  quarter: 'Q4 2026', 
+                  title: 'Series A Ready', 
+                  milestone: '$60K+ MRR',
+                  items: ['100+ customers', 'Integration ecosystem', 'Expand sales team'],
+                  color: 'success',
+                  icon: Target
+                },
+              ].map((item, i) => (
+                <motion.div 
+                  key={i} 
+                  className="relative"
+                  {...staggerItem}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  {/* Milestone dot */}
+                  <div className="hidden md:flex absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-background border-4 border-primary rounded-full items-center justify-center z-10">
+                    <item.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  
+                  <Card className="bg-secondary border-border mt-8 md:mt-16 h-full">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className={`bg-${item.color} text-${item.color}-foreground`}>{item.quarter}</Badge>
+                      </div>
+                      <h3 className="text-lg font-bold text-foreground mb-1">{item.title}</h3>
+                      <p className={`text-2xl font-extrabold text-${item.color} mb-4`}>{item.milestone}</p>
+                      <ul className="space-y-2">
+                        {item.items.map((li, j) => (
+                          <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <CheckCircle className="w-4 h-4 text-success flex-shrink-0 mt-0.5" />
+                            {li}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Founder Section */}
-      <section className="py-20">
+      <motion.section className="py-20 bg-card" {...fadeInUp}>
         <div className="container mx-auto px-6">
           <Badge variant="outline" className="mb-4 text-primary border-primary">Founder</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12">
             Security Practitioner + Product Builder
           </h2>
           <div className="grid lg:grid-cols-3 gap-12 items-center">
-            <div className="flex justify-center">
+            <motion.div className="flex justify-center" {...scaleIn}>
               <div className="w-48 h-48 gradient-primary rounded-3xl flex items-center justify-center">
                 <Users className="w-20 h-20 text-muted-foreground/30" />
               </div>
-            </div>
+            </motion.div>
             <div className="lg:col-span-2">
               <h3 className="text-2xl font-bold text-primary mb-4">[Your Name]</h3>
               <div className="flex flex-wrap gap-3 mb-6">
@@ -356,39 +656,74 @@ export default function InvestorPitch() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* CTA Section */}
-      <section className="py-20 gradient-primary relative overflow-hidden">
+      <motion.section 
+        className="py-20 gradient-primary relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold text-foreground mb-4"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
             Strategic Partners, Not Just Capital
-          </h2>
-          <p className="text-lg text-muted-foreground mb-12">
+          </motion.h2>
+          <motion.p 
+            className="text-lg text-muted-foreground mb-12"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
             We're looking for investors who understand security and can open doors
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          </motion.p>
+          <motion.div 
+            className="grid md:grid-cols-3 gap-6 mb-12"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
             {[
               { title: 'Design Partners', desc: 'Introductions to 3-5 security teams from your LP network' },
               { title: 'Market Feedback', desc: 'Insights on positioning and pricing from investors who know security buyers' },
               { title: 'Seed Investment', desc: '$500K-$1M when we hit $5-10K MRR' },
             ].map((item, i) => (
-              <div key={i} className="bg-white/10 border border-white/20 rounded-xl p-6 backdrop-blur-sm">
+              <motion.div 
+                key={i} 
+                className="bg-white/10 border border-white/20 rounded-xl p-6 backdrop-blur-sm"
+                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+              >
                 <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
-          <p className="text-2xl font-semibold text-foreground mb-2">We're hackers and hustlers.</p>
-          <p className="text-muted-foreground mb-8">Let's build something together.</p>
-          <div className="text-sm text-muted-foreground">
-            <a href="mailto:your@email.com" className="text-foreground hover:text-primary transition-colors">[your@email.com]</a>
-            <span className="mx-2">·</span>
-            <a href="#" className="text-foreground hover:text-primary transition-colors">[LinkedIn]</a>
-          </div>
+          </motion.div>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            <p className="text-2xl font-semibold text-foreground mb-2">We're hackers and hustlers.</p>
+            <p className="text-muted-foreground mb-8">Let's build something together.</p>
+            <div className="text-sm text-muted-foreground">
+              <a href="mailto:your@email.com" className="text-foreground hover:text-primary transition-colors">[your@email.com]</a>
+              <span className="mx-2">·</span>
+              <a href="#" className="text-foreground hover:text-primary transition-colors">[LinkedIn]</a>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }

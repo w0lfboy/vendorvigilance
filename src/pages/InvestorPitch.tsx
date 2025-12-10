@@ -1,10 +1,11 @@
-import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, TrendingUp, Clock, DollarSign, ArrowRight, Milestone } from 'lucide-react';
+import { Shield, FileText, CheckCircle, BarChart3, Brain, Target, Users, Zap, TrendingUp, Clock, DollarSign, ArrowRight, Milestone, Calculator, Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import logo from '@/assets/logo.png';
 import founderHeadshot from '@/assets/founder-headshot.jpg';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line } from 'recharts';
 const fadeInUp = {
   initial: {
     opacity: 0,
@@ -197,10 +198,21 @@ export default function InvestorPitch() {
               <p className="text-xs md:text-sm text-muted-foreground mb-1">Cost vs Enterprise</p>
               <p className="text-xl md:text-3xl font-bold text-success">75% Less</p>
             </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 md:p-6 text-center">
-              <p className="text-xs md:text-sm text-muted-foreground mb-1">Time to Value</p>
-              <p className="text-xl md:text-3xl font-bold text-success">1 Day</p>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 md:p-6 text-center cursor-help relative group">
+                    <Info className="absolute top-2 right-2 w-3 h-3 text-muted-foreground opacity-50 group-hover:opacity-100 transition-opacity" />
+                    <p className="text-xs md:text-sm text-muted-foreground mb-1">Time to Value</p>
+                    <p className="text-xl md:text-3xl font-bold text-success">1 Day</p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs p-3 bg-card border border-border">
+                  <p className="text-sm text-foreground font-medium mb-1">What "1 Day" means:</p>
+                  <p className="text-xs text-muted-foreground">Sign up this morning, add vendors, send your first assessment, get AI-analyzed results by end of day.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </motion.div>
         </motion.div>
       </section>
@@ -258,7 +270,7 @@ export default function InvestorPitch() {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis dataKey="year" stroke="hsl(var(--muted-foreground))" />
                     <YAxis stroke="hsl(var(--muted-foreground))" />
-                    <Tooltip contentStyle={{
+                    <RechartsTooltip contentStyle={{
                     backgroundColor: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',
                     borderRadius: '8px'
@@ -437,7 +449,7 @@ export default function InvestorPitch() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                   <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{
+                  <RechartsTooltip contentStyle={{
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px'
@@ -456,7 +468,7 @@ export default function InvestorPitch() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
                   <YAxis stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip contentStyle={{
+                  <RechartsTooltip contentStyle={{
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px'
@@ -984,6 +996,171 @@ export default function InvestorPitch() {
           delay: 0.5
         }}>
             
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Appendix - Unit Economics */}
+      <motion.section className="py-16 md:py-20 bg-card" {...fadeInUp}>
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Calculator className="w-5 h-5 text-primary" />
+            <Badge variant="outline" className="text-primary border-primary">Appendix</Badge>
+          </div>
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
+            Unit Economics Deep Dive
+          </h2>
+          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-12 max-w-3xl">
+            Detailed breakdown of key SaaS metrics and sensitivity analysis for different growth scenarios.
+          </p>
+
+          {/* Unit Economics Calculations */}
+          <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12" {...staggerChildren}>
+            <motion.div className="bg-secondary rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-success" />
+                LTV Calculation
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Average Revenue Per Account (ARPA)</span>
+                  <span className="font-mono font-semibold text-foreground">$450/mo</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Gross Margin</span>
+                  <span className="font-mono font-semibold text-foreground">85%</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Monthly Churn Rate</span>
+                  <span className="font-mono font-semibold text-foreground">2.5%</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Customer Lifetime (1/churn)</span>
+                  <span className="font-mono font-semibold text-foreground">40 months</span>
+                </div>
+                <div className="border-t border-border pt-3 mt-3">
+                  <div className="flex justify-between items-center p-3 bg-success/10 rounded-lg">
+                    <span className="font-medium text-foreground">LTV = ARPA × GM × Lifetime</span>
+                    <span className="font-mono font-bold text-success text-lg">$15,300</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div className="bg-secondary rounded-xl p-4 md:p-6 border border-border" {...staggerItem}>
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Target className="w-5 h-5 text-primary" />
+                CAC Calculation
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Content Marketing (annual)</span>
+                  <span className="font-mono font-semibold text-foreground">$24,000</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Paid Ads (annual)</span>
+                  <span className="font-mono font-semibold text-foreground">$36,000</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">Sales Tools & Ops</span>
+                  <span className="font-mono font-semibold text-foreground">$12,000</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-card rounded-lg">
+                  <span className="text-muted-foreground">New Customers (Year 1)</span>
+                  <span className="font-mono font-semibold text-foreground">130</span>
+                </div>
+                <div className="border-t border-border pt-3 mt-3">
+                  <div className="flex justify-between items-center p-3 bg-primary/10 rounded-lg">
+                    <span className="font-medium text-foreground">CAC = Total S&M ÷ New Customers</span>
+                    <span className="font-mono font-bold text-primary text-lg">$554</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Key Ratios */}
+          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8 md:mb-12" {...staggerChildren}>
+            {[
+              { label: 'LTV:CAC Ratio', value: '27.6x', target: 'Target: >3x', status: 'success' },
+              { label: 'CAC Payback', value: '1.4 mo', target: 'Target: <12mo', status: 'success' },
+              { label: 'Magic Number', value: '1.8', target: 'Target: >0.75', status: 'success' },
+              { label: 'Rule of 40', value: '95%', target: 'Growth + Margin', status: 'success' },
+            ].map((item, i) => (
+              <motion.div key={i} className={`bg-${item.status}/10 rounded-xl p-3 md:p-4 text-center border border-${item.status}/20`} {...staggerItem}>
+                <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">{item.label}</p>
+                <p className={`text-xl md:text-3xl font-bold text-${item.status}`}>{item.value}</p>
+                <p className="text-xs text-muted-foreground mt-1">{item.target}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Sensitivity Analysis */}
+          <motion.div className="bg-secondary rounded-xl p-4 md:p-6 border border-border" {...scaleIn}>
+            <h3 className="text-base md:text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-warning" />
+              Sensitivity Analysis: 2027 ARR by Growth Scenario
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse min-w-[500px]">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="p-3 text-left font-semibold text-muted-foreground text-sm">Scenario</th>
+                    <th className="p-3 text-center font-semibold text-muted-foreground text-sm">Monthly Growth</th>
+                    <th className="p-3 text-center font-semibold text-muted-foreground text-sm">2027 Customers</th>
+                    <th className="p-3 text-center font-semibold text-muted-foreground text-sm">2027 ARR</th>
+                    <th className="p-3 text-center font-semibold text-muted-foreground text-sm">Burn Multiple</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border/50">
+                    <td className="p-3 text-foreground font-medium text-sm">Conservative</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">8%</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">280</td>
+                    <td className="p-3 text-center text-warning font-semibold text-sm">$1.5M</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">0.8x</td>
+                  </tr>
+                  <tr className="border-b border-border/50 bg-success/5">
+                    <td className="p-3 text-foreground font-medium text-sm flex items-center gap-2">
+                      Base Case
+                      <Badge className="bg-success/20 text-success border-0 text-xs">Plan</Badge>
+                    </td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">12%</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">400</td>
+                    <td className="p-3 text-center text-success font-bold text-sm">$2.4M</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">0.5x</td>
+                  </tr>
+                  <tr className="border-b border-border/50">
+                    <td className="p-3 text-foreground font-medium text-sm">Aggressive</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">15%</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">550</td>
+                    <td className="p-3 text-center text-primary font-semibold text-sm">$3.3M</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">0.4x</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 text-foreground font-medium text-sm">Hypergrowth</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">20%</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">750</td>
+                    <td className="p-3 text-center text-primary font-bold text-sm">$4.5M</td>
+                    <td className="p-3 text-center text-muted-foreground text-sm">0.3x</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              * Burn Multiple = Net Burn ÷ Net New ARR. Lower is better. &lt;1x is efficient growth.
+            </p>
+          </motion.div>
+
+          {/* Key Assumptions */}
+          <motion.div className="mt-6 md:mt-8 p-4 bg-warning/5 border border-warning/20 rounded-xl" {...staggerItem}>
+            <h4 className="text-sm font-semibold text-warning mb-2">Sensitivity Assumptions</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-muted-foreground">
+              <div>• Churn held constant at 2.5%</div>
+              <div>• ARPA grows 5% annually</div>
+              <div>• CAC decreases with scale</div>
+              <div>• Gross margin stable at 85%</div>
+            </div>
           </motion.div>
         </div>
       </motion.section>

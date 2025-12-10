@@ -97,7 +97,7 @@ const Landing = () => {
     },
     {
       name: "Professional",
-      price: "$799",
+      price: "$499",
       period: "/month",
       description: "For growing organizations with complex vendor ecosystems",
       features: [

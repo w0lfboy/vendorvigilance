@@ -1,5 +1,5 @@
 import { Search, User, Settings, ChevronDown, LogOut } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import appLogo from '@/assets/logo.png';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,10 +14,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { MobileNav } from './MobileNav';
 import { NotificationBell } from './NotificationBell';
+import { useOrganization } from '@/hooks/useOrganization';
 
 export function Header() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { organization } = useOrganization();
 
   const handleSignOut = async () => {
     await signOut();
@@ -25,6 +27,7 @@ export function Header() {
   };
 
   const displayName = user?.email?.split('@')[0] || 'User';
+  const logoSrc = organization?.logo_url || appLogo;
 
   return (
     <header className="h-14 md:h-16 bg-header text-header-foreground flex items-center justify-between px-3 md:px-6 border-b border-sidebar-border">
@@ -32,8 +35,8 @@ export function Header() {
         <MobileNav />
         
         <div className="flex items-center gap-2">
-          <img src={logo} alt="VendorVigilance" className="w-7 h-7 md:w-8 md:h-8 transition-all duration-300 hover:drop-shadow-[0_0_8px_hsl(var(--primary))] animate-fade-in" />
-          <span className="font-semibold text-base md:text-lg tracking-tight hidden sm:block">VendorVigilance</span>
+          <img src={logoSrc} alt={organization?.name || 'VendorVigilance'} className="w-7 h-7 md:w-8 md:h-8 rounded object-cover transition-all duration-300 hover:drop-shadow-[0_0_8px_hsl(var(--primary))] animate-fade-in" />
+          <span className="font-semibold text-base md:text-lg tracking-tight hidden sm:block">{organization?.name || 'VendorVigilance'}</span>
         </div>
         
         <div className="relative hidden lg:block">

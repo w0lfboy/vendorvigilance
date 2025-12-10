@@ -632,6 +632,36 @@ export type Database = {
           },
         ]
       }
+      questionnaire_template_seeds: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          framework: string | null
+          id: string
+          name: string
+          questions: Json
+          seed_key: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          framework?: string | null
+          id?: string
+          name: string
+          questions: Json
+          seed_key: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          framework?: string | null
+          id?: string
+          name?: string
+          questions?: Json
+          seed_key?: string
+        }
+        Relationships: []
+      }
       questionnaire_templates: {
         Row: {
           category: string

@@ -13,6 +13,8 @@ import Documents from "./pages/Documents";
 import Assessments from "./pages/Assessments";
 import AssessmentComparison from "./pages/AssessmentComparison";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
+import RiskAnalytics from "./pages/RiskAnalytics";
+import RemediationTracking from "./pages/RemediationTracking";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import VendorPortal from "./pages/VendorPortal";
@@ -37,6 +39,8 @@ const App = () => (
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Index />} />
               <Route path="/executive" element={<ExecutiveDashboard />} />
+              <Route path="/analytics" element={<RiskAnalytics />} />
+              <Route path="/remediation" element={<RemediationTracking />} />
               <Route path="/vendors" element={<Vendors />} />
               <Route path="/vendors/:id" element={<VendorProfile />} />
               <Route path="/documents" element={<Documents />} />

@@ -113,8 +113,83 @@ export type Database = {
           },
         ]
       }
+      assessment_ai_analysis: {
+        Row: {
+          analysis_version: string | null
+          assessment_id: string
+          compliance_scores: Json | null
+          confidence_score: number | null
+          created_at: string
+          executive_summary: string | null
+          findings: Json | null
+          flagged_responses: Json | null
+          id: string
+          key_concerns: Json | null
+          key_strengths: Json | null
+          model_used: string | null
+          overall_score: number | null
+          processing_time_ms: number | null
+          recommended_actions: Json | null
+          risk_level: string | null
+          tokens_used: number | null
+          updated_at: string
+        }
+        Insert: {
+          analysis_version?: string | null
+          assessment_id: string
+          compliance_scores?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          executive_summary?: string | null
+          findings?: Json | null
+          flagged_responses?: Json | null
+          id?: string
+          key_concerns?: Json | null
+          key_strengths?: Json | null
+          model_used?: string | null
+          overall_score?: number | null
+          processing_time_ms?: number | null
+          recommended_actions?: Json | null
+          risk_level?: string | null
+          tokens_used?: number | null
+          updated_at?: string
+        }
+        Update: {
+          analysis_version?: string | null
+          assessment_id?: string
+          compliance_scores?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          executive_summary?: string | null
+          findings?: Json | null
+          flagged_responses?: Json | null
+          id?: string
+          key_concerns?: Json | null
+          key_strengths?: Json | null
+          model_used?: string | null
+          overall_score?: number | null
+          processing_time_ms?: number | null
+          recommended_actions?: Json | null
+          risk_level?: string | null
+          tokens_used?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_ai_analysis_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: true
+            referencedRelation: "vendor_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assessment_responses: {
         Row: {
+          ai_analysis: string | null
+          ai_risk_flag: string | null
+          ai_score: number | null
+          ai_suggestions: Json | null
           assessment_id: string
           created_at: string
           file_path: string | null
@@ -128,6 +203,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          ai_analysis?: string | null
+          ai_risk_flag?: string | null
+          ai_score?: number | null
+          ai_suggestions?: Json | null
           assessment_id: string
           created_at?: string
           file_path?: string | null
@@ -141,6 +220,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          ai_analysis?: string | null
+          ai_risk_flag?: string | null
+          ai_score?: number | null
+          ai_suggestions?: Json | null
           assessment_id?: string
           created_at?: string
           file_path?: string | null
@@ -485,12 +568,15 @@ export type Database = {
         Row: {
           compliance_mapping: Json | null
           created_at: string
+          expected_answer: Json | null
+          help_text: string | null
           id: string
           is_required: boolean | null
           options: Json | null
           order_index: number | null
           question_text: string
           question_type: string
+          risk_category: string | null
           section: string
           template_id: string
           weight: number | null
@@ -498,12 +584,15 @@ export type Database = {
         Insert: {
           compliance_mapping?: Json | null
           created_at?: string
+          expected_answer?: Json | null
+          help_text?: string | null
           id?: string
           is_required?: boolean | null
           options?: Json | null
           order_index?: number | null
           question_text: string
           question_type?: string
+          risk_category?: string | null
           section?: string
           template_id: string
           weight?: number | null
@@ -511,12 +600,15 @@ export type Database = {
         Update: {
           compliance_mapping?: Json | null
           created_at?: string
+          expected_answer?: Json | null
+          help_text?: string | null
           id?: string
           is_required?: boolean | null
           options?: Json | null
           order_index?: number | null
           question_text?: string
           question_type?: string
+          risk_category?: string | null
           section?: string
           template_id?: string
           weight?: number | null
@@ -567,6 +659,27 @@ export type Database = {
         }
         Relationships: []
       }
+      super_admins: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assignee: string | null
@@ -614,12 +727,15 @@ export type Database = {
       vendor_assessments: {
         Row: {
           access_token: string | null
+          ai_analyzed_at: string | null
           created_at: string
           due_date: string
           id: string
           is_recurring: boolean | null
+          last_activity_at: string | null
           organization_id: string | null
           recurrence_interval: string | null
+          reminder_sent_at: string | null
           reviewed_date: string | null
           risk_level: string | null
           score: number | null
@@ -633,12 +749,15 @@ export type Database = {
         }
         Insert: {
           access_token?: string | null
+          ai_analyzed_at?: string | null
           created_at?: string
           due_date: string
           id?: string
           is_recurring?: boolean | null
+          last_activity_at?: string | null
           organization_id?: string | null
           recurrence_interval?: string | null
+          reminder_sent_at?: string | null
           reviewed_date?: string | null
           risk_level?: string | null
           score?: number | null
@@ -652,12 +771,15 @@ export type Database = {
         }
         Update: {
           access_token?: string | null
+          ai_analyzed_at?: string | null
           created_at?: string
           due_date?: string
           id?: string
           is_recurring?: boolean | null
+          last_activity_at?: string | null
           organization_id?: string | null
           recurrence_interval?: string | null
+          reminder_sent_at?: string | null
           reviewed_date?: string | null
           risk_level?: string | null
           score?: number | null
@@ -769,6 +891,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_assessment_progress: {
+        Args: { p_assessment_id: string }
+        Returns: number
+      }
       get_user_org_role: {
         Args: { _org_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["org_role"]
@@ -782,12 +908,24 @@ export type Database = {
         Args: { _org_id: string; _user_id: string }
         Returns: boolean
       }
+      is_super_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
+      app_role: "super_admin" | "user"
       assessment_status: "not_started" | "in_progress" | "completed"
       document_status: "active" | "expired" | "expiring_soon"
       document_type: "soc2_report" | "iso_certificate" | "policy" | "contract"
       org_role: "owner" | "admin" | "member"
+      question_type:
+        | "yes_no"
+        | "yes_no_na"
+        | "single_choice"
+        | "multi_choice"
+        | "text_short"
+        | "text_long"
+        | "file_upload"
+        | "date"
+        | "number"
       risk_tier: "critical" | "high" | "medium" | "low"
       vendor_status: "active" | "pending" | "offboarded"
     }
@@ -917,10 +1055,22 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["super_admin", "user"],
       assessment_status: ["not_started", "in_progress", "completed"],
       document_status: ["active", "expired", "expiring_soon"],
       document_type: ["soc2_report", "iso_certificate", "policy", "contract"],
       org_role: ["owner", "admin", "member"],
+      question_type: [
+        "yes_no",
+        "yes_no_na",
+        "single_choice",
+        "multi_choice",
+        "text_short",
+        "text_long",
+        "file_upload",
+        "date",
+        "number",
+      ],
       risk_tier: ["critical", "high", "medium", "low"],
       vendor_status: ["active", "pending", "offboarded"],
     },

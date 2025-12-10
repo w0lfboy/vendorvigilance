@@ -7,6 +7,9 @@ import { RiskHeatMap } from '@/components/dashboard/RiskHeatMap';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { PendingAnalysisWidget } from '@/components/dashboard/PendingAnalysisWidget';
 import { useAuth } from '@/hooks/useAuth';
+import { useRealtimeAlerts } from '@/hooks/useRealtimeAlerts';
+import { useRealtimeAssessments } from '@/hooks/useRealtimeAssessments';
+import { useRealtimeVendors } from '@/hooks/useRealtimeVendors';
 import { 
   dashboardStats, 
   alerts, 
@@ -18,6 +21,11 @@ import {
 export default function Dashboard() {
   const { user } = useAuth();
   const displayName = user?.email?.split('@')[0] || 'there';
+  
+  // Enable realtime subscriptions
+  useRealtimeAlerts();
+  useRealtimeAssessments();
+  useRealtimeVendors();
 
   return (
     <div className="space-y-4 md:space-y-6 animate-fade-in">

@@ -11,6 +11,7 @@ import Vendors from "./pages/Vendors";
 import VendorProfile from "./pages/VendorProfile";
 import Documents from "./pages/Documents";
 import Assessments from "./pages/Assessments";
+import AssessmentComparison from "./pages/AssessmentComparison";
 import ExecutiveDashboard from "./pages/ExecutiveDashboard";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/vendors/:id" element={<VendorProfile />} />
               <Route path="/documents" element={<Documents />} />
               <Route path="/assessments" element={<Assessments />} />
+              <Route path="/assessments/compare" element={<AssessmentComparison />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/settings" element={<Settings />} />
             </Route>

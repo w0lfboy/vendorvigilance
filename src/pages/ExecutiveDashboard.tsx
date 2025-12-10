@@ -55,11 +55,23 @@ const complianceData = [
   { framework: 'HIPAA', compliant: 88, partial: 8, nonCompliant: 4 },
 ];
 
+// Define colors as CSS custom properties for charts
+const CHART_COLORS = {
+  critical: '#DC2626', // red-600
+  high: '#F59E0B', // amber-500
+  medium: '#3B82F6', // blue-500
+  low: '#10B981', // emerald-500
+  primary: '#0EA5E9', // sky-500
+  compliant: '#10B981',
+  partial: '#F59E0B',
+  nonCompliant: '#DC2626',
+};
+
 const chartConfig = {
-  critical: { label: 'Critical', color: 'hsl(var(--destructive))' },
-  high: { label: 'High', color: 'hsl(var(--warning))' },
-  medium: { label: 'Medium', color: 'hsl(var(--secondary))' },
-  low: { label: 'Low', color: 'hsl(var(--success))' },
+  critical: { label: 'Critical', color: CHART_COLORS.critical },
+  high: { label: 'High', color: CHART_COLORS.high },
+  medium: { label: 'Medium', color: CHART_COLORS.medium },
+  low: { label: 'Low', color: CHART_COLORS.low },
 };
 
 export default function ExecutiveDashboard() {
@@ -68,10 +80,10 @@ export default function ExecutiveDashboard() {
 
   // Calculate metrics from real data
   const riskDistribution = [
-    { name: 'Critical', value: vendors.filter(v => v.risk_tier === 'critical').length, color: 'hsl(var(--destructive))' },
-    { name: 'High', value: vendors.filter(v => v.risk_tier === 'high').length, color: 'hsl(var(--warning))' },
-    { name: 'Medium', value: vendors.filter(v => v.risk_tier === 'medium').length, color: 'hsl(var(--secondary))' },
-    { name: 'Low', value: vendors.filter(v => v.risk_tier === 'low').length, color: 'hsl(var(--success))' },
+    { name: 'Critical', value: vendors.filter(v => v.risk_tier === 'critical').length, color: CHART_COLORS.critical },
+    { name: 'High', value: vendors.filter(v => v.risk_tier === 'high').length, color: CHART_COLORS.high },
+    { name: 'Medium', value: vendors.filter(v => v.risk_tier === 'medium').length, color: CHART_COLORS.medium },
+    { name: 'Low', value: vendors.filter(v => v.risk_tier === 'low').length, color: CHART_COLORS.low },
   ];
 
   const totalVendors = vendors.length;
@@ -216,24 +228,24 @@ export default function ExecutiveDashboard() {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[250px]">
               <LineChart data={riskTrendData}>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                <XAxis dataKey="month" className="text-xs" />
-                <YAxis className="text-xs" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="month" tick={{ fill: '#94A3B8', fontSize: 12 }} />
+                <YAxis tick={{ fill: '#94A3B8', fontSize: 12 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Line 
                   type="monotone" 
                   dataKey="avgRisk" 
-                  stroke="hsl(var(--primary))" 
+                  stroke={CHART_COLORS.primary}
                   strokeWidth={2}
-                  dot={{ fill: 'hsl(var(--primary))' }}
+                  dot={{ fill: CHART_COLORS.primary }}
                   name="Avg Risk Score"
                 />
                 <Line 
                   type="monotone" 
                   dataKey="highRiskCount" 
-                  stroke="hsl(var(--destructive))" 
+                  stroke={CHART_COLORS.critical}
                   strokeWidth={2}
-                  dot={{ fill: 'hsl(var(--destructive))' }}
+                  dot={{ fill: CHART_COLORS.critical }}
                   name="High Risk Count"
                 />
               </LineChart>
@@ -251,14 +263,14 @@ export default function ExecutiveDashboard() {
         <CardContent>
           <ChartContainer config={chartConfig} className="h-[300px]">
             <BarChart data={complianceData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-              <XAxis type="number" domain={[0, 100]} className="text-xs" />
-              <YAxis dataKey="framework" type="category" className="text-xs" width={80} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+              <XAxis type="number" domain={[0, 100]} tick={{ fill: '#94A3B8', fontSize: 12 }} />
+              <YAxis dataKey="framework" type="category" tick={{ fill: '#94A3B8', fontSize: 12 }} width={80} />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Legend />
-              <Bar dataKey="compliant" stackId="a" fill="hsl(var(--success))" name="Compliant" />
-              <Bar dataKey="partial" stackId="a" fill="hsl(var(--warning))" name="Partial" />
-              <Bar dataKey="nonCompliant" stackId="a" fill="hsl(var(--destructive))" name="Non-Compliant" />
+              <Legend wrapperStyle={{ color: '#94A3B8' }} />
+              <Bar dataKey="compliant" stackId="a" fill={CHART_COLORS.compliant} name="Compliant" />
+              <Bar dataKey="partial" stackId="a" fill={CHART_COLORS.partial} name="Partial" />
+              <Bar dataKey="nonCompliant" stackId="a" fill={CHART_COLORS.nonCompliant} name="Non-Compliant" />
             </BarChart>
           </ChartContainer>
         </CardContent>

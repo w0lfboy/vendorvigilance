@@ -67,6 +67,7 @@ import { useDocuments, type Document } from '@/hooks/useDocuments';
 import { useVendors } from '@/hooks/useVendors';
 import { format } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import { DocumentComparisonDialog } from '@/components/documents/DocumentComparisonDialog';
 
 const documentTypeLabels: Record<string, string> = {
   soc2_report: 'SOC 2 Report',
@@ -221,108 +222,111 @@ export default function Documents() {
           <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
           <p className="text-muted-foreground">AI-powered document analysis and compliance tracking</p>
         </div>
-        <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-              <Upload className="h-4 w-4 mr-2" />
-              Upload Document
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <DialogTitle>Upload Document</DialogTitle>
-              <DialogDescription>Upload a document for AI analysis and compliance review</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Vendor *</Label>
-                <Select value={uploadData.vendorId} onValueChange={(v) => setUploadData(prev => ({ ...prev, vendorId: v }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select vendor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {vendors.map((v) => (
-                      <SelectItem key={v.id} value={v.id}>{v.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Document Name *</Label>
-                <Input 
-                  value={uploadData.name}
-                  onChange={(e) => setUploadData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="e.g., SOC 2 Type II Report 2024"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Document Type *</Label>
-                <Select value={uploadData.type} onValueChange={(v: Document['type']) => setUploadData(prev => ({ ...prev, type: v }))}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="soc2_report">SOC 2 Report</SelectItem>
-                    <SelectItem value="iso_certificate">ISO Certificate</SelectItem>
-                    <SelectItem value="policy">Policy Document</SelectItem>
-                    <SelectItem value="contract">Contract</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Expiration Date (optional)</Label>
-                <Input 
-                  type="date"
-                  value={uploadData.expirationDate}
-                  onChange={(e) => setUploadData(prev => ({ ...prev, expirationDate: e.target.value }))}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>File *</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center relative">
-                  {selectedFile ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <FileText className="h-6 w-6 text-secondary" />
-                      <span className="text-sm font-medium">{selectedFile.name}</span>
-                      <span className="text-xs text-muted-foreground">({formatFileSize(selectedFile.size)})</span>
-                    </div>
-                  ) : (
-                    <div>
-                      <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground">Click or drag file to upload</p>
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    onChange={handleFileSelect}
-                    accept=".pdf,.doc,.docx,.xls,.xlsx"
+        <div className="flex gap-2">
+          <DocumentComparisonDialog documents={documents} vendors={vendors} />
+          <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+                <Upload className="h-4 w-4 mr-2" />
+                Upload Document
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Upload Document</DialogTitle>
+                <DialogDescription>Upload a document for AI analysis and compliance review</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label>Vendor *</Label>
+                  <Select value={uploadData.vendorId} onValueChange={(v) => setUploadData(prev => ({ ...prev, vendorId: v }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select vendor" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {vendors.map((v) => (
+                        <SelectItem key={v.id} value={v.id}>{v.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Document Name *</Label>
+                  <Input 
+                    value={uploadData.name}
+                    onChange={(e) => setUploadData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g., SOC 2 Type II Report 2024"
                   />
                 </div>
-              </div>
 
-              <div className="bg-secondary/10 rounded-lg p-3 flex items-start gap-2">
-                <Sparkles className="h-4 w-4 text-secondary mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-medium text-foreground">AI Analysis Enabled</p>
-                  <p className="text-muted-foreground">Your document will be automatically analyzed for compliance, risks, and key findings.</p>
+                <div className="space-y-2">
+                  <Label>Document Type *</Label>
+                  <Select value={uploadData.type} onValueChange={(v: Document['type']) => setUploadData(prev => ({ ...prev, type: v }))}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="soc2_report">SOC 2 Report</SelectItem>
+                      <SelectItem value="iso_certificate">ISO Certificate</SelectItem>
+                      <SelectItem value="policy">Policy Document</SelectItem>
+                      <SelectItem value="contract">Contract</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </div>
 
-              <Button 
-                className="w-full bg-secondary hover:bg-secondary/90"
-                onClick={handleUpload}
-                disabled={uploadDocument.isPending || analyzeDocument.isPending}
-              >
-                {uploadDocument.isPending ? 'Uploading...' : analyzeDocument.isPending ? 'Analyzing...' : 'Upload & Analyze'}
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+                <div className="space-y-2">
+                  <Label>Expiration Date (optional)</Label>
+                  <Input 
+                    type="date"
+                    value={uploadData.expirationDate}
+                    onChange={(e) => setUploadData(prev => ({ ...prev, expirationDate: e.target.value }))}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>File *</Label>
+                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center relative">
+                    {selectedFile ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <FileText className="h-6 w-6 text-secondary" />
+                        <span className="text-sm font-medium">{selectedFile.name}</span>
+                        <span className="text-xs text-muted-foreground">({formatFileSize(selectedFile.size)})</span>
+                      </div>
+                    ) : (
+                      <div>
+                        <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">Click or drag file to upload</p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleFileSelect}
+                      accept=".pdf,.doc,.docx,.xls,.xlsx"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-secondary/10 rounded-lg p-3 flex items-start gap-2">
+                  <Sparkles className="h-4 w-4 text-secondary mt-0.5" />
+                  <div className="text-sm">
+                    <p className="font-medium text-foreground">AI Analysis Enabled</p>
+                    <p className="text-muted-foreground">Your document will be automatically analyzed for compliance, risks, and key findings.</p>
+                  </div>
+                </div>
+
+                <Button 
+                  className="w-full bg-secondary hover:bg-secondary/90"
+                  onClick={handleUpload}
+                  disabled={uploadDocument.isPending || analyzeDocument.isPending}
+                >
+                  {uploadDocument.isPending ? 'Uploading...' : analyzeDocument.isPending ? 'Analyzing...' : 'Upload & Analyze'}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Stats Cards */}

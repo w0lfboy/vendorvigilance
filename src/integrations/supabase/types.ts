@@ -963,6 +963,10 @@ export type Database = {
         Returns: Database["public"]["Enums"]["org_role"]
       }
       get_user_organization: { Args: { _user_id: string }; Returns: string }
+      is_active_org_member: {
+        Args: { _org_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_org_admin: {
         Args: { _org_id: string; _user_id: string }
         Returns: boolean

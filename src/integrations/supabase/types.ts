@@ -315,12 +315,20 @@ export type Database = {
       }
       documents: {
         Row: {
+          ai_analysis: Json | null
+          ai_summary: string | null
+          analyzed_at: string | null
+          compliance_mapping: Json | null
           created_at: string
           expiration_date: string | null
           file_path: string | null
           id: string
+          key_findings: Json | null
           name: string
           organization_id: string | null
+          review_status: string | null
+          reviewer_notes: string | null
+          risk_flags: Json | null
           size: number | null
           status: Database["public"]["Enums"]["document_status"] | null
           type: Database["public"]["Enums"]["document_type"]
@@ -329,12 +337,20 @@ export type Database = {
           vendor_id: string
         }
         Insert: {
+          ai_analysis?: Json | null
+          ai_summary?: string | null
+          analyzed_at?: string | null
+          compliance_mapping?: Json | null
           created_at?: string
           expiration_date?: string | null
           file_path?: string | null
           id?: string
+          key_findings?: Json | null
           name: string
           organization_id?: string | null
+          review_status?: string | null
+          reviewer_notes?: string | null
+          risk_flags?: Json | null
           size?: number | null
           status?: Database["public"]["Enums"]["document_status"] | null
           type: Database["public"]["Enums"]["document_type"]
@@ -343,12 +359,20 @@ export type Database = {
           vendor_id: string
         }
         Update: {
+          ai_analysis?: Json | null
+          ai_summary?: string | null
+          analyzed_at?: string | null
+          compliance_mapping?: Json | null
           created_at?: string
           expiration_date?: string | null
           file_path?: string | null
           id?: string
+          key_findings?: Json | null
           name?: string
           organization_id?: string | null
+          review_status?: string | null
+          reviewer_notes?: string | null
+          risk_flags?: Json | null
           size?: number | null
           status?: Database["public"]["Enums"]["document_status"] | null
           type?: Database["public"]["Enums"]["document_type"]

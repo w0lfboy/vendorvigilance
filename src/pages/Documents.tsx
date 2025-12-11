@@ -10,7 +10,12 @@ import {
   Calendar,
   AlertCircle,
   CheckCircle2,
-  Clock
+  Clock,
+  Sparkles,
+  FileSearch,
+  MessageSquare,
+  Flag,
+  MoreVertical
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -30,7 +35,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Table,
   TableBody,
@@ -39,6 +59,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useDocuments, type Document } from '@/hooks/useDocuments';
 import { useVendors } from '@/hooks/useVendors';
@@ -58,15 +81,33 @@ const statusConfig = {
   expiring_soon: { label: 'Expiring Soon', icon: Clock, class: 'bg-warning/10 text-warning' },
 };
 
+const reviewStatusConfig: Record<string, { label: string; class: string }> = {
+  pending: { label: 'Pending Analysis', class: 'bg-muted text-muted-foreground' },
+  analyzed: { label: 'Analyzed', class: 'bg-blue-500/10 text-blue-600' },
+  reviewed: { label: 'Reviewed', class: 'bg-success/10 text-success' },
+  flagged: { label: 'Flagged', class: 'bg-destructive/10 text-destructive' },
+};
+
 export default function Documents() {
-  const { documents, isLoading, uploadDocument, deleteDocument, getDownloadUrl } = useDocuments();
+  const { 
+    documents, 
+    isLoading, 
+    uploadDocument, 
+    analyzeDocument,
+    updateReviewStatus,
+    deleteDocument, 
+    getDownloadUrl 
+  } = useDocuments();
   const { vendors } = useVendors();
   const { toast } = useToast();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [reviewFilter, setReviewFilter] = useState<string>('all');
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [reviewNotes, setReviewNotes] = useState('');
   const [uploadData, setUploadData] = useState({
     vendorId: '',
     name: '',
@@ -80,7 +121,8 @@ export default function Documents() {
     const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = typeFilter === 'all' || doc.type === typeFilter;
     const matchesStatus = statusFilter === 'all' || doc.status === statusFilter;
-    return matchesSearch && matchesType && matchesStatus;
+    const matchesReview = reviewFilter === 'all' || doc.review_status === reviewFilter;
+    return matchesSearch && matchesType && matchesStatus && matchesReview;
   });
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -118,13 +160,19 @@ export default function Documents() {
       return;
     }
 
-    await uploadDocument.mutateAsync({
+    const result = await uploadDocument.mutateAsync({
       file: selectedFile,
       vendorId: uploadData.vendorId,
       name: uploadData.name,
       type: uploadData.type,
       expirationDate: uploadData.expirationDate || undefined,
     });
+
+    // Auto-trigger AI analysis after upload
+    if (result) {
+      toast({ title: 'Analyzing...', description: 'AI is analyzing your document' });
+      analyzeDocument.mutate(result as unknown as Document);
+    }
 
     setIsUploadOpen(false);
     setSelectedFile(null);
@@ -139,11 +187,31 @@ export default function Documents() {
     }
   };
 
+  const handleAnalyze = (doc: Document) => {
+    toast({ title: 'Analyzing...', description: 'AI is analyzing your document' });
+    analyzeDocument.mutate(doc);
+  };
+
+  const handleReviewStatusChange = (docId: string, status: string) => {
+    updateReviewStatus.mutate({ docId, status, notes: reviewNotes });
+  };
+
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
+
+  const getVendorName = (vendorId: string) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    return vendor?.name || 'Unknown Vendor';
+  };
+
+  // Stats
+  const totalDocs = documents.length;
+  const analyzedDocs = documents.filter(d => d.analyzed_at).length;
+  const pendingReview = documents.filter(d => d.review_status === 'analyzed').length;
+  const flaggedDocs = documents.filter(d => d.review_status === 'flagged').length;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -151,7 +219,7 @@ export default function Documents() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
-          <p className="text-muted-foreground">Manage and organize vendor compliance documents</p>
+          <p className="text-muted-foreground">AI-powered document analysis and compliance tracking</p>
         </div>
         <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
           <DialogTrigger asChild>
@@ -163,7 +231,7 @@ export default function Documents() {
           <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Upload Document</DialogTitle>
-              <DialogDescription>Upload a new compliance document to the vault</DialogDescription>
+              <DialogDescription>Upload a document for AI analysis and compliance review</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
@@ -215,7 +283,7 @@ export default function Documents() {
 
               <div className="space-y-2">
                 <Label>File *</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center relative">
                   {selectedFile ? (
                     <div className="flex items-center justify-center gap-2">
                       <FileText className="h-6 w-6 text-secondary" />
@@ -232,21 +300,65 @@ export default function Documents() {
                     type="file"
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     onChange={handleFileSelect}
-                    style={{ position: 'relative' }}
+                    accept=".pdf,.doc,.docx,.xls,.xlsx"
                   />
+                </div>
+              </div>
+
+              <div className="bg-secondary/10 rounded-lg p-3 flex items-start gap-2">
+                <Sparkles className="h-4 w-4 text-secondary mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-foreground">AI Analysis Enabled</p>
+                  <p className="text-muted-foreground">Your document will be automatically analyzed for compliance, risks, and key findings.</p>
                 </div>
               </div>
 
               <Button 
                 className="w-full bg-secondary hover:bg-secondary/90"
                 onClick={handleUpload}
-                disabled={uploadDocument.isPending}
+                disabled={uploadDocument.isPending || analyzeDocument.isPending}
               >
-                {uploadDocument.isPending ? 'Uploading...' : 'Upload Document'}
+                {uploadDocument.isPending ? 'Uploading...' : analyzeDocument.isPending ? 'Analyzing...' : 'Upload & Analyze'}
               </Button>
             </div>
           </DialogContent>
         </Dialog>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Documents</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalDocs}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">AI Analyzed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">{analyzedDocs}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Pending Review</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-warning">{pendingReview}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Flagged</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-destructive">{flaggedDocs}</div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Drop Zone */}
@@ -301,6 +413,18 @@ export default function Documents() {
             <SelectItem value="expiring_soon">Expiring Soon</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={reviewFilter} onValueChange={setReviewFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Review Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Reviews</SelectItem>
+            <SelectItem value="pending">Pending Analysis</SelectItem>
+            <SelectItem value="analyzed">Analyzed</SelectItem>
+            <SelectItem value="reviewed">Reviewed</SelectItem>
+            <SelectItem value="flagged">Flagged</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Documents Table */}
@@ -308,12 +432,12 @@ export default function Documents() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead>Document</TableHead>
+              <TableHead>Vendor</TableHead>
               <TableHead>Type</TableHead>
-              <TableHead>Uploaded</TableHead>
-              <TableHead>Expires</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Size</TableHead>
+              <TableHead>AI Review</TableHead>
+              <TableHead>Uploaded</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -335,52 +459,69 @@ export default function Documents() {
             ) : (
               filteredDocuments.map((doc) => {
                 const status = statusConfig[doc.status];
+                const reviewStatus = reviewStatusConfig[doc.review_status || 'pending'];
                 const StatusIcon = status.icon;
                 
                 return (
-                  <TableRow key={doc.id}>
+                  <TableRow key={doc.id} className="cursor-pointer hover:bg-muted/50" onClick={() => setSelectedDocument(doc)}>
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="p-2 bg-accent rounded">
                           <FileText className="h-4 w-4 text-secondary" />
                         </div>
-                        <span className="font-medium">{doc.name}</span>
+                        <div>
+                          <span className="font-medium block">{doc.name}</span>
+                          <span className="text-xs text-muted-foreground">{formatFileSize(doc.size)}</span>
+                        </div>
                       </div>
                     </TableCell>
+                    <TableCell className="text-muted-foreground">{getVendorName(doc.vendor_id)}</TableCell>
                     <TableCell>{documentTypeLabels[doc.type] || doc.type}</TableCell>
-                    <TableCell>{format(new Date(doc.upload_date), 'MMM d, yyyy')}</TableCell>
-                    <TableCell>
-                      {doc.expiration_date 
-                        ? format(new Date(doc.expiration_date), 'MMM d, yyyy')
-                        : '—'
-                      }
-                    </TableCell>
                     <TableCell>
                       <Badge className={cn('gap-1', status.class)}>
                         <StatusIcon className="h-3 w-3" />
                         {status.label}
                       </Badge>
                     </TableCell>
-                    <TableCell>{formatFileSize(doc.size)}</TableCell>
+                    <TableCell>
+                      <Badge className={reviewStatus.class}>
+                        {doc.analyzed_at && <Sparkles className="h-3 w-3 mr-1" />}
+                        {reviewStatus.label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{format(new Date(doc.upload_date), 'MMM d, yyyy')}</TableCell>
                     <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8"
-                          onClick={() => handleDownload(doc)}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8 text-destructive hover:text-destructive"
-                          onClick={() => deleteDocument.mutate(doc)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setSelectedDocument(doc); }}>
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDownload(doc); }}>
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </DropdownMenuItem>
+                          {!doc.analyzed_at && (
+                            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleAnalyze(doc); }}>
+                              <Sparkles className="h-4 w-4 mr-2" />
+                              Analyze with AI
+                            </DropdownMenuItem>
+                          )}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem 
+                            className="text-destructive"
+                            onClick={(e) => { e.stopPropagation(); deleteDocument.mutate(doc); }}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 );
@@ -389,6 +530,236 @@ export default function Documents() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Document Details Sheet */}
+      <Sheet open={!!selectedDocument} onOpenChange={(open) => !open && setSelectedDocument(null)}>
+        <SheetContent className="sm:max-w-xl">
+          {selectedDocument && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-secondary" />
+                  {selectedDocument.name}
+                </SheetTitle>
+                <SheetDescription>
+                  {documentTypeLabels[selectedDocument.type]} • {getVendorName(selectedDocument.vendor_id)}
+                </SheetDescription>
+              </SheetHeader>
+
+              <Tabs defaultValue="analysis" className="mt-6">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
+                  <TabsTrigger value="details">Details</TabsTrigger>
+                  <TabsTrigger value="review">Review</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="analysis" className="mt-4">
+                  <ScrollArea className="h-[calc(100vh-280px)]">
+                    {selectedDocument.analyzed_at ? (
+                      <div className="space-y-4">
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm flex items-center gap-2">
+                              <Sparkles className="h-4 w-4 text-secondary" />
+                              AI Summary
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm text-muted-foreground">
+                              {selectedDocument.ai_summary || 'No summary available'}
+                            </p>
+                          </CardContent>
+                        </Card>
+
+                        {Array.isArray(selectedDocument.key_findings) && selectedDocument.key_findings.length > 0 && (
+                          <Card>
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-sm flex items-center gap-2">
+                                <FileSearch className="h-4 w-4 text-blue-500" />
+                                Key Findings
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <ul className="space-y-2">
+                                {(selectedDocument.key_findings as string[]).map((finding, i) => (
+                                  <li key={i} className="text-sm flex items-start gap-2">
+                                    <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                                    <span>{finding}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        {Array.isArray(selectedDocument.risk_flags) && selectedDocument.risk_flags.length > 0 && (
+                          <Card>
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-sm flex items-center gap-2">
+                                <Flag className="h-4 w-4 text-destructive" />
+                                Risk Flags
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <ul className="space-y-2">
+                                {(selectedDocument.risk_flags as Array<{ severity: string; description: string }>).map((flag, i) => (
+                                  <li key={i} className="text-sm flex items-start gap-2">
+                                    <Badge 
+                                      className={cn(
+                                        'text-xs',
+                                        flag.severity === 'high' ? 'bg-destructive/10 text-destructive' :
+                                        flag.severity === 'medium' ? 'bg-warning/10 text-warning' :
+                                        'bg-muted text-muted-foreground'
+                                      )}
+                                    >
+                                      {flag.severity}
+                                    </Badge>
+                                    <span>{flag.description}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        {selectedDocument.compliance_mapping && typeof selectedDocument.compliance_mapping === 'object' && Object.keys(selectedDocument.compliance_mapping as Record<string, unknown>).length > 0 && (
+                          <Card>
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-sm">Compliance Mapping</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-2">
+                                {Object.entries(selectedDocument.compliance_mapping as Record<string, string[]>).map(([framework, controls]) => (
+                                  <div key={framework}>
+                                    <p className="text-sm font-medium">{framework}</p>
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {Array.isArray(controls) && controls.map((control, i) => (
+                                        <Badge key={i} variant="outline" className="text-xs">{control}</Badge>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        <p className="text-xs text-muted-foreground">
+                          Analyzed {format(new Date(selectedDocument.analyzed_at), 'MMM d, yyyy h:mm a')}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Sparkles className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                        <p className="text-muted-foreground">Document not yet analyzed</p>
+                        <Button 
+                          className="mt-4 bg-secondary hover:bg-secondary/90"
+                          onClick={() => handleAnalyze(selectedDocument)}
+                          disabled={analyzeDocument.isPending}
+                        >
+                          <Sparkles className="h-4 w-4 mr-2" />
+                          {analyzeDocument.isPending ? 'Analyzing...' : 'Analyze with AI'}
+                        </Button>
+                      </div>
+                    )}
+                  </ScrollArea>
+                </TabsContent>
+
+                <TabsContent value="details" className="mt-4">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Document Type</Label>
+                        <p className="font-medium">{documentTypeLabels[selectedDocument.type]}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">File Size</Label>
+                        <p className="font-medium">{formatFileSize(selectedDocument.size)}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Uploaded</Label>
+                        <p className="font-medium">{format(new Date(selectedDocument.upload_date), 'MMM d, yyyy')}</p>
+                      </div>
+                      <div>
+                        <Label className="text-muted-foreground text-xs">Expires</Label>
+                        <p className="font-medium">
+                          {selectedDocument.expiration_date 
+                            ? format(new Date(selectedDocument.expiration_date), 'MMM d, yyyy')
+                            : 'No expiration'
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                        onClick={() => handleDownload(selectedDocument)}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download Document
+                      </Button>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="review" className="mt-4">
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-muted-foreground text-xs">Current Status</Label>
+                      <Badge className={cn('mt-1', reviewStatusConfig[selectedDocument.review_status || 'pending'].class)}>
+                        {reviewStatusConfig[selectedDocument.review_status || 'pending'].label}
+                      </Badge>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Update Review Status</Label>
+                      <Select 
+                        value={selectedDocument.review_status || 'pending'} 
+                        onValueChange={(v) => handleReviewStatusChange(selectedDocument.id, v)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending Analysis</SelectItem>
+                          <SelectItem value="analyzed">Analyzed</SelectItem>
+                          <SelectItem value="reviewed">Reviewed</SelectItem>
+                          <SelectItem value="flagged">Flagged for Follow-up</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Reviewer Notes</Label>
+                      <Textarea 
+                        placeholder="Add notes about this document..."
+                        value={reviewNotes || selectedDocument.reviewer_notes || ''}
+                        onChange={(e) => setReviewNotes(e.target.value)}
+                        rows={4}
+                      />
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => updateReviewStatus.mutate({ 
+                          docId: selectedDocument.id, 
+                          status: selectedDocument.review_status || 'pending',
+                          notes: reviewNotes 
+                        })}
+                        disabled={updateReviewStatus.isPending}
+                      >
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Save Notes
+                      </Button>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

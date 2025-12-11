@@ -13,8 +13,16 @@ export interface Document {
   size: number;
   status: 'active' | 'expired' | 'expiring_soon';
   file_path: string | null;
-  user_id: string;
+  user_id: string | null;
   created_at: string;
+  ai_summary?: string | null;
+  ai_analysis?: unknown;
+  analyzed_at?: string | null;
+  review_status?: string | null;
+  reviewer_notes?: string | null;
+  key_findings?: unknown;
+  risk_flags?: unknown;
+  compliance_mapping?: unknown;
 }
 
 export function useDocuments(vendorId?: string) {
@@ -71,6 +79,7 @@ export function useDocuments(vendorId?: string) {
           size: file.size,
           expiration_date: expirationDate || null,
           user_id: user?.id,
+          review_status: 'pending',
         })
         .select()
         .single();
@@ -81,6 +90,52 @@ export function useDocuments(vendorId?: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['documents'] });
       toast({ title: 'Success', description: 'Document uploaded successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    },
+  });
+
+  const analyzeDocument = useMutation({
+    mutationFn: async (doc: Document) => {
+      const { data, error } = await supabase.functions.invoke('analyze-document', {
+        body: {
+          documentId: doc.id,
+          documentName: doc.name,
+          documentType: doc.type,
+          // Note: For actual content extraction, you'd need to implement
+          // PDF/document parsing. For now, we pass metadata for analysis.
+          documentContent: `Document: ${doc.name}\nType: ${doc.type}\nThis is a ${doc.type} document that requires compliance analysis.`,
+        },
+      });
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['documents'] });
+      toast({ title: 'Success', description: 'Document analyzed successfully' });
+    },
+    onError: (error: Error) => {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    },
+  });
+
+  const updateReviewStatus = useMutation({
+    mutationFn: async ({ docId, status, notes }: { docId: string; status: string; notes?: string }) => {
+      const { error } = await supabase
+        .from('documents')
+        .update({ 
+          review_status: status,
+          reviewer_notes: notes || null,
+        })
+        .eq('id', docId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['documents'] });
+      toast({ title: 'Success', description: 'Review status updated' });
     },
     onError: (error: Error) => {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -116,6 +171,8 @@ export function useDocuments(vendorId?: string) {
     isLoading: documentsQuery.isLoading,
     error: documentsQuery.error,
     uploadDocument,
+    analyzeDocument,
+    updateReviewStatus,
     deleteDocument,
     getDownloadUrl,
   };
